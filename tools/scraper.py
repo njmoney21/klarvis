@@ -47,6 +47,7 @@ def fetch_places(query: str, radius_m: int) -> list[dict]:
     results = []
     while True:
         r = requests.get(PLACES_URL, params=params, timeout=10)
+        r.raise_for_status()
         data = r.json()
         results.extend(data.get('results', []))
         next_token = data.get('next_page_token')
@@ -60,6 +61,7 @@ def fetch_places(query: str, radius_m: int) -> list[dict]:
 def get_place_details(place_id: str) -> dict:
     params = {'place_id': place_id, 'fields': 'website,formatted_phone_number', 'key': API_KEY, 'language': 'de'}
     r = requests.get(DETAILS_URL, params=params, timeout=10)
+    r.raise_for_status()
     return r.json().get('result', {})
 
 
@@ -67,11 +69,16 @@ def check_website(url: str) -> str:
     try:
         r = requests.get(url, timeout=8, headers={'User-Agent': 'Mozilla/5.0'})
         return 'modern' if is_modern_website(r.text) else 'veraltete Website'
-    except Exception:
+    except requests.RequestException:
+        return 'Website nicht erreichbar'
+    except Exception as e:
+        print(f'WARNING: Unexpected error checking {url}: {e}')
         return 'Website nicht erreichbar'
 
 
 def scrape(radius_km: int, output: str) -> None:
+    if not API_KEY:
+        raise EnvironmentError("GOOGLE_PLACES_API_KEY not set — create tools/.env from tools/.env.example")
     radius_m = radius_km * 1000
     seen_ids: set[str] = set()
     leads: list[dict] = []
