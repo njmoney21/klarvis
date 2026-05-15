@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.env
+leads.csv
+sent_log.csv
+tools/__pycache__/
+tools/tests/__pycache__/
+*.pyc

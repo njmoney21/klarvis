@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+@theme {
+  --color-purple-950: #1a0533;
+  --color-purple-900: #2e0854;
+  --color-purple-600: #9333ea;
+  --color-purple-400: #c084fc;
+  --color-dark: #0a0a0a;
+  --color-dark-100: #0f0f0f;
+  --color-dark-200: #1a1a1a;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background-color: #0a0a0a;
+  color: #ffffff;
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+}
