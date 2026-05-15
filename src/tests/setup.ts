@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom'
 
 // Mock IntersectionObserver for framer-motion viewport animations
-global.IntersectionObserver = class IntersectionObserver {
+;(globalThis as unknown as Record<string, unknown>).IntersectionObserver = class IntersectionObserver {
   root = null
   rootMargin = ''
   thresholds = []
@@ -9,4 +9,4 @@ global.IntersectionObserver = class IntersectionObserver {
   unobserve() {}
   disconnect() {}
   takeRecords() { return [] }
-} as unknown as typeof IntersectionObserver
+}
