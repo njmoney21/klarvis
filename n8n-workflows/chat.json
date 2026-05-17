@@ -1,0 +1,108 @@
+{
+  "name": "steuerhelfer-chat",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "chat",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "ch-0001-webhook",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [240, 300],
+      "webhookId": "steuerhelfer-chat"
+    },
+    {
+      "parameters": {
+        "jsCode": "const body = $input.first().json.body;\nconst message = body.message;\nconst history = Array.isArray(body.history) ? body.history : [];\n\nif (!message) throw new Error('Missing message field in request body');\n\nconst systemPrompt = `Du bist Steuerhelfer, ein freundlicher KI-Assistent für deutsche Kleinunternehmer und Selbstständige — besonders im ländlichen Bayern. Du hilfst bei Umsatzsteuer, Betriebsausgaben, Rechnungspflichten (§14 UStG), ELSTER-Fristen, und SKR03/SKR04 Buchungskategorien. Antworte immer auf Deutsch, klar und verständlich. Weise bei komplexen Fragen darauf hin, dass ein Steuerberater die endgültige Beratung übernehmen sollte.`;\n\nconst messages = [\n  ...history.map(h => ({ role: h.role, content: h.content })),\n  { role: 'user', content: message }\n];\n\nconst payload = {\n  model: 'claude-sonnet-4-20250514',\n  max_tokens: 2048,\n  system: systemPrompt,\n  messages\n};\n\nreturn [{ json: { payload } }];"
+      },
+      "id": "ch-0002-prep",
+      "name": "Prepare Chat Payload",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "anthropic-version",
+              "value": "2023-06-01"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "raw",
+        "rawContentType": "application/json",
+        "rawBody": "={{ JSON.stringify($json.payload) }}",
+        "options": {}
+      },
+      "id": "ch-0003-claude",
+      "name": "Call Claude Chat",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [680, 300],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "REPLACE_WITH_ANTHROPIC_CRED_ID",
+          "name": "Anthropic API Key"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const reply = $input.first().json.content[0].text;\nreturn [{ json: { reply } }];"
+      },
+      "id": "ch-0004-extract",
+      "name": "Extract Reply",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [900, 300]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "id": "ch-0005-respond",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [1120, 300]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [[{"node": "Prepare Chat Payload", "type": "main", "index": 0}]]
+    },
+    "Prepare Chat Payload": {
+      "main": [[{"node": "Call Claude Chat", "type": "main", "index": 0}]]
+    },
+    "Call Claude Chat": {
+      "main": [[{"node": "Extract Reply", "type": "main", "index": 0}]]
+    },
+    "Extract Reply": {
+      "main": [[{"node": "Respond to Webhook", "type": "main", "index": 0}]]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "meta": {
+    "instanceId": "steuerhelfer"
+  },
+  "tags": [{"name": "steuerhelfer"}]
+}

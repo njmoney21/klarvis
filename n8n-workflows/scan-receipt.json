@@ -1,0 +1,129 @@
+{
+  "name": "steuerhelfer-scan-receipt",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "scan-receipt",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "sr-0001-webhook",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [240, 300],
+      "webhookId": "steuerhelfer-scan-receipt"
+    },
+    {
+      "parameters": {
+        "jsCode": "const image = $input.first().json.body.image;\n\nif (!image) throw new Error('Missing image field in request body');\n\nconst payload = {\n  model: 'claude-sonnet-4-20250514',\n  max_tokens: 1024,\n  messages: [\n    {\n      role: 'user',\n      content: [\n        {\n          type: 'image',\n          source: {\n            type: 'base64',\n            media_type: 'image/jpeg',\n            data: image\n          }\n        },\n        {\n          type: 'text',\n          text: 'Analysiere diesen Kassenbon oder diese Rechnung und extrahiere folgende Daten als JSON:\\n{ \"vendor\": \"...\", \"amount_gross\": 0.00, \"amount_net\": 0.00, \"vat_rate\": 19, \"vat_amount\": 0.00, \"date\": \"YYYY-MM-DD\", \"category\": \"...\", \"skr03_account\": \"...\", \"description\": \"...\", \"deductible\": true, \"notes\": \"...\" }\\nAntworte NUR mit dem JSON-Objekt, ohne Markdown-Backticks oder zusätzlichen Text.'\n        }\n      ]\n    }\n  ]\n};\n\nreturn [{ json: { payload } }];"
+      },
+      "id": "sr-0002-prep",
+      "name": "Prepare Claude Payload",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "anthropic-version",
+              "value": "2023-06-01"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "raw",
+        "rawContentType": "application/json",
+        "rawBody": "={{ JSON.stringify($json.payload) }}",
+        "options": {}
+      },
+      "id": "sr-0003-claude",
+      "name": "Call Claude Vision",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [680, 300],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "REPLACE_WITH_ANTHROPIC_CRED_ID",
+          "name": "Anthropic API Key"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const text = $input.first().json.content[0].text;\n\nlet receipt;\ntry {\n  receipt = JSON.parse(text);\n} catch {\n  throw new Error('Claude did not return valid JSON: ' + text.substring(0, 200));\n}\n\nreturn [{ json: receipt }];"
+      },
+      "id": "sr-0004-parse",
+      "name": "Parse Receipt JSON",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [900, 300]
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "tableId": "receipts",
+        "dataToSend": "autoMapInputData"
+      },
+      "id": "sr-0005-supabase",
+      "name": "Save to Supabase",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [1120, 300],
+      "credentials": {
+        "supabaseApi": {
+          "id": "REPLACE_WITH_SUPABASE_CRED_ID",
+          "name": "Supabase Service Role"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "id": "sr-0006-respond",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [1340, 300]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [[{"node": "Prepare Claude Payload", "type": "main", "index": 0}]]
+    },
+    "Prepare Claude Payload": {
+      "main": [[{"node": "Call Claude Vision", "type": "main", "index": 0}]]
+    },
+    "Call Claude Vision": {
+      "main": [[{"node": "Parse Receipt JSON", "type": "main", "index": 0}]]
+    },
+    "Parse Receipt JSON": {
+      "main": [[{"node": "Save to Supabase", "type": "main", "index": 0}]]
+    },
+    "Save to Supabase": {
+      "main": [[{"node": "Respond to Webhook", "type": "main", "index": 0}]]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "meta": {
+    "instanceId": "steuerhelfer"
+  },
+  "tags": [{"name": "steuerhelfer"}]
+}
