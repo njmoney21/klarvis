@@ -39,4 +39,10 @@ describe('generateCSV', () => {
     const row = csv.split('\n')[1]
     expect(row).toContain('""')
   })
+
+  it('escapes double quotes inside cell values per RFC 4180', () => {
+    const csv = generateCSV([makeReceipt({ vendor: 'REWE "Markt"' })])
+    const row = csv.split('\n')[1]
+    expect(row).toContain('"REWE ""Markt"""')
+  })
 })

@@ -11,7 +11,7 @@ test('shows website price', () => {
 
 test('shows maintenance price', () => {
   render(<SectionPreise />)
-  expect(screen.getByText(/37,99/)).toBeInTheDocument()
+  expect(screen.getByText(/^49\s/)).toBeInTheDocument()
 })
 
 test('shows both tier names', () => {

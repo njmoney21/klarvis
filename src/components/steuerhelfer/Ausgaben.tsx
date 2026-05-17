@@ -6,7 +6,7 @@ export function generateCSV(receipts: Receipt[]): string {
   const header = 'Datum,Händler,Kategorie,Brutto,Netto,MwSt-Satz,Vorsteuer,SKR03'
   const rows = receipts.map(r =>
     [r.date, r.vendor, r.category, r.amount_gross, r.amount_net, r.vat_rate, r.vat_amount, r.skr03_account]
-      .map(v => `"${v ?? ''}"`)
+      .map(v => `"${String(v ?? '').replace(/"/g, '""')}"`)
       .join(',')
   )
   return [header, ...rows].join('\n')
