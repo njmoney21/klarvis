@@ -137,6 +137,61 @@ Visual: node-graph mini diagram (same style as panel preview) above the project 
 
 ---
 
+## Site-Wide Theme Restyle
+
+### New colour palette (replaces all purple)
+
+Derived directly from the Three.js scene colours:
+
+| Token | Value | Replaces |
+|---|---|---|
+| `--accent` | `#00ffff` (pure cyan = Thing points `#0ff`) | `#7c3aed` |
+| `--accent-2` | `#88ffff` (soft cyan = Thing lines `#8ff`) | `#a78bfa` |
+| `--accent-mid` | `#006688` (teal = WaterStuff `#068`) | purple mid-tones |
+| `--dark` | `#020d14` (matches scene bg `#024`) | `#060a0f` |
+| `--dark-100` | `#03111c` | `#0a0e14` |
+| `--dark-200` | `#061a28` | `#141820` |
+
+All `rgba(124,58,237,*)` → `rgba(0,255,255,*)` at the same opacity.  
+All `rgba(167,139,250,*)` → `rgba(136,255,255,*)` at the same opacity.
+
+### Geometric / wireframe style direction
+
+- Border-radius: reduce or remove rounded corners on cards/buttons — use `4px` max (matches sharp wireframe aesthetic)
+- Borders: `1px solid rgba(0,255,255,0.2)` replaces purple borders — thin, luminous
+- Card backgrounds: `rgba(0,100,136,0.08)` instead of purple-tinted backgrounds
+- Buttons: outlined cyan (`border: 1px solid rgba(0,255,255,0.5); color: #00ffff`) instead of purple filled — except CTA "Anfragen" which becomes `background: rgba(0,255,255,0.12)`
+- Logo dot: `Klarvis<span style="color:#00ffff">.</span>`
+- Section number labels and divider lines: switch from `rgba(167,139,250,*)` → `rgba(0,255,255,*)`
+- "BEST DEAL" badge: `background: rgba(0,255,255,0.15); color: #00ffff; border: 1px solid rgba(0,255,255,0.4)`
+
+### Components to restyle
+
+Every component that references purple hex values or `rgba(124,58,237,*)` / `rgba(167,139,250,*)`:
+
+| Component | What changes |
+|---|---|
+| `src/index.css` | CSS variable values (`--accent`, `--accent-2`, `--dark*`), body background |
+| `Navbar.tsx` | Logo dot, "Anfragen" button, mobile menu border |
+| `SectionHero.tsx` | Bottom gradient fade colour (`#060a0f` → `#020d14`) |
+| `SectionLeistungen.tsx` | Card icon bg, border, feature dot, section label colour |
+| `SectionProcess.tsx` | Step numbers, connector lines, section label colour |
+| `SectionGallery.tsx` | Tags, card borders, section label |
+| `SectionPreise.tsx` | Tier card borders, badge, CTA buttons, CardScanner accent |
+| `SectionKontakt.tsx` | Form input borders, submit button, label colour |
+| `Footer.tsx` | Accent dot/divider colour |
+
+### Side panel colours (updated from earlier design)
+
+All purple in the panel becomes cyan/teal:
+- `border-left: 1px solid rgba(0,255,255,0.25)`
+- Label text: `rgba(0,255,255,0.5)`
+- Service/price card borders: `rgba(0,255,255,0.2)`
+- CTA button: `background: rgba(0,255,255,0.1); border: 1px solid rgba(0,255,255,0.4); color: #00ffff`
+- "BEST DEAL" badge: cyan
+
+---
+
 ## Out of Scope
 
 - Uploading or hosting the n8n workflow JSON file
