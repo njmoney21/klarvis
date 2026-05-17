@@ -1,20 +1,276 @@
 @import "tailwindcss";
 
 @theme {
-  --color-purple-950: #1a0533;
-  --color-purple-900: #2e0854;
-  --color-purple-600: #9333ea;
-  --color-purple-400: #c084fc;
-  --color-dark: #0a0a0a;
-  --color-dark-100: #0f0f0f;
-  --color-dark-200: #1a1a1a;
+  --color-cyan-500:  #00ffff;
+  --color-cyan-400:  #88ffff;
+  --color-teal-700:  #006688;
+  --color-dark:      #020d14;
+  --color-dark-100:  #03111c;
+  --color-dark-200:  #061a28;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+:root {
+  --accent:    #00ffff;
+  --accent-2:  #88ffff;
+  --font-code: 'JetBrains Mono', monospace;
 }
 
 * { box-sizing: border-box; }
+
 html { scroll-behavior: smooth; }
+
 body {
-  background-color: #0a0a0a;
-  color: #ffffff;
-  font-family: 'Inter', sans-serif;
   margin: 0;
+  padding: 0;
+  background: #020d14;
+  color: #e8e8f0;
+  font-family: 'Outfit', sans-serif;
+  overflow-x: hidden;
+}
+
+a, button { cursor: pointer; }
+
+/* Three.js underwater canvas — fixed full-screen background */
+#underwater-container canvas {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 0 !important;
+}
+
+/* ── CARD SCANNER ─────────────────────────────── */
+.cs-wrap {
+  position: relative;
+  width: 100%;
+  background: #000;
+  overflow: hidden;
+}
+.cs-controls {
+  position: absolute;
+  top: 14px;
+  left: 16px;
+  display: flex;
+  gap: 8px;
+  z-index: 100;
+}
+.cs-btn {
+  padding: 7px 14px;
+  background: rgba(255,255,255,0.15);
+  border: none;
+  border-radius: 25px;
+  color: #fff;
+  font-weight: 700;
+  font-size: 12px;
+  cursor: pointer;
+  backdrop-filter: blur(5px);
+  transition: background 0.2s, transform 0.2s;
+}
+.cs-btn:hover { background: rgba(255,255,255,0.28); transform: translateY(-1px); }
+.cs-speed {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  color: #fff;
+  font-size: 13px;
+  background: rgba(0,0,0,0.35);
+  padding: 6px 14px;
+  border-radius: 20px;
+  backdrop-filter: blur(5px);
+  z-index: 100;
+}
+.cs-container {
+  position: relative;
+  width: 100%;
+  height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.cs-particle-canvas {
+  position: absolute !important;
+  top: 50% !important;
+  left: 0 !important;
+  transform: translateY(-50%) !important;
+  width: 100% !important;
+  height: 250px !important;
+  z-index: 0 !important;
+  pointer-events: none;
+}
+.cs-scanner-canvas {
+  position: absolute !important;
+  top: 50% !important;
+  left: -3px !important;
+  transform: translateY(-50%) !important;
+  width: 100% !important;
+  height: 300px !important;
+  z-index: 15 !important;
+  pointer-events: none;
+}
+.cs-card-stream {
+  position: absolute;
+  width: 100%;
+  height: 180px;
+  display: flex;
+  align-items: center;
+  overflow: visible;
+  z-index: 5;
+}
+.cs-card-line {
+  display: flex;
+  align-items: center;
+  gap: 60px;
+  white-space: nowrap;
+  cursor: grab;
+  user-select: none;
+  will-change: transform;
+}
+.cs-card-line:active, .cs-card-line.cs-dragging { cursor: grabbing; }
+.cs-card-wrapper {
+  position: relative;
+  width: 400px;
+  height: 250px;
+  flex-shrink: 0;
+}
+.cs-card {
+  position: absolute;
+  top: 0; left: 0;
+  width: 400px;
+  height: 250px;
+  border-radius: 15px;
+  overflow: hidden;
+}
+.cs-card-normal {
+  z-index: 2;
+  clip-path: inset(0 0 0 var(--clip-right, 0%));
+}
+.cs-card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 15px;
+  filter: brightness(1.1) contrast(1.1);
+  display: block;
+}
+.cs-card-ascii {
+  z-index: 1;
+  clip-path: inset(0 calc(100% - var(--clip-left, 0%)) 0 0);
+}
+.cs-ascii-content {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  color: rgba(220,210,255,0.6);
+  font-family: 'Courier New', monospace;
+  font-size: 11px;
+  line-height: 13px;
+  overflow: hidden;
+  white-space: pre;
+  margin: 0; padding: 0;
+  box-sizing: border-box;
+}
+.cs-scan-effect {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0,255,255,0.35), transparent);
+  animation: csScan 0.6s ease-out forwards;
+  pointer-events: none;
+  z-index: 5;
+}
+@keyframes csScan {
+  0%   { transform: translateX(-100%); opacity: 0; }
+  50%  { opacity: 1; }
+  100% { transform: translateX(100%); opacity: 0; }
+}
+
+/* React app sits above canvas */
+#root {
+  position: relative;
+  z-index: 5;
+}
+
+/* overlays removed */
+.scanlines, .vignette, .noise { display: none; }
+
+/* ── HUD CORNERS ──────────────────────────────── */
+.hud-corner {
+  position: fixed;
+  font-family: var(--font-code);
+  font-size: 9px;
+  color: rgba(255,255,255,0.18);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  z-index: 20;
+  pointer-events: none;
+}
+.hud-corner strong { color: rgba(167,139,250,0.45); font-weight: 700; }
+.hud-tl { top: 14px;    left: 16px;  }
+.hud-tr { top: 14px;    right: 16px; }
+.hud-bl { bottom: 14px; left: 16px;  }
+.hud-br { bottom: 14px; right: 16px; }
+
+/* ── INFO BAR ─────────────────────────────────── */
+.info {
+  position: fixed;
+  bottom: 24px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: rgba(255,255,255,0.65);
+  font-size: 12px;
+  letter-spacing: 1px;
+  background: rgba(0,0,0,0.55);
+  width: fit-content;
+  margin: 0 auto;
+  padding: 7px 18px;
+  border-radius: 40px;
+  z-index: 25;
+  font-family: var(--font-code);
+  border: 1px solid rgba(255,255,255,0.1);
+  pointer-events: none;
+}
+
+@media (max-width: 600px) {
+  .info { font-size: 10px; bottom: 16px; padding: 6px 14px; }
+}
+
+/* ── EVOLVE BUTTON (legacy #ui hidden — React button handles this) ── */
+#ui { display: none; }
+
+/* ── LOADING ──────────────────────────────────── */
+#loading {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #fff;
+  font-family: var(--font-code);
+  font-size: 12px;
+  background: rgba(0,0,0,0.6);
+  padding: 12px 24px;
+  border-radius: 30px;
+  z-index: 100;
+  transition: opacity 1s;
+  pointer-events: none;
+}
+
+/* ── SECTIONS ─────────────────────────────────── */
+#root section:not(.hero-section),
+#root footer {
+  background: #020d14;
+}
+
+/* Remove hard border on the first content section — the hero gradient handles the transition */
+#root section:not(.hero-section):first-of-type {
+  border-top: none;
+}
+
+#root section:not(.hero-section) + section,
+#root section:not(.hero-section) ~ section,
+#root section:not(.hero-section) + footer {
+  border-top: 1px solid rgba(255,255,255,0.05);
 }
