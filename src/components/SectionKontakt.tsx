@@ -1,6 +1,17 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Mail, MessageSquare } from 'lucide-react'
+
+const inputStyle: React.CSSProperties = {
+  width: '100%',
+  background: 'rgba(255,255,255,0.03)',
+  border: '1px solid rgba(0,255,255,0.12)',
+  borderRadius: '4px',
+  padding: '12px 16px',
+  color: '#fff',
+  fontSize: '14px',
+  fontFamily: 'Outfit, sans-serif',
+  outline: 'none',
+}
 
 export default function SectionKontakt() {
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
@@ -23,55 +34,77 @@ export default function SectionKontakt() {
   }
 
   return (
-    <section id="kontakt" className="py-24 bg-dark">
-      <div className="max-w-6xl mx-auto px-6">
+    <section id="kontakt" className="py-20 md:py-[88px] px-6 md:px-8">
+      <div className="max-w-5xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
         >
-          <p className="text-purple-400 text-sm font-semibold uppercase tracking-widest mb-3">Kontakt</p>
-          <h2 className="text-4xl font-extrabold text-white mb-4">Lassen Sie uns reden</h2>
-          <p className="text-white/60 mb-16 max-w-xl">Kostenlose Erstberatung — unverbindlich und unkompliziert.</p>
+          <div className="flex items-center gap-3 mb-4">
+            <span className="font-mono text-[10px] tracking-[2px]" style={{ color: 'rgba(0,255,255,0.45)' }}>05</span>
+            <span className="w-8 h-px flex-shrink-0" style={{ background: 'rgba(0,255,255,0.2)' }} />
+            <span className="font-mono text-[9px] uppercase tracking-[3px]" style={{ color: 'rgba(0,255,255,0.4)' }}>Kontakt</span>
+          </div>
+          <h2
+            className="font-extrabold text-white mb-12"
+            style={{ fontSize: 'clamp(1.6rem, 3vw, 2.4rem)', letterSpacing: '-0.8px', lineHeight: 1.1 }}
+          >
+            Lassen Sie uns reden
+          </h2>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-16">
+        <div className="grid md:grid-cols-[1.2fr_1fr] gap-16 items-start">
           <motion.form
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
             onSubmit={handleSubmit}
-            className="space-y-5"
           >
-            <div className="grid sm:grid-cols-2 gap-5">
-              <div>
-                <label className="block text-sm text-white/60 mb-2">Name *</label>
-                <input name="name" required className="w-full bg-dark-100 border border-dark-200 rounded-xl px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-purple-600 transition-colors" placeholder="Max Mustermann" />
-              </div>
-              <div>
-                <label className="block text-sm text-white/60 mb-2">Firma</label>
-                <input name="firma" className="w-full bg-dark-100 border border-dark-200 rounded-xl px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-purple-600 transition-colors" placeholder="Muster GmbH" />
-              </div>
+            <div className="mb-4">
+              <label className="block mb-1.5" style={{ fontSize: '11px', color: 'rgba(255,255,255,0.38)', letterSpacing: '0.5px' }}>
+                Name *
+              </label>
+              <input name="name" required style={inputStyle} placeholder="Max Mustermann" />
             </div>
-            <div>
-              <label className="block text-sm text-white/60 mb-2">E-Mail *</label>
-              <input name="email" type="email" required className="w-full bg-dark-100 border border-dark-200 rounded-xl px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-purple-600 transition-colors" placeholder="max@beispiel.de" />
+            <div className="mb-4">
+              <label className="block mb-1.5" style={{ fontSize: '11px', color: 'rgba(255,255,255,0.38)', letterSpacing: '0.5px' }}>
+                E-Mail *
+              </label>
+              <input name="email" type="email" required style={inputStyle} placeholder="max@beispiel.de" />
             </div>
-            <div>
-              <label className="block text-sm text-white/60 mb-2">Nachricht</label>
-              <textarea name="nachricht" rows={4} className="w-full bg-dark-100 border border-dark-200 rounded-xl px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-purple-600 transition-colors resize-none" placeholder="Kurze Beschreibung Ihres Projekts..." />
+            <div className="mb-4">
+              <label className="block mb-1.5" style={{ fontSize: '11px', color: 'rgba(255,255,255,0.38)', letterSpacing: '0.5px' }}>
+                Nachricht
+              </label>
+              <textarea
+                name="nachricht"
+                rows={4}
+                style={{ ...inputStyle, resize: 'none' }}
+                placeholder="Kurze Beschreibung Ihres Projekts..."
+              />
             </div>
             <button
               type="submit"
               disabled={status === 'sending' || status === 'sent'}
-              className="w-full bg-purple-600 hover:bg-purple-600/80 disabled:opacity-50 text-white font-semibold py-4 rounded-full transition-colors"
+              className="w-full font-bold transition-opacity hover:opacity-90 disabled:opacity-50"
+              style={{
+                background: 'rgba(0,255,255,0.1)',
+                border: '1px solid rgba(0,255,255,0.35)',
+                color: '#00ffff',
+                borderRadius: '4px',
+                fontSize: '14px',
+                padding: '14px',
+                cursor: 'pointer',
+                fontFamily: 'Outfit, sans-serif',
+              }}
             >
-              {status === 'sending' ? 'Wird gesendet…' : status === 'sent' ? 'Nachricht gesendet ✓' : 'Nachricht senden'}
+              {status === 'sending' ? 'Wird gesendet…' : status === 'sent' ? 'Nachricht gesendet ✓' : 'Nachricht senden →'}
             </button>
             {status === 'error' && (
-              <p className="text-red-400 text-sm text-center">
+              <p className="mt-3 text-center" style={{ fontSize: '12px', color: '#f87171' }}>
                 Etwas ist schiefgelaufen. Schreiben Sie uns direkt an hallo@klarvis.de
               </p>
             )}
@@ -81,30 +114,35 @@ export default function SectionKontakt() {
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="flex flex-col gap-8 justify-center"
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            className="flex flex-col gap-8 pt-2"
           >
-            <div className="flex items-start gap-4">
-              <Mail className="text-purple-400 flex-shrink-0 mt-1" size={22} />
-              <div>
-                <p className="text-white font-semibold mb-1">E-Mail</p>
-                <a href="mailto:hallo@klarvis.de" className="text-white/60 hover:text-purple-400 transition-colors">
-                  hallo@klarvis.de
-                </a>
-              </div>
+            <div>
+              <h4 className="font-semibold mb-1" style={{ fontSize: '13px', color: 'rgba(255,255,255,0.7)' }}>E-Mail</h4>
+              <a
+                href="mailto:hallo@klarvis.de"
+                className="transition-colors hover:opacity-70"
+                style={{ fontSize: '13px', color: 'rgba(255,255,255,0.38)' }}
+              >
+                hallo@klarvis.de
+              </a>
             </div>
-            <div className="flex items-start gap-4">
-              <MessageSquare className="text-purple-400 flex-shrink-0 mt-1" size={22} />
-              <div>
-                <p className="text-white font-semibold mb-1">WhatsApp</p>
-                <a href="https://wa.me/49XXXXXXXXXX" className="text-white/60 hover:text-purple-400 transition-colors">
-                  Direkt schreiben →
-                </a>
-              </div>
+            <div>
+              <h4 className="font-semibold mb-1" style={{ fontSize: '13px', color: 'rgba(255,255,255,0.7)' }}>WhatsApp</h4>
+              <a
+                href="https://wa.me/49XXXXXXXXXX"
+                className="transition-colors hover:opacity-70"
+                style={{ fontSize: '13px', color: 'rgba(255,255,255,0.38)' }}
+              >
+                Direkt schreiben →
+              </a>
             </div>
-            <div className="border border-dark-200 rounded-2xl p-6 bg-dark-100">
-              <p className="text-white/80 text-sm leading-relaxed">
-                <span className="text-white font-semibold">Antwortzeit:</span> Wir melden uns in der Regel innerhalb von 24 Stunden bei Ihnen.
+            <div
+              style={{ border: '1px solid rgba(0,255,255,0.08)', background: 'rgba(0,255,255,0.02)', borderRadius: '4px', padding: '20px' }}
+            >
+              <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.38)', lineHeight: '1.6' }}>
+                <strong style={{ color: 'rgba(255,255,255,0.6)' }}>Antwortzeit:</strong>{' '}
+                Wir melden uns in der Regel innerhalb von 24 Stunden bei Ihnen.
               </p>
             </div>
           </motion.div>
