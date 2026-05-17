@@ -145,7 +145,7 @@
 
       class SeaBed extends THREE.LineSegments {
         constructor() {
-          const g = new THREE.PlaneGeometry(100, 100, 400, 400).rotateX(-Math.PI * 0.5).rotateY(Math.PI * 0.25);
+          const g = new THREE.PlaneGeometry(100, 100, 120, 120).rotateX(-Math.PI * 0.5).rotateY(Math.PI * 0.25);
           ToQuads(g);
           const m = new THREE.MeshBasicMaterial({
             color: "#048",
@@ -212,7 +212,7 @@
       class WaterStuff extends THREE.Group {
         constructor() {
           super();
-          this.items = Array.from({ length: 50 }, () => {
+          this.items = Array.from({ length: 30 }, () => {
             const item = new THREE.Mesh(
               new THREE.CapsuleGeometry(0.25, 2, 3, 7, 3),
               new THREE.MeshBasicMaterial({ wireframe: true, color: "#068" })
@@ -313,8 +313,8 @@
       const camera = new THREE.PerspectiveCamera(45, innerWidth / innerHeight, 0.1, 500);
       camera.position.set(0.5, 0.25, -1).setLength(7.25);
 
-      const renderer = new THREE.WebGLRenderer({ antialias: true });
-      renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+      const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
+      renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5));
       renderer.setSize(innerWidth, innerHeight);
       document.getElementById('underwater-container').appendChild(renderer.domElement);
 
@@ -327,7 +327,9 @@
       const controls = new OrbitControls(camera, renderer.domElement);
       controls.enableDamping = true;
       controls.enablePan = false;
-      controls.maxDistance = 15;
+      controls.enableZoom = false;
+      controls.rotateSpeed = 0.6;
+      controls.dampingFactor = 0.08;
 
       const background = new Background(scene);
       scene.add(background);
