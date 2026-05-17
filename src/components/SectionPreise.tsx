@@ -22,12 +22,31 @@ const tiers = [
     highlight: false,
   },
   {
-    name: 'Wartung & Support',
-    price: '37,99',
-    originalPrice: '49,99',
-    period: 'pro Monat',
-    saving: '24 % günstiger',
+    name: 'KI-Agent',
+    price: '999',
+    originalPrice: '1.299',
+    period: 'einmalig',
+    saving: '300 € gespart',
     badge: 'BEST DEAL',
+    description: 'Vollautomatischer KI-Assistent — WhatsApp, Bestellungen, Support, rund um die Uhr.',
+    features: [
+      'Individuelle Automatisierung',
+      'WhatsApp / Messenger Integration',
+      'GPT-4o-mini powered',
+      'n8n Workflow-Setup',
+      'Bestellungen & FAQ-Antworten',
+      'Launch & Einrichtung inklusive',
+    ],
+    cta: 'KI-Agent anfragen',
+    highlight: true,
+  },
+  {
+    name: 'Wartung & Support',
+    price: '49',
+    originalPrice: '69',
+    period: 'pro Monat',
+    saving: '29 % günstiger',
+    badge: null,
     description: 'Wir kümmern uns um alles — Sie konzentrieren sich aufs Geschäft.',
     features: [
       'Hosting inklusive',
@@ -38,7 +57,7 @@ const tiers = [
       'Monatlich kündbar',
     ],
     cta: 'Wartung hinzufügen',
-    highlight: true,
+    highlight: false,
   },
 ]
 
@@ -70,7 +89,7 @@ export default function SectionPreise() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-          className="grid md:grid-cols-2 overflow-hidden max-w-[720px]"
+          className="grid md:grid-cols-3 overflow-hidden"
           style={{ gap: '1px', background: 'rgba(0,255,255,0.06)', border: '1px solid rgba(0,255,255,0.1)', borderRadius: '4px' }}
         >
           {tiers.map(({ name, price, originalPrice, period, saving, badge, description, features, cta, highlight }) => (
@@ -79,7 +98,7 @@ export default function SectionPreise() {
               className="flex flex-col p-9 relative"
               style={{
                 background: highlight ? 'rgba(0,255,255,0.05)' : '#020d14',
-                borderLeft: highlight ? '1px solid rgba(0,255,255,0.15)' : undefined,
+              boxShadow: highlight ? 'inset 0 0 0 1px rgba(0,255,255,0.18)' : undefined,
               }}
             >
               {badge && (
