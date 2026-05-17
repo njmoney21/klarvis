@@ -1,16 +1,478 @@
 <!doctype html>
-<html lang="en">
+<html lang="de">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
     <title>Klarvis — Webdesign für lokale Unternehmen</title>
+    <style>
+      #side-panel {
+        position: fixed;
+        right: 0;
+        top: 0;
+        height: 100vh;
+        width: 320px;
+        background: rgba(2,13,20,0.97);
+        border-left: 1px solid rgba(0,255,255,0.2);
+        z-index: 10;
+        transform: translateX(100%);
+        transition: transform 0.35s cubic-bezier(0.16,1,0.3,1);
+        overflow-y: auto;
+        padding: 24px 20px;
+        box-sizing: border-box;
+        backdrop-filter: blur(8px);
+      }
+      #side-panel.open { transform: translateX(0); }
+      #panel-close {
+        position: absolute;
+        top: 14px;
+        right: 14px;
+        background: rgba(255,255,255,0.06);
+        border: 1px solid rgba(255,255,255,0.08);
+        color: rgba(255,255,255,0.4);
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.15s, color 0.15s;
+      }
+      #panel-close:hover { background: rgba(0,255,255,0.1); color: #00ffff; }
+      @media (max-width: 639px) {
+        #side-panel {
+          width: 100vw;
+          height: 65vh;
+          top: auto;
+          bottom: 0;
+          transform: translateY(100%);
+          border-left: none;
+          border-top: 1px solid rgba(0,255,255,0.2);
+        }
+        #side-panel.open { transform: translateY(0); }
+      }
+    </style>
   </head>
   <body>
+
+    <!-- Three.js importmap -->
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.182.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@0.182.0/examples/jsm/"
+        }
+      }
+    </script>
+
+    <!-- Underwater Three.js background -->
+    <div id="underwater-container"></div>
+
+    <!-- Side panel -->
+    <div id="side-panel">
+      <button id="panel-close" aria-label="Schließen">✕</button>
+      <div id="panel-content"></div>
+    </div>
+
+    <!-- React App -->
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+
+    <!-- Underwater scene -->
+    <script type="module">
+      import * as THREE from "three";
+      import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+      import * as BGU from "three/addons/utils/BufferGeometryUtils.js";
+
+      const noise = `
+        vec3 permute(vec3 x) { return mod(((x*34.0)+1.0)*x, 289.0); }
+        float snoise(vec2 v){
+          const vec4 C = vec4(0.211324865405187, 0.366025403784439,
+                   -0.577350269189626, 0.024390243902439);
+          vec2 i  = floor(v + dot(v, C.yy) );
+          vec2 x0 = v -   i + dot(i, C.xx);
+          vec2 i1;
+          i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
+          vec4 x12 = x0.xyxy + C.xxzz;
+          x12.xy -= i1;
+          i = mod(i, 289.0);
+          vec3 p = permute( permute( i.y + vec3(0.0, i1.y, 1.0 ))
+          + i.x + vec3(0.0, i1.x, 1.0 ));
+          vec3 m = max(0.5 - vec3(dot(x0,x0), dot(x12.xy,x12.xy),
+            dot(x12.zw,x12.zw)), 0.0);
+          m = m*m ;
+          m = m*m ;
+          vec3 x = 2.0 * fract(p * C.www) - 1.0;
+          vec3 h = abs(x) - 0.5;
+          vec3 ox = floor(x + 0.5);
+          vec3 a0 = x - ox;
+          m *= 1.79284291400159 - 0.85373472095314 * ( a0*a0 + h*h );
+          vec3 g;
+          g.x  = a0.x  * x0.x  + h.x  * x0.y;
+          g.yz = a0.yz * x12.xz + h.yz * x12.yw;
+          return 130.0 * dot(m, g);
+        }
+      `;
+
+      const gu = { time: { value: 0 } };
+
+      const ToQuads = (g) => {
+        let p = g.parameters;
+        let segmentsX = (g.type == "TorusGeometry" ? p.tubularSegments : p.radialSegments) || p.widthSegments || p.thetaSegments || (p.points && p.points.length - 1) || 1;
+        let segmentsY = (g.type == "TorusGeometry" ? p.radialSegments : p.tubularSegments) || p.heightSegments || p.phiSegments || p.segments || 1;
+        let indices = [];
+        for (let i = 0; i < segmentsY + 1; i++) {
+          let index11 = 0, index12 = 0;
+          for (let j = 0; j < segmentsX; j++) {
+            index11 = (segmentsX + 1) * i + j;
+            index12 = index11 + 1;
+            let index21 = index11;
+            let index22 = index11 + (segmentsX + 1);
+            indices.push(index11, index12);
+            if (index22 < ((segmentsX + 1) * (segmentsY + 1) - 1)) indices.push(index21, index22);
+          }
+          if ((index12 + segmentsX + 1) <= ((segmentsX + 1) * (segmentsY + 1) - 1)) indices.push(index12, index12 + segmentsX + 1);
+        }
+        g.setIndex(indices);
+      };
+
+      class SeaBed extends THREE.LineSegments {
+        constructor() {
+          const g = new THREE.PlaneGeometry(100, 100, 400, 400).rotateX(-Math.PI * 0.5).rotateY(Math.PI * 0.25);
+          ToQuads(g);
+          const m = new THREE.MeshBasicMaterial({
+            color: "#048",
+            onBeforeCompile: shader => {
+              shader.uniforms.time = gu.time;
+              shader.vertexShader = `
+                uniform float time;
+                varying float vN;
+                varying vec3 vPos;
+                ${noise}
+                ${shader.vertexShader}
+              `.replace(`#include <begin_vertex>`, `#include <begin_vertex>
+                float t = time;
+                float posX = position.x - mod(t, 2. * sqrt(2.));
+                transformed.x = posX;
+                float xShift = posX + t;
+                float n = snoise(vec2(xShift, position.z) * 0.1);
+                vN = n;
+                transformed.y = n * 1.;
+                vPos = transformed;
+              `);
+              shader.fragmentShader = `
+                varying float vN;
+                varying vec3 vPos;
+                ${shader.fragmentShader}
+              `.replace(`vec4 diffuseColor = vec4( diffuse, opacity );`, `
+                vec3 col = mix(diffuse, vec3(0, 0.75, 1), 1. - smoothstep(-0.5, 0., vN));
+                col += vec3(0, 0.2, 0.1) * (1. - smoothstep(10., 15., length(vPos)));
+                vec4 diffuseColor = vec4( col, opacity );
+              `);
+            }
+          });
+          super(g, m);
+          this.position.y = -5;
+        }
+      }
+
+      class Background extends THREE.Mesh {
+        constructor() {
+          const g = new THREE.SphereGeometry(300);
+          const m = new THREE.MeshBasicMaterial({
+            side: THREE.BackSide,
+            fog: false,
+            color: "white",
+            map: (() => {
+              const c = document.createElement("canvas");
+              c.width = 1; c.height = 1024;
+              const ctx = c.getContext("2d");
+              const grd = ctx.createLinearGradient(0, 0, 0, c.height);
+              grd.addColorStop(0.1, "#044");
+              grd.addColorStop(0.4, "#" + scene.background.getHexString());
+              ctx.fillStyle = grd;
+              ctx.fillRect(0, 0, c.width, c.height);
+              const tex = new THREE.CanvasTexture(c);
+              tex.colorSpace = "srgb";
+              tex.anisotropy = 16;
+              return tex;
+            })()
+          });
+          super(g, m);
+        }
+      }
+
+      class WaterStuff extends THREE.Group {
+        constructor() {
+          super();
+          this.items = Array.from({ length: 50 }, () => {
+            const item = new THREE.Mesh(
+              new THREE.CapsuleGeometry(0.25, 2, 3, 7, 3),
+              new THREE.MeshBasicMaterial({ wireframe: true, color: "#068" })
+            );
+            this.setRandom(item, 50 - Math.random() * 100);
+            this.add(item);
+            return item;
+          });
+        }
+        setRandom(o, x) {
+          const a = Math.PI * Math.random();
+          const r = 5 + Math.random() * 10;
+          o.position.set(x, Math.sin(a) * r, Math.cos(a) * r);
+          o.rotation.setFromVector3(new THREE.Vector3().random().multiplyScalar(Math.PI * 2));
+          o.scale.y = 1 + (Math.random() - 0.5) * 1.5;
+        }
+        update(dt) {
+          const lim = 50;
+          this.items.forEach(item => {
+            let iPos = item.position.x - dt;
+            item.position.x = iPos;
+            if (iPos < -lim) {
+              iPos = (iPos + lim) % 100;
+              this.setRandom(item, lim + iPos);
+            }
+          });
+        }
+      }
+
+      class Thing extends THREE.Group {
+        constructor() {
+          super();
+          const gBase = new THREE.SphereGeometry(3, 64, 32);
+          const gLines = new THREE.EdgesGeometry(gBase, 0.5);
+          const mLines = new THREE.LineBasicMaterial({ color: "#8ff", transparent: true, opacity: 0.75 });
+          const lines = new THREE.LineSegments(gLines, mLines);
+          this.add(lines);
+          const gPoints = BGU.mergeVertices(gBase.clone().deleteAttribute("uv").deleteAttribute("normal"));
+          const mPoints = new THREE.PointsMaterial({ color: "#0ff", size: 0.1, transparent: true });
+          const points = new THREE.Points(gPoints, mPoints);
+          this.add(points);
+          [mLines, mPoints].forEach(m => {
+            m.onBeforeCompile = shader => {
+              shader.uniforms.time = gu.time;
+              shader.vertexShader = `
+                uniform float time;
+                varying vec3 vPos;
+                mat2 rot(float a){return mat2(cos(a), sin(a), -sin(a), cos(a));}
+                ${shader.vertexShader}
+              `.replace(`#include <begin_vertex>`, `#include <begin_vertex>
+                vec3 pos = position;
+                vPos = pos;
+                pos.y *= 0.05;
+                float a = atan(pos.z, pos.x);
+                float s = cos(a * 4.);
+                float r = s * 0.125 + 0.875;
+                pos.xz *= r;
+                pos.x -= (smoothstep(0., 3., pos.x)) * 0.75;
+                float syncWave = sin(time * 1.25 + pos.x);
+                float zSwaying = smoothstep(0.25, 2., abs(pos.z));
+                mat2 zRot = rot(PI * 0.1 * zSwaying * syncWave * sign(pos.z));
+                pos.yz *= zRot;
+                pos.y += syncWave * 0.5 * ((1. - smoothstep(-3., 3., position.x)) * 0.5 + 0.5);
+                transformed = pos;
+              `);
+              if (m.type == "PointsMaterial") {
+                shader.fragmentShader = `
+                  varying vec3 vPos;
+                  ${shader.fragmentShader}
+                `.replace(`vec4 diffuseColor = vec4( diffuse, opacity );`, `
+                  vec2 uv = gl_PointCoord - 0.5;
+                  float pl = length(uv);
+                  float fw = length(fwidth(uv));
+                  float f = 1. - smoothstep(0.5 - fw, 0.5, pl);
+                  if (pl > 0.5) discard;
+                  vec3 bodyColor = mix(vec3(1), diffuse, smoothstep(2., 1., vPos.x));
+                  vec3 col = mix(bodyColor, diffuse, smoothstep(0.5, 1.0, abs(vPos.z)));
+                  vec4 diffuseColor = vec4( col, opacity * f );
+                `);
+              }
+            };
+          });
+          // Invisible hit-proxy sphere for reliable raycasting
+          const proxy = new THREE.Mesh(
+            new THREE.SphereGeometry(3.5),
+            new THREE.MeshBasicMaterial({ visible: false })
+          );
+          proxy.userData.hitProxy = true;
+          this.add(proxy);
+          this.position.y = 1;
+        }
+      }
+
+      const scene = new THREE.Scene();
+      scene.background = new THREE.Color("#024");
+      scene.fog = new THREE.Fog(scene.background, 8, 30);
+
+      const camera = new THREE.PerspectiveCamera(45, innerWidth / innerHeight, 0.1, 500);
+      camera.position.set(0.5, 0.25, -1).setLength(7.25);
+
+      const renderer = new THREE.WebGLRenderer({ antialias: true });
+      renderer.setPixelRatio(devicePixelRatio);
+      renderer.setSize(innerWidth, innerHeight);
+      document.getElementById('underwater-container').appendChild(renderer.domElement);
+
+      addEventListener("resize", () => {
+        camera.aspect = innerWidth / innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(innerWidth, innerHeight);
+      });
+
+      const controls = new OrbitControls(camera, renderer.domElement);
+      controls.enableDamping = true;
+      controls.enablePan = false;
+      controls.maxDistance = 15;
+      controls.maxPolarAngle = Math.PI * 0.6;
+
+      const background = new Background();
+      scene.add(background);
+      const thing = new Thing();
+      scene.add(thing);
+      const seaBed = new SeaBed();
+      scene.add(seaBed);
+      const waterStuff = new WaterStuff();
+      scene.add(waterStuff);
+
+      const clock = new THREE.Clock();
+      let t = 0;
+
+      renderer.setAnimationLoop(() => {
+        const dt = clock.getDelta();
+        t += dt;
+        gu.time.value = t * 1.25;
+        controls.update();
+        waterStuff.update(dt);
+        renderer.render(scene, camera);
+      });
+
+      // ── Raycasting & Side Panel ──────────────────────────────────────────
+
+      const raycaster = new THREE.Raycaster();
+      const pointer = new THREE.Vector2();
+      let mouseDownPos = { x: 0, y: 0 };
+
+      const panel = document.getElementById('side-panel');
+      const panelContent = document.getElementById('panel-content');
+      const panelClose = document.getElementById('panel-close');
+
+      function openPanel(type) {
+        panelContent.innerHTML = getPanelContent(type);
+        panel.classList.add('open');
+      }
+
+      function closePanel() {
+        panel.classList.remove('open');
+      }
+      window.closePanel = closePanel;
+
+      panelClose.addEventListener('click', closePanel);
+
+      renderer.domElement.addEventListener('mousedown', e => {
+        mouseDownPos = { x: e.clientX, y: e.clientY };
+      });
+
+      renderer.domElement.addEventListener('click', e => {
+        const dx = e.clientX - mouseDownPos.x;
+        const dy = e.clientY - mouseDownPos.y;
+        if (Math.sqrt(dx * dx + dy * dy) > 5) return;
+
+        pointer.x =  (e.clientX / innerWidth)  * 2 - 1;
+        pointer.y = -(e.clientY / innerHeight) * 2 + 1;
+        raycaster.setFromCamera(pointer, camera);
+
+        const proxyMesh = thing.children.find(c => c.userData.hitProxy);
+        if (proxyMesh) {
+          const hits = raycaster.intersectObject(proxyMesh);
+          if (hits.length > 0) { openPanel('fish'); return; }
+        }
+
+        const capsuleHits = raycaster.intersectObjects(waterStuff.items);
+        if (capsuleHits.length > 0) { openPanel('capsule'); return; }
+
+        const bedHits = raycaster.intersectObject(seaBed);
+        if (bedHits.length > 0) { openPanel('seabed'); return; }
+      });
+
+      renderer.domElement.addEventListener('mousemove', e => {
+        pointer.x =  (e.clientX / innerWidth)  * 2 - 1;
+        pointer.y = -(e.clientY / innerHeight) * 2 + 1;
+        raycaster.setFromCamera(pointer, camera);
+        const proxyMesh = thing.children.find(c => c.userData.hitProxy);
+        const hitProxy = proxyMesh ? raycaster.intersectObject(proxyMesh).length > 0 : false;
+        const hitCapsule = raycaster.intersectObjects(waterStuff.items).length > 0;
+        const hitBed = raycaster.intersectObject(seaBed).length > 0;
+        renderer.domElement.style.cursor = (hitProxy || hitCapsule || hitBed) ? 'pointer' : 'default';
+      });
+
+      function getPanelContent(type) {
+        if (type === 'fish') return `
+          <div style="margin-top:8px">
+            <div style="font-size:9px;font-weight:700;letter-spacing:3px;color:rgba(0,255,255,0.45);text-transform:uppercase;margin-bottom:12px">01 — Leistungen</div>
+            <h2 style="font-size:18px;font-weight:800;color:#fff;margin:0 0 16px;line-height:1.2">Was wir<br>anbieten</h2>
+            <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px">
+              <div style="background:rgba(0,255,255,0.06);border:1px solid rgba(0,255,255,0.18);border-radius:4px;padding:12px">
+                <div style="font-size:11px;font-weight:700;color:#fff;margin-bottom:4px">Website</div>
+                <div style="font-size:10px;color:rgba(255,255,255,0.4);line-height:1.5">Responsiv, SEO-ready, launch-fertig. Einmalig erstellt.</div>
+              </div>
+              <div style="background:rgba(0,255,255,0.06);border:1px solid rgba(0,255,255,0.18);border-radius:4px;padding:12px">
+                <div style="font-size:11px;font-weight:700;color:#fff;margin-bottom:4px">Wartung &amp; Support</div>
+                <div style="font-size:10px;color:rgba(255,255,255,0.4);line-height:1.5">Hosting, Updates, persönlicher Ansprechpartner.</div>
+              </div>
+            </div>
+            <a href="#leistungen" onclick="closePanel()" style="display:block;background:rgba(0,255,255,0.1);border:1px solid rgba(0,255,255,0.35);border-radius:4px;padding:11px;font-size:11px;color:#00ffff;text-align:center;font-weight:700;text-decoration:none">Mehr erfahren →</a>
+          </div>`;
+
+        if (type === 'capsule') return `
+          <div style="margin-top:8px">
+            <div style="font-size:9px;font-weight:700;letter-spacing:3px;color:rgba(0,255,255,0.45);text-transform:uppercase;margin-bottom:12px">02 — Gallery</div>
+            <h2 style="font-size:18px;font-weight:800;color:#fff;margin:0 0 16px;line-height:1.2">Unsere<br>Arbeit</h2>
+            <div style="background:rgba(10,20,30,0.9);border:1px solid rgba(0,255,255,0.15);border-radius:4px;padding:14px;margin-bottom:14px">
+              <div style="font-size:8px;color:rgba(0,255,255,0.4);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px">KI Workflow</div>
+              <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
+                <div style="padding:4px 8px;background:rgba(34,197,94,0.15);border:1px solid rgba(34,197,94,0.35);border-radius:3px;font-size:8px;color:#86efac;font-weight:700">Webhook</div>
+                <div style="flex:1;height:1px;background:rgba(0,255,255,0.2)"></div>
+                <div style="padding:4px 8px;background:rgba(0,255,255,0.1);border:1px solid rgba(0,255,255,0.3);border-radius:3px;font-size:8px;color:#00ffff;font-weight:700">GPT-4o</div>
+                <div style="flex:1;height:1px;background:rgba(0,255,255,0.2)"></div>
+                <div style="padding:4px 8px;background:rgba(59,130,246,0.15);border:1px solid rgba(59,130,246,0.35);border-radius:3px;font-size:8px;color:#93c5fd;font-weight:700">Twilio</div>
+              </div>
+              <div style="font-size:8px;color:rgba(255,255,255,0.2);text-align:center">WhatsApp → KI → Antwort</div>
+            </div>
+            <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:6px">La Locanda di Nino</div>
+            <div style="font-size:10px;color:rgba(255,255,255,0.4);line-height:1.6;margin-bottom:14px">KI-Bestellassistent via WhatsApp — nimmt Bestellungen entgegen, beantwortet Fragen, rund um die Uhr.</div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px">
+              <span style="background:rgba(0,255,255,0.08);border:1px solid rgba(0,255,255,0.2);border-radius:3px;padding:3px 8px;font-size:9px;color:rgba(0,255,255,0.7)">n8n</span>
+              <span style="background:rgba(0,255,255,0.08);border:1px solid rgba(0,255,255,0.2);border-radius:3px;padding:3px 8px;font-size:9px;color:rgba(0,255,255,0.7)">GPT-4o-mini</span>
+              <span style="background:rgba(0,255,255,0.08);border:1px solid rgba(0,255,255,0.2);border-radius:3px;padding:3px 8px;font-size:9px;color:rgba(0,255,255,0.7)">Twilio</span>
+            </div>
+            <a href="#gallery" onclick="closePanel()" style="display:block;background:rgba(0,255,255,0.1);border:1px solid rgba(0,255,255,0.35);border-radius:4px;padding:11px;font-size:11px;color:#00ffff;text-align:center;font-weight:700;text-decoration:none">Gallery ansehen →</a>
+          </div>`;
+
+        if (type === 'seabed') return `
+          <div style="margin-top:8px">
+            <div style="font-size:9px;font-weight:700;letter-spacing:3px;color:rgba(0,255,255,0.45);text-transform:uppercase;margin-bottom:12px">03 — Preise</div>
+            <h2 style="font-size:18px;font-weight:800;color:#fff;margin:0 0 16px;line-height:1.2">Unsere<br>Pakete</h2>
+            <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px">
+              <div style="background:rgba(0,255,255,0.06);border:1px solid rgba(0,255,255,0.18);border-radius:4px;padding:12px">
+                <div style="font-size:10px;font-weight:700;color:#fff;margin-bottom:3px">Website</div>
+                <div style="font-size:22px;font-weight:800;color:#00ffff;line-height:1;margin-bottom:2px">499 €</div>
+                <div style="font-size:9px;color:rgba(255,255,255,0.3)">einmalig</div>
+              </div>
+              <div style="background:rgba(0,255,255,0.08);border:1px solid rgba(0,255,255,0.28);border-radius:4px;padding:12px;position:relative">
+                <div style="position:absolute;top:-9px;right:10px;background:rgba(0,255,255,0.12);border:1px solid rgba(0,255,255,0.35);border-radius:3px;padding:2px 8px;font-size:8px;font-weight:700;color:#00ffff;letter-spacing:1px">BEST DEAL</div>
+                <div style="font-size:10px;font-weight:700;color:#fff;margin-bottom:3px">Wartung &amp; Support</div>
+                <div style="font-size:22px;font-weight:800;color:#00ffff;line-height:1;margin-bottom:2px">37,99 €</div>
+                <div style="font-size:9px;color:rgba(255,255,255,0.3)">pro Monat</div>
+              </div>
+            </div>
+            <a href="#preise" onclick="closePanel()" style="display:block;background:rgba(0,255,255,0.1);border:1px solid rgba(0,255,255,0.35);border-radius:4px;padding:11px;font-size:11px;color:#00ffff;text-align:center;font-weight:700;text-decoration:none">Preise ansehen →</a>
+          </div>`;
+
+        return '';
+      }
+    </script>
   </body>
 </html>
