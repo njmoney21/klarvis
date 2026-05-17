@@ -1,3 +1,57 @@
+import { useState } from 'react'
+import Belegscanner from '../components/steuerhelfer/Belegscanner'
+import Ausgaben from '../components/steuerhelfer/Ausgaben'
+import TaxChat from '../components/steuerhelfer/TaxChat'
+import DeadlineEngine from '../components/steuerhelfer/DeadlineEngine'
+
+type Tab = 'scanner' | 'ausgaben' | 'chat' | 'fristen'
+
+const TAB_LABELS: Record<Tab, string> = {
+  scanner: 'Belegscanner',
+  ausgaben: 'Ausgaben',
+  chat: 'Steuer-FAQ',
+  fristen: 'Fristen',
+}
+
+const TABS: Tab[] = ['scanner', 'ausgaben', 'chat', 'fristen']
+
 export default function SteuerhelferApp() {
-  return <p style={{ padding: 32 }}>Steuerhelfer wird geladen...</p>
+  const [activeTab, setActiveTab] = useState<Tab>('scanner')
+  const [refreshKey, setRefreshKey] = useState(0)
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <header className="bg-white border-b border-gray-200 px-4 py-3">
+        <h1 className="text-xl font-bold text-gray-900">Steuerhelfer</h1>
+        <p className="text-sm text-gray-500">KI-Assistent für Kleinunternehmer</p>
+      </header>
+
+      <nav className="bg-white border-b border-gray-200 overflow-x-auto">
+        <div className="flex min-w-max">
+          {TABS.map(tab => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={`px-4 py-3 text-sm font-medium border-b-2 whitespace-nowrap ${
+                activeTab === tab
+                  ? 'border-blue-600 text-blue-600'
+                  : 'border-transparent text-gray-500 hover:text-gray-700'
+              }`}
+            >
+              {TAB_LABELS[tab]}
+            </button>
+          ))}
+        </div>
+      </nav>
+
+      <main className="p-4 max-w-2xl mx-auto">
+        {activeTab === 'scanner' && (
+          <Belegscanner onApproved={() => setRefreshKey(k => k + 1)} />
+        )}
+        {activeTab === 'ausgaben' && <Ausgaben refreshKey={refreshKey} />}
+        {activeTab === 'chat' && <TaxChat />}
+        {activeTab === 'fristen' && <DeadlineEngine />}
+      </main>
+    </div>
+  )
 }
