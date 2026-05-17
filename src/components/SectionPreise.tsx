@@ -1,11 +1,14 @@
 import { motion } from 'framer-motion'
-import { Check } from 'lucide-react'
+import CardScanner from './CardScanner'
 
 const tiers = [
   {
     name: 'Website',
     price: '499',
+    originalPrice: '575',
     period: 'einmalig',
+    saving: '76 € gespart',
+    badge: null,
     description: 'Ihre professionelle Website — einmalig erstellt, launch-ready.',
     features: [
       'Individuelles Design',
@@ -21,13 +24,16 @@ const tiers = [
   {
     name: 'Wartung & Support',
     price: '37,99',
+    originalPrice: '49,99',
     period: 'pro Monat',
+    saving: '24 % günstiger',
+    badge: 'BEST DEAL',
     description: 'Wir kümmern uns um alles — Sie konzentrieren sich aufs Geschäft.',
     features: [
       'Hosting inklusive',
       'SSL-Zertifikat',
       'Sicherheits-Updates',
-      'Inhaltspflege (bis 2h/Mo)',
+      'Inhaltspflege bis 2h/Mo',
       'Technischer Support',
       'Monatlich kündbar',
     ],
@@ -38,61 +44,134 @@ const tiers = [
 
 export default function SectionPreise() {
   return (
-    <section id="preise" className="py-24 bg-dark-100">
-      <div className="max-w-6xl mx-auto px-6">
+    <section id="preise" className="py-20 md:py-[88px] px-6 md:px-8">
+      <div className="max-w-5xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
         >
-          <p className="text-purple-400 text-sm font-semibold uppercase tracking-widest mb-3">Preise</p>
-          <h2 className="text-4xl font-extrabold text-white mb-4">Transparent & fair</h2>
-          <p className="text-white/60 mb-16 max-w-xl">Keine versteckten Kosten. Kein Kleingedrucktes.</p>
+          <div className="flex items-center gap-3 mb-4">
+            <span className="font-mono text-[10px] tracking-[2px]" style={{ color: 'rgba(0,255,255,0.45)' }}>04</span>
+            <span className="w-8 h-px flex-shrink-0" style={{ background: 'rgba(0,255,255,0.2)' }} />
+            <span className="font-mono text-[9px] uppercase tracking-[3px]" style={{ color: 'rgba(0,255,255,0.4)' }}>Preise</span>
+          </div>
+          <h2
+            className="font-extrabold text-white mb-12"
+            style={{ fontSize: 'clamp(1.6rem, 3vw, 2.4rem)', letterSpacing: '-0.8px', lineHeight: 1.1 }}
+          >
+            Transparent &amp; fair
+          </h2>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-8 max-w-3xl">
-          {tiers.map(({ name, price, period, description, features, cta, highlight }, i) => (
-            <motion.div
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          className="grid md:grid-cols-2 overflow-hidden max-w-[720px]"
+          style={{ gap: '1px', background: 'rgba(0,255,255,0.06)', border: '1px solid rgba(0,255,255,0.1)', borderRadius: '4px' }}
+        >
+          {tiers.map(({ name, price, originalPrice, period, saving, badge, description, features, cta, highlight }) => (
+            <div
               key={name}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: i * 0.15 }}
-              className={`rounded-2xl p-8 flex flex-col ${
-                highlight
-                  ? 'bg-purple-600/10 border-2 border-purple-600'
-                  : 'bg-dark border border-dark-200'
-              }`}
+              className="flex flex-col p-9 relative"
+              style={{
+                background: highlight ? 'rgba(0,255,255,0.05)' : '#020d14',
+                borderLeft: highlight ? '1px solid rgba(0,255,255,0.15)' : undefined,
+              }}
             >
-              <h3 className="text-xl font-bold text-white mb-2">{name}</h3>
-              <div className="flex items-end gap-2 mb-2">
-                <span className="text-4xl font-extrabold text-white">{price} €</span>
-                <span className="text-white/50 text-sm mb-1">{period}</span>
+              {badge && (
+                <div
+                  className="absolute top-0 right-0 font-mono font-bold"
+                  style={{
+                    fontSize: '9px',
+                    letterSpacing: '2px',
+                    background: 'rgba(0,255,255,0.12)',
+                    color: '#00ffff',
+                    border: '1px solid rgba(0,255,255,0.3)',
+                    padding: '5px 12px',
+                    borderBottomLeftRadius: '4px',
+                  }}
+                >
+                  {badge}
+                </div>
+              )}
+
+              <h3 className="font-bold mb-3" style={{ fontSize: '15px', color: 'rgba(255,255,255,0.7)' }}>{name}</h3>
+
+              <div className="flex items-center gap-2 mb-1">
+                <span
+                  className="font-mono line-through"
+                  style={{ fontSize: '13px', color: 'rgba(255,255,255,0.25)', textDecorationColor: 'rgba(255,255,255,0.2)' }}
+                >
+                  {originalPrice} €
+                </span>
+                <span
+                  className="font-mono font-bold"
+                  style={{
+                    fontSize: '10px',
+                    color: 'rgba(0,255,255,0.7)',
+                    background: 'rgba(0,255,255,0.08)',
+                    border: '1px solid rgba(0,255,255,0.2)',
+                    padding: '2px 7px',
+                    borderRadius: '3px',
+                    letterSpacing: '0.5px',
+                  }}
+                >
+                  {saving}
+                </span>
               </div>
-              <p className="text-white/60 text-sm mb-6 leading-relaxed">{description}</p>
-              <ul className="space-y-3 mb-8 flex-1">
+
+              <div className="mb-4 leading-none">
+                <span className="font-black text-white" style={{ fontSize: '42px', letterSpacing: '-2px' }}>
+                  {price} €
+                </span>
+                <span className="ml-2" style={{ fontSize: '14px', color: 'rgba(255,255,255,0.35)' }}>{period}</span>
+              </div>
+
+              <p className="mb-6 leading-relaxed" style={{ fontSize: '12px', color: 'rgba(255,255,255,0.38)' }}>
+                {description}
+              </p>
+
+              <ul className="flex flex-col gap-2 mb-7 flex-1">
                 {features.map(f => (
-                  <li key={f} className="flex items-start gap-3 text-white/70 text-sm">
-                    <Check size={16} className="text-purple-400 flex-shrink-0 mt-0.5" />
+                  <li key={f} className="flex items-center gap-2" style={{ fontSize: '12px', color: 'rgba(255,255,255,0.5)', listStyle: 'none' }}>
+                    <span style={{ color: '#00ffff', fontSize: '11px', fontWeight: 700 }}>✓</span>
                     {f}
                   </li>
                 ))}
               </ul>
+
               <a
                 href="#kontakt"
-                className={`text-center font-semibold py-3 px-6 rounded-full transition-colors text-sm ${
-                  highlight
-                    ? 'bg-purple-600 hover:bg-purple-600/80 text-white'
-                    : 'border border-white/20 hover:border-white/50 text-white/80 hover:text-white'
-                }`}
+                className="block text-center font-bold transition-opacity hover:opacity-90"
+                style={{
+                  fontSize: '13px',
+                  padding: '11px 0',
+                  borderRadius: '4px',
+                  background: highlight ? 'rgba(0,255,255,0.1)' : undefined,
+                  color: highlight ? '#00ffff' : 'rgba(255,255,255,0.55)',
+                  border: highlight ? '1px solid rgba(0,255,255,0.35)' : '1px solid rgba(255,255,255,0.12)',
+                }}
               >
                 {cta}
               </a>
-            </motion.div>
+            </div>
           ))}
-        </div>
+        </motion.div>
       </div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+        className="mt-16 -mx-6 md:-mx-8"
+      >
+        <CardScanner />
+      </motion.div>
     </section>
   )
 }
