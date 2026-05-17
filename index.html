@@ -306,6 +306,67 @@
         }
       }
 
+      class FlowSurface extends THREE.Group {
+        constructor() {
+          super();
+          const U = 44, V = 30;
+          const vCount = (U + 1) * (V + 1);
+          const posArr = new Float32Array(vCount * 3);
+          const posAttr = new THREE.BufferAttribute(posArr, 3);
+
+          // Grid line indices: horizontal rows + vertical columns
+          const lineIdx = [];
+          for (let j = 0; j <= V; j++)
+            for (let i = 0; i < U; i++) lineIdx.push(j*(U+1)+i, j*(U+1)+i+1);
+          for (let j = 0; j < V; j++)
+            for (let i = 0; i <= U; i++) lineIdx.push(j*(U+1)+i, (j+1)*(U+1)+i);
+
+          const lineGeo = new THREE.BufferGeometry();
+          lineGeo.setAttribute('position', posAttr);
+          lineGeo.setIndex(lineIdx);
+          this.add(new THREE.LineSegments(lineGeo, new THREE.LineBasicMaterial({
+            color: '#00ffff', transparent: true, opacity: 0.5
+          })));
+
+          // Points share the same buffer — no extra memory
+          const ptGeo = new THREE.BufferGeometry();
+          ptGeo.setAttribute('position', posAttr);
+          this.add(new THREE.Points(ptGeo, new THREE.PointsMaterial({
+            color: '#88ffff', size: 0.07, sizeAttenuation: true
+          })));
+
+          this._pos = posAttr;
+          this._U = U; this._V = V;
+          this.update(0);
+        }
+
+        _vert(u, v, t) {
+          const x = (u - 0.5) * 5.5;
+          const z = (v - 0.5) * 4.5;
+          // Primary diagonal wave
+          const wave1 = Math.sin(x * 0.75 + z * 0.3 - t * 0.65) * 1.1;
+          // Cross wave adds richness
+          const wave2 = Math.cos(x * 0.3 - z * 0.75 + t * 0.42) * 0.65;
+          // One edge lifts up — the "wing curl" from the screenshot
+          const lift  = u * u * Math.sin(v * Math.PI) * 2.3;
+          return [x, wave1 + wave2 + lift, z];
+        }
+
+        update(t) {
+          const { _pos: pos, _U: U, _V: V } = this;
+          let i = 0;
+          for (let j = 0; j <= V; j++)
+            for (let k = 0; k <= U; k++) {
+              const [x, y, z] = this._vert(k/U, j/V, t);
+              pos.setXYZ(i++, x, y, z);
+            }
+          pos.needsUpdate = true;
+          // Slow self-rotation + gentle float
+          this.rotation.y = t * 0.18;
+          this.position.y = 0.6 + Math.sin(t * 0.28) * 0.4;
+        }
+      }
+
       const scene = new THREE.Scene();
       scene.background = new THREE.Color("#024");
       scene.fog = new THREE.Fog(scene.background, 8, 30);
@@ -331,6 +392,8 @@
 
       const background = new Background(scene);
       scene.add(background);
+      const flowSurface = new FlowSurface();
+      scene.add(flowSurface);
       const thing = new Thing();
       scene.add(thing);
       const seaBed = new SeaBed();
@@ -347,6 +410,7 @@
         gu.time.value = t * 1.25;
         controls.update();
         waterStuff.update(dt);
+        flowSurface.update(t);
         renderer.render(scene, camera);
       });
 
