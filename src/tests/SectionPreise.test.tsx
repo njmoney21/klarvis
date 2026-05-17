@@ -1,5 +1,8 @@
+import { vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import SectionPreise from '../components/SectionPreise'
+
+vi.mock('../components/CardScanner', () => ({ default: () => null }))
 
 test('shows website price', () => {
   render(<SectionPreise />)
