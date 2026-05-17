@@ -41,6 +41,15 @@ a, button { cursor: pointer; }
   z-index: 0 !important;
 }
 
+/* Pass pointer events through #root so the canvas receives them in the hero area.
+   Re-enable for every direct child except the hero spacer. */
+#root {
+  pointer-events: none;
+}
+#root > *:not(.hero-section) {
+  pointer-events: auto;
+}
+
 /* ── CARD SCANNER ─────────────────────────────── */
 .cs-wrap {
   position: relative;
