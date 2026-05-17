@@ -3,6 +3,7 @@ import Belegscanner from '../components/steuerhelfer/Belegscanner'
 import Ausgaben from '../components/steuerhelfer/Ausgaben'
 import TaxChat from '../components/steuerhelfer/TaxChat'
 import DeadlineEngine from '../components/steuerhelfer/DeadlineEngine'
+import { useAuth } from '../lib/auth'
 
 type Tab = 'scanner' | 'ausgaben' | 'chat' | 'fristen'
 
@@ -18,12 +19,24 @@ const TABS: Tab[] = ['scanner', 'ausgaben', 'chat', 'fristen']
 export default function SteuerhelferApp() {
   const [activeTab, setActiveTab] = useState<Tab>('scanner')
   const [refreshKey, setRefreshKey] = useState(0)
+  const { session, signOut } = useAuth()
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b border-gray-200 px-4 py-3">
-        <h1 className="text-xl font-bold text-gray-900">Steuerhelfer</h1>
-        <p className="text-sm text-gray-500">KI-Assistent für Kleinunternehmer</p>
+      <header className="bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between">
+        <div>
+          <h1 className="text-xl font-bold text-gray-900">Steuerhelfer</h1>
+          <p className="text-sm text-gray-500">KI-Assistent für Kleinunternehmer</p>
+        </div>
+        <div className="text-right">
+          <p className="text-xs text-gray-400 mb-1 truncate max-w-[160px]">{session?.user.email}</p>
+          <button
+            onClick={signOut}
+            className="text-xs text-gray-400 hover:text-gray-700 transition-colors"
+          >
+            Abmelden
+          </button>
+        </div>
       </header>
 
       <nav className="bg-white border-b border-gray-200 overflow-x-auto">

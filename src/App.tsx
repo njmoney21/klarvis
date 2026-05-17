@@ -8,6 +8,8 @@ import SectionPreise from './components/SectionPreise'
 import SectionKontakt from './components/SectionKontakt'
 import Footer from './components/Footer'
 import SteuerhelferApp from './pages/SteuerhelferApp'
+import { AuthProvider } from './lib/auth'
+import AuthGuard from './components/steuerhelfer/AuthGuard'
 
 function KlarvisSite() {
   return (
@@ -28,7 +30,13 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/app" element={<SteuerhelferApp />} />
+        <Route path="/app" element={
+          <AuthProvider>
+            <AuthGuard>
+              <SteuerhelferApp />
+            </AuthGuard>
+          </AuthProvider>
+        } />
         <Route path="/*" element={<KlarvisSite />} />
       </Routes>
     </BrowserRouter>
