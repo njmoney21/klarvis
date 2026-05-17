@@ -8,5 +8,10 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: ['./src/tests/setup.ts'],
     globals: true,
+    env: {
+      VITE_N8N_SCAN: 'http://test/scan',
+      VITE_N8N_CHAT: 'http://test/chat',
+      VITE_N8N_INVOICE: 'http://test/invoice',
+    },
   },
 })
