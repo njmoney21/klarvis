@@ -2,7 +2,7 @@ import Navbar from './components/Navbar'
 import SectionHero from './components/SectionHero'
 import SectionLeistungen from './components/SectionLeistungen'
 import SectionProcess from './components/SectionProcess'
-import SectionPortfolio from './components/SectionPortfolio'
+import SectionGallery from './components/SectionGallery'
 import SectionPreise from './components/SectionPreise'
 import SectionKontakt from './components/SectionKontakt'
 import Footer from './components/Footer'
@@ -14,7 +14,7 @@ export default function App() {
       <SectionHero />
       <SectionLeistungen />
       <SectionProcess />
-      <SectionPortfolio />
+      <SectionGallery />
       <SectionPreise />
       <SectionKontakt />
       <Footer />
