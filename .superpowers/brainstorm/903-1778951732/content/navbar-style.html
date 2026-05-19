@@ -1,0 +1,97 @@
+<h2>How should the navbar behave?</h2>
+<p class="subtitle">With the 3D model as the centrepiece, the nav must not compete. Pick the treatment that feels right.</p>
+
+<div class="cards">
+
+  <div class="card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#050a0a;padding:0;min-height:220px;overflow:hidden;position:relative;font-family:'JetBrains Mono',monospace;">
+      <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 55%,rgba(124,58,237,0.2) 0%,transparent 65%);"></div>
+      <!-- Floating glass pill centered at top -->
+      <div style="position:absolute;top:12px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-radius:40px;padding:7px 16px;display:flex;gap:14px;align-items:center;white-space:nowrap;z-index:10;">
+        <span style="color:#fff;font-weight:900;font-size:10px;letter-spacing:1.5px;">KLARVIS.</span>
+        <span style="width:1px;height:12px;background:rgba(255,255,255,0.15);display:inline-block;"></span>
+        <span style="color:rgba(255,255,255,0.45);font-size:9px;">Leistungen</span>
+        <span style="color:rgba(255,255,255,0.45);font-size:9px;">Portfolio</span>
+        <span style="color:rgba(255,255,255,0.45);font-size:9px;">Preise</span>
+        <span style="background:#7c3aed;color:#fff;font-size:9px;padding:4px 10px;border-radius:20px;font-weight:700;">Anfragen</span>
+      </div>
+      <!-- Model -->
+      <div style="position:absolute;left:50%;top:48%;transform:translate(-50%,-50%);width:80px;height:80px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,0.45),rgba(50,20,120,0.1));box-shadow:0 0 30px 10px rgba(124,58,237,0.3);"></div>
+      <div style="position:absolute;left:50%;top:48%;transform:translate(-50%,-50%);width:94px;height:26px;border:1px solid rgba(167,139,250,0.2);border-radius:50%;"></div>
+      <!-- Bottom text -->
+      <div style="position:absolute;bottom:0;left:0;right:0;padding:10px 16px;background:linear-gradient(to top,rgba(5,10,10,0.95),transparent);text-align:center;">
+        <h1 style="color:#fff;font-size:14px;font-weight:900;margin:0 0 4px;letter-spacing:-0.5px;">Ihre Website. <span style="color:#a78bfa;">Professionell.</span></h1>
+        <p style="color:rgba(255,255,255,0.35);font-size:8px;margin:0 0 6px;">Lokale Unternehmen in Bayern</p>
+        <span style="background:#7c3aed;color:#fff;font-size:8px;padding:4px 12px;border-radius:20px;">Anfragen →</span>
+      </div>
+      <div style="position:absolute;top:10px;left:10px;font-size:7px;color:rgba(255,255,255,0.2);">KLARVIS.SYS</div>
+      <div style="position:absolute;top:10px;right:10px;font-size:7px;color:rgba(255,255,255,0.2);">FPS: 60</div>
+    </div>
+    <div class="card-body">
+      <h3>A — Floating Glass Pill (centered)</h3>
+      <p>Nav floats as a glass capsule in the center top. Blurs the model behind it. Coexists with the HUD corners. Premium, minimal.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#050a0a;padding:0;min-height:220px;overflow:hidden;position:relative;font-family:'JetBrains Mono',monospace;">
+      <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 55%,rgba(124,58,237,0.2) 0%,transparent 65%);"></div>
+      <!-- Split corners nav -->
+      <div style="position:absolute;top:10px;left:14px;z-index:10;">
+        <span style="color:#fff;font-weight:900;font-size:11px;letter-spacing:2px;">KLARVIS.</span>
+      </div>
+      <div style="position:absolute;top:10px;right:14px;display:flex;gap:12px;align-items:center;z-index:10;">
+        <span style="color:rgba(255,255,255,0.4);font-size:9px;">Leistungen</span>
+        <span style="color:rgba(255,255,255,0.4);font-size:9px;">Portfolio</span>
+        <span style="color:rgba(255,255,255,0.4);font-size:9px;">Preise</span>
+        <span style="background:rgba(124,58,237,0.8);color:#fff;font-size:9px;padding:4px 10px;border-radius:20px;">Anfragen</span>
+      </div>
+      <!-- Thin separator line -->
+      <div style="position:absolute;top:30px;left:14px;right:14px;height:1px;background:rgba(255,255,255,0.06);z-index:10;"></div>
+      <!-- Model -->
+      <div style="position:absolute;left:50%;top:48%;transform:translate(-50%,-50%);width:80px;height:80px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,0.45),rgba(50,20,120,0.1));box-shadow:0 0 30px 10px rgba(124,58,237,0.3);"></div>
+      <div style="position:absolute;left:50%;top:48%;transform:translate(-50%,-50%);width:94px;height:26px;border:1px solid rgba(167,139,250,0.2);border-radius:50%;"></div>
+      <!-- Bottom text -->
+      <div style="position:absolute;bottom:0;left:0;right:0;padding:10px 16px;background:linear-gradient(to top,rgba(5,10,10,0.95),transparent);text-align:center;">
+        <h1 style="color:#fff;font-size:14px;font-weight:900;margin:0 0 4px;letter-spacing:-0.5px;">Ihre Website. <span style="color:#a78bfa;">Professionell.</span></h1>
+        <p style="color:rgba(255,255,255,0.35);font-size:8px;margin:0 0 6px;">Lokale Unternehmen in Bayern</p>
+        <span style="background:#7c3aed;color:#fff;font-size:8px;padding:4px 12px;border-radius:20px;">Anfragen →</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B — Split Corners (logo left, links right)</h3>
+      <p>Fully transparent — logo left, links right, separated by a hairline. Zero visual weight. Integrates cleanly with the existing HUD corner style.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="c" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#050a0a;padding:0;min-height:220px;overflow:hidden;position:relative;font-family:'JetBrains Mono',monospace;">
+      <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 55%,rgba(124,58,237,0.2) 0%,transparent 65%);"></div>
+      <!-- No navbar — just logo corner -->
+      <div style="position:absolute;top:10px;left:14px;z-index:10;">
+        <span style="color:#fff;font-weight:900;font-size:11px;letter-spacing:2px;">KLARVIS.</span>
+        <span style="color:#7c3aed;font-weight:900;font-size:11px;">_</span>
+      </div>
+      <!-- Hamburger -->
+      <div style="position:absolute;top:10px;right:14px;z-index:10;display:flex;flex-direction:column;gap:4px;cursor:pointer;">
+        <div style="width:18px;height:1.5px;background:rgba(255,255,255,0.6);"></div>
+        <div style="width:12px;height:1.5px;background:rgba(255,255,255,0.4);"></div>
+        <div style="width:16px;height:1.5px;background:rgba(255,255,255,0.6);"></div>
+      </div>
+      <!-- Model -->
+      <div style="position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);width:86px;height:86px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,0.45),rgba(50,20,120,0.1));box-shadow:0 0 35px 12px rgba(124,58,237,0.32);"></div>
+      <div style="position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);width:100px;height:28px;border:1px solid rgba(167,139,250,0.2);border-radius:50%;"></div>
+      <!-- Bottom text -->
+      <div style="position:absolute;bottom:0;left:0;right:0;padding:10px 16px;background:linear-gradient(to top,rgba(5,10,10,0.95),transparent);text-align:center;">
+        <h1 style="color:#fff;font-size:14px;font-weight:900;margin:0 0 4px;letter-spacing:-0.5px;">Ihre Website. <span style="color:#a78bfa;">Professionell.</span></h1>
+        <p style="color:rgba(255,255,255,0.35);font-size:8px;margin:0 0 6px;">Lokale Unternehmen in Bayern</p>
+        <span style="background:#7c3aed;color:#fff;font-size:8px;padding:4px 12px;border-radius:20px;">Anfragen →</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C — Logo + Minimal Hamburger</h3>
+      <p>Most immersive — only logo and a hamburger icon. Navigation slides in as an overlay. Maximum viewport for the 3D model.</p>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,99 @@
+<h2>How should the content sit around the 3D model?</h2>
+<p class="subtitle">The rotating crystal/orb is the centrepiece. Where does the text live relative to it?</p>
+
+<div class="cards">
+
+  <div class="card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#050a0a;padding:0;min-height:240px;overflow:hidden;position:relative;font-family:'JetBrains Mono',monospace;">
+      <!-- Stars bg -->
+      <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 60% 50%,rgba(124,58,237,0.22) 0%,transparent 65%),radial-gradient(ellipse at 60% 50%,rgba(80,40,180,0.12) 0%,transparent 85%);"></div>
+      <!-- Fake 3D model placeholder -->
+      <div style="position:absolute;right:18%;top:50%;transform:translateY(-50%);width:100px;height:100px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,0.5),rgba(50,20,120,0.2));box-shadow:0 0 40px 12px rgba(124,58,237,0.35),0 0 80px 30px rgba(80,40,180,0.15);display:flex;align-items:center;justify-content:center;">
+        <div style="width:60px;height:60px;border:1px solid rgba(167,139,250,0.4);transform:rotate(25deg);clip-path:polygon(50% 0%,100% 38%,81% 100%,19% 100%,0% 38%);background:rgba(124,58,237,0.3);"></div>
+      </div>
+      <!-- Torus rings -->
+      <div style="position:absolute;right:18%;top:50%;transform:translate(50%,-50%);width:110px;height:30px;border:1px solid rgba(167,139,250,0.25);border-radius:50%;"></div>
+      <div style="position:absolute;right:18%;top:50%;transform:translate(50%,-50%) rotate(35deg);width:126px;height:35px;border:1px solid rgba(255,200,100,0.15);border-radius:50%;"></div>
+      <!-- LEFT text -->
+      <div style="position:absolute;left:0;top:0;bottom:0;width:45%;display:flex;flex-direction:column;justify-content:center;padding:20px 16px 20px 20px;">
+        <p style="color:rgba(167,139,250,0.7);font-size:8px;letter-spacing:3px;text-transform:uppercase;margin-bottom:8px;">◈ MAINBURG · BAYERN</p>
+        <h1 style="color:#fff;font-size:18px;font-weight:900;line-height:1.1;margin:0 0 8px;letter-spacing:-0.5px;">Ihre Website.<br/><span style="color:#a78bfa;">Professionell</span><br/>&amp; lokal.</h1>
+        <p style="color:rgba(255,255,255,0.4);font-size:8px;line-height:1.6;margin-bottom:12px;">Websites für lokale Unternehmen<br/>in Bayern — schnell &amp; fair.</p>
+        <div style="display:flex;flex-direction:column;gap:5px;">
+          <span style="background:#7c3aed;color:#fff;font-size:8px;padding:5px 12px;border-radius:20px;font-weight:700;text-align:center;">Kostenlos anfragen →</span>
+          <span style="border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.5);font-size:8px;padding:5px 12px;border-radius:20px;text-align:center;">Preise ansehen</span>
+        </div>
+      </div>
+      <!-- HUD corners -->
+      <div style="position:absolute;top:8px;left:8px;font-size:7px;color:rgba(255,255,255,0.25);letter-spacing:1px;">KLARVIS.SYS</div>
+      <div style="position:absolute;top:8px;right:8px;font-size:7px;color:rgba(255,255,255,0.25);letter-spacing:1px;">FPS: 60</div>
+      <div style="position:absolute;bottom:8px;right:8px;font-size:7px;color:rgba(255,255,255,0.25);">VER 2.0.4</div>
+    </div>
+    <div class="card-body">
+      <h3>A — Text Left, Model Right</h3>
+      <p>Content pinned to left third of the screen. The 3D model owns the right side. HUD stays. Clean separation — never compete with the model.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#050a0a;padding:0;min-height:240px;overflow:hidden;position:relative;font-family:'JetBrains Mono',monospace;">
+      <!-- Glow -->
+      <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 55%,rgba(124,58,237,0.25) 0%,transparent 70%);"></div>
+      <!-- Model center -->
+      <div style="position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);width:80px;height:80px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,0.5),rgba(50,20,120,0.15));box-shadow:0 0 30px 10px rgba(124,58,237,0.3),0 0 60px 25px rgba(80,40,180,0.12);display:flex;align-items:center;justify-content:center;">
+        <div style="width:46px;height:46px;border:1px solid rgba(167,139,250,0.4);transform:rotate(25deg);clip-path:polygon(50% 0%,100% 38%,81% 100%,19% 100%,0% 38%);background:rgba(124,58,237,0.3);"></div>
+      </div>
+      <div style="position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);width:92px;height:25px;border:1px solid rgba(167,139,250,0.2);border-radius:50%;"></div>
+      <!-- BOTTOM text panel -->
+      <div style="position:absolute;bottom:0;left:0;right:0;padding:12px 16px;background:linear-gradient(to top,rgba(5,10,10,0.95),transparent);text-align:center;">
+        <h1 style="color:#fff;font-size:16px;font-weight:900;line-height:1.1;margin:0 0 4px;letter-spacing:-0.5px;">Ihre Website. <span style="color:#a78bfa;">Professionell.</span></h1>
+        <p style="color:rgba(255,255,255,0.4);font-size:8px;margin-bottom:8px;">Moderne Websites für lokale Unternehmen in Bayern.</p>
+        <div style="display:flex;gap:6px;justify-content:center;">
+          <span style="background:#7c3aed;color:#fff;font-size:8px;padding:4px 10px;border-radius:20px;font-weight:700;">Anfragen →</span>
+          <span style="border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.5);font-size:8px;padding:4px 10px;border-radius:20px;">Preise</span>
+        </div>
+      </div>
+      <!-- TOP small label -->
+      <div style="position:absolute;top:10px;left:50%;transform:translateX(-50%);text-align:center;">
+        <p style="color:rgba(167,139,250,0.6);font-size:7px;letter-spacing:3px;text-transform:uppercase;">◈ MAINBURG · BAYERN</p>
+      </div>
+      <div style="position:absolute;top:8px;left:8px;font-size:7px;color:rgba(255,255,255,0.2);">KLARVIS.SYS</div>
+      <div style="position:absolute;top:8px;right:8px;font-size:7px;color:rgba(255,255,255,0.2);">FPS: 60</div>
+    </div>
+    <div class="card-body">
+      <h3>B — Model Center, Text Below</h3>
+      <p>The 3D model is the true hero — it owns most of the viewport. Text fades in at the bottom like a caption. Cinematic, immersive.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="c" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#050a0a;padding:0;min-height:240px;overflow:hidden;position:relative;font-family:'JetBrains Mono',monospace;">
+      <!-- Glow -->
+      <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 55% 48%,rgba(124,58,237,0.2) 0%,transparent 70%);"></div>
+      <!-- Model slightly right of center -->
+      <div style="position:absolute;left:54%;top:46%;transform:translate(-50%,-50%);width:88px;height:88px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,0.45),rgba(50,20,120,0.15));box-shadow:0 0 35px 12px rgba(124,58,237,0.28);display:flex;align-items:center;justify-content:center;">
+        <div style="width:52px;height:52px;border:1px solid rgba(167,139,250,0.35);transform:rotate(25deg);clip-path:polygon(50% 0%,100% 38%,81% 100%,19% 100%,0% 38%);background:rgba(124,58,237,0.28);"></div>
+      </div>
+      <div style="position:absolute;left:54%;top:46%;transform:translate(-50%,-50%);width:102px;height:28px;border:1px solid rgba(167,139,250,0.18);border-radius:50%;"></div>
+      <div style="position:absolute;left:54%;top:46%;transform:translate(-50%,-50%) rotate(30deg);width:118px;height:32px;border:1px solid rgba(255,180,80,0.12);border-radius:50%;"></div>
+      <!-- HUD-STYLE glass panel LEFT -->
+      <div style="position:absolute;left:8px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);backdrop-filter:blur(12px);border-radius:12px;padding:12px;width:38%;">
+        <p style="color:rgba(167,139,250,0.7);font-size:7px;letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;">◈ KLARVIS // WEB DESIGN</p>
+        <h1 style="color:#fff;font-size:15px;font-weight:900;line-height:1.15;margin:0 0 6px;letter-spacing:-0.3px;">Ihre Website.<br/><span style="color:#a78bfa;">Professionell</span><br/>&amp; lokal.</h1>
+        <div style="width:100%;height:1px;background:rgba(255,255,255,0.08);margin:8px 0;"></div>
+        <p style="color:rgba(255,255,255,0.35);font-size:7px;line-height:1.5;margin-bottom:8px;">Mainburg · Ingolstadt · Bayern</p>
+        <span style="background:#7c3aed;color:#fff;font-size:7px;padding:4px 10px;border-radius:6px;font-weight:700;display:block;text-align:center;">ANFRAGEN →</span>
+      </div>
+      <!-- HUD corners -->
+      <div style="position:absolute;top:8px;left:8px;font-size:7px;color:rgba(255,255,255,0.2);">KLARVIS.SYS</div>
+      <div style="position:absolute;top:8px;right:8px;font-size:7px;color:rgba(255,255,255,0.2);">FPS: 60</div>
+      <div style="position:absolute;bottom:8px;right:8px;font-size:7px;color:rgba(255,255,255,0.2);">VER 2.0.4 [BETA]</div>
+      <div style="position:absolute;bottom:8px;left:8px;font-size:7px;color:rgba(255,255,255,0.2);">ORBIT: 5.00</div>
+    </div>
+    <div class="card-body">
+      <h3>C — HUD Glass Panel + Model Background</h3>
+      <p>Text in a frosted glass panel that feels like part of the HUD. The 3D model fills the background. Most "sci-fi dashboard" feel — cohesive with existing HUD corners.</p>
+    </div>
+  </div>
+
+</div>

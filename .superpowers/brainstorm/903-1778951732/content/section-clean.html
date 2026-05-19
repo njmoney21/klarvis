@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #060a0f;
+    color: #e8e8f0;
+    font-family: 'Outfit', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    padding-bottom: 56px;
+    position: relative;
+    background: radial-gradient(ellipse at 50% 42%, rgba(109,40,217,0.22) 0%, transparent 68%);
+    text-align: center;
+  }
+  .hero-orb {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -56%);
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 40% 38%, rgba(139,92,246,0.55), rgba(67,20,150,0.18));
+    box-shadow: 0 0 80px 28px rgba(109,40,217,0.28), 0 0 160px 60px rgba(80,30,160,0.13);
+  }
+  .hero-ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border-radius: 50%;
+    border: 1px solid rgba(167,139,250,0.22);
+  }
+  .hero-ring-1 { width: 260px; height: 70px; transform: translate(-50%,-120%); }
+  .hero-ring-2 { width: 300px; height: 82px; transform: translate(-50%,-120%) rotate(28deg); border-color: rgba(251,191,36,0.12); }
+
+  .hero-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: rgba(167,139,250,0.65);
+    margin-bottom: 14px;
+  }
+  .hero-title {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 800;
+    line-height: 1.08;
+    letter-spacing: -1.5px;
+    color: #fff;
+    margin-bottom: 14px;
+  }
+  .hero-title span { color: #a78bfa; }
+  .hero-sub {
+    font-size: 15px;
+    color: rgba(255,255,255,0.42);
+    margin-bottom: 28px;
+    font-weight: 400;
+    max-width: 360px;
+  }
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #7c3aed;
+    color: #fff;
+    font-weight: 700;
+    font-size: 14px;
+    padding: 13px 28px;
+    border-radius: 40px;
+    text-decoration: none;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 20px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .nav-logo { font-weight: 900; font-size: 17px; letter-spacing: 1px; color: #fff; }
+  .nav-logo span { color: #7c3aed; }
+  .nav-links { display: flex; gap: 28px; align-items: center; }
+  .nav-links a { font-size: 13px; color: rgba(255,255,255,0.42); text-decoration: none; }
+  .nav-links .cta {
+    background: rgba(124,58,237,0.85);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 8px 18px;
+    border-radius: 40px;
+  }
+
+  /* ── HUD corners ── */
+  .hud-tl, .hud-tr, .hud-bl, .hud-br {
+    position: fixed;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: rgba(255,255,255,0.18);
+    letter-spacing: 1px;
+    z-index: 50;
+  }
+  .hud-tl { top: 12px; left: 14px; }
+  .hud-tr { top: 12px; right: 14px; }
+  .hud-bl { bottom: 12px; left: 14px; }
+  .hud-br { bottom: 12px; right: 14px; }
+
+  /* ── SECTIONS ── */
+  section {
+    background: rgba(6,10,15,0.94);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(255,255,255,0.05);
+    padding: 88px 32px;
+  }
+  .container { max-width: 1000px; margin: 0 auto; }
+
+  .section-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .section-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: rgba(167,139,250,0.5);
+    letter-spacing: 2px;
+  }
+  .section-line { flex: 0 0 32px; height: 1px; background: rgba(167,139,250,0.25); }
+  .section-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(167,139,250,0.45);
+  }
+  h2 {
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    font-weight: 800;
+    letter-spacing: -0.8px;
+    color: #fff;
+    margin-bottom: 48px;
+    line-height: 1.1;
+  }
+
+  /* ── LEISTUNGEN ── */
+  .services-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .service-cell {
+    background: rgba(6,10,15,0.97);
+    padding: 36px 32px;
+  }
+  .service-cell:first-child { border-right: 1px solid rgba(255,255,255,0.06); }
+  .service-icon {
+    width: 36px; height: 36px;
+    background: rgba(124,58,237,0.14);
+    border: 1px solid rgba(124,58,237,0.28);
+    border-radius: 10px;
+    margin-bottom: 20px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .service-cell h3 { font-size: 17px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+  .service-cell .sub { font-size: 11px; color: rgba(167,139,250,0.6); font-family: 'JetBrains Mono',monospace; letter-spacing:1px; margin-bottom: 12px; }
+  .service-cell p { font-size: 13px; color: rgba(255,255,255,0.42); line-height: 1.65; margin-bottom: 20px; }
+  .feat-list { display: flex; flex-direction: column; gap: 6px; }
+  .feat-list span { font-size: 12px; color: rgba(255,255,255,0.5); display: flex; align-items: center; gap: 8px; }
+  .feat-list span::before { content:''; display:inline-block; width:4px;height:4px;border-radius:50%;background:#7c3aed;flex-shrink:0; }
+
+  /* ── PROCESS ── */
+  .process-steps {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    position: relative;
+  }
+  .process-steps::before {
+    content: '';
+    position: absolute;
+    top: 20px; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(124,58,237,0.35), transparent);
+  }
+  .step { padding: 0 20px 0 0; }
+  .step-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: #7c3aed;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .step-num::before { content:''; display:inline-block; width:8px;height:8px;background:#7c3aed;border-radius:50%; }
+  .step h3 { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+  .step p { font-size: 13px; color: rgba(255,255,255,0.38); line-height: 1.65; }
+
+  /* ── PREISE ── */
+  .pricing-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
+    overflow: hidden;
+    max-width: 720px;
+  }
+  .price-cell { background: rgba(6,10,15,0.97); padding: 36px 32px; }
+  .price-cell.highlight { background: rgba(109,40,217,0.08); border-left: 1px solid rgba(124,58,237,0.25); }
+  .price-cell h3 { font-size: 15px; font-weight: 700; color: rgba(255,255,255,0.7); margin-bottom: 12px; }
+  .price-amount { font-size: 42px; font-weight: 900; color: #fff; letter-spacing: -2px; line-height: 1; margin-bottom: 4px; }
+  .price-amount span { font-size: 14px; font-weight: 400; color: rgba(255,255,255,0.35); letter-spacing: 0; }
+  .price-desc { font-size: 12px; color: rgba(255,255,255,0.38); margin-bottom: 24px; line-height: 1.6; }
+  .check-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 28px; }
+  .check-list li { font-size: 12px; color: rgba(255,255,255,0.5); list-style:none; display:flex;align-items:center;gap:8px; }
+  .check-list li::before { content:'✓'; color:#7c3aed; font-size:11px; font-weight:700; }
+  .price-btn {
+    display: block; text-align: center;
+    font-size: 13px; font-weight: 700;
+    padding: 11px 0; border-radius: 40px;
+    text-decoration: none;
+  }
+  .price-btn.primary { background: #7c3aed; color: #fff; }
+  .price-btn.ghost { border: 1px solid rgba(255,255,255,0.12); color: rgba(255,255,255,0.55); }
+
+  /* ── PORTFOLIO ── */
+  .portfolio-card {
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .portfolio-img {
+    aspect-ratio: 16/6;
+    background: linear-gradient(135deg, rgba(109,40,217,0.18), rgba(30,10,60,0.6));
+    display: flex; align-items: center; justify-content: center;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .portfolio-img span { color: rgba(255,255,255,0.12); font-size: 13px; }
+  .portfolio-meta { padding: 24px 28px; display: flex; align-items: center; justify-content: space-between; }
+  .portfolio-meta h3 { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+  .portfolio-meta p { font-size: 12px; color: rgba(255,255,255,0.38); }
+  .portfolio-link {
+    font-size: 12px; font-weight: 600; color: #a78bfa;
+    border: 1px solid rgba(124,58,237,0.3);
+    padding: 8px 16px; border-radius: 40px;
+    text-decoration: none; white-space: nowrap;
+  }
+
+  /* ── KONTAKT ── */
+  .contact-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 64px; align-items: start; }
+  .form-field { margin-bottom: 16px; }
+  .form-field label { display: block; font-size: 11px; color: rgba(255,255,255,0.38); margin-bottom: 6px; letter-spacing: 0.5px; }
+  .form-field input, .form-field textarea {
+    width: 100%; background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px; padding: 12px 16px;
+    color: #fff; font-size: 14px; font-family: 'Outfit',sans-serif;
+    outline: none;
+  }
+  .form-field textarea { height: 100px; resize: none; }
+  .submit-btn {
+    width: 100%; background: #7c3aed; color: #fff;
+    font-weight: 700; font-size: 14px;
+    padding: 14px; border-radius: 40px;
+    border: none; cursor: pointer; font-family: 'Outfit',sans-serif;
+  }
+  .contact-info { display: flex; flex-direction: column; gap: 32px; padding-top: 8px; }
+  .info-item h4 { font-size: 13px; color: rgba(255,255,255,0.7); font-weight: 600; margin-bottom: 4px; }
+  .info-item a { font-size: 13px; color: rgba(255,255,255,0.38); text-decoration: none; }
+  .response-note {
+    padding: 16px 20px;
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 10px;
+    background: rgba(255,255,255,0.02);
+  }
+  .response-note p { font-size: 12px; color: rgba(255,255,255,0.38); line-height: 1.6; }
+  .response-note strong { color: rgba(255,255,255,0.6); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: rgba(6,10,15,0.97);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(255,255,255,0.05);
+    padding: 28px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  footer .logo { font-weight: 900; font-size: 15px; color: rgba(255,255,255,0.6); }
+  footer .logo span { color: #7c3aed; }
+  footer .links { display: flex; gap: 20px; }
+  footer .links a { font-size: 12px; color: rgba(255,255,255,0.28); text-decoration: none; }
+  footer .copy { font-size: 12px; color: rgba(255,255,255,0.2); font-family: 'JetBrains Mono',monospace; }
+
+  .divider { width: 1px; height: 14px; background: rgba(255,255,255,0.1); display: inline-block; }
+</style>
+</head>
+<body>
+
+<!-- HUD -->
+<div class="hud-tl">KLARVIS.SYS</div>
+<div class="hud-tr">FPS: 60</div>
+<div class="hud-bl">ORBIT: 5.00</div>
+<div class="hud-br">VER 2.0.4</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Klarvis<span>.</span></div>
+  <div class="nav-links">
+    <a href="#">Leistungen</a>
+    <a href="#">Portfolio</a>
+    <a href="#">Preise</a>
+    <a href="#" class="cta">Anfragen</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-orb"></div>
+  <div class="hero-ring hero-ring-1"></div>
+  <div class="hero-ring hero-ring-2"></div>
+  <div class="hero-label">◈ Mainburg · Ingolstadt · Bayern</div>
+  <h1 class="hero-title">Ihre Website.<br/><span>Professionell</span> &amp; lokal.</h1>
+  <p class="hero-sub">Moderne Websites für lokale Unternehmen in Bayern — schnell, mobilfreundlich und fair.</p>
+  <a href="#" class="hero-cta">Kostenlos anfragen →</a>
+</div>
+
+<!-- LEISTUNGEN -->
+<section>
+  <div class="container">
+    <div class="section-eyebrow">
+      <span class="section-num">01</span>
+      <span class="section-line"></span>
+      <span class="section-tag">Leistungen</span>
+    </div>
+    <h2>Was wir anbieten</h2>
+    <div class="services-grid">
+      <div class="service-cell">
+        <div class="service-icon">
+          <svg width="16" height="16" fill="none" stroke="#a78bfa" stroke-width="1.5" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+        </div>
+        <h3>Website</h3>
+        <div class="sub">Einmalige Erstellung</div>
+        <p>Individuell, mobilfreundlich und auf Ihre Kunden zugeschnitten — von der Konzeption bis zum Launch.</p>
+        <div class="feat-list">
+          <span>Responsives Design</span>
+          <span>Schnelle Ladezeiten</span>
+          <span>SEO-Grundoptimierung</span>
+          <span>Kontaktformular</span>
+        </div>
+      </div>
+      <div class="service-cell">
+        <div class="service-icon">
+          <svg width="16" height="16" fill="none" stroke="#a78bfa" stroke-width="1.5" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+        </div>
+        <h3>Wartung & Support</h3>
+        <div class="sub">Monatlich kündbar</div>
+        <p>Wir kümmern uns um Hosting, Sicherheit und Updates — damit Sie sich auf Ihr Geschäft konzentrieren können.</p>
+        <div class="feat-list">
+          <span>Hosting inklusive</span>
+          <span>Sicherheits-Updates</span>
+          <span>Inhaltspflege bis 2h/Mo</span>
+          <span>Persönlicher Ansprechpartner</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section>
+  <div class="container">
+    <div class="section-eyebrow">
+      <span class="section-num">02</span>
+      <span class="section-line"></span>
+      <span class="section-tag">Ablauf</span>
+    </div>
+    <h2>So funktioniert's</h2>
+    <div class="process-steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <h3>Gespräch</h3>
+        <p>Wir besprechen Ihre Wünsche, Ziele und Zielgruppe — kostenlos und unverbindlich.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <h3>Design & Entwicklung</h3>
+        <p>Wir entwerfen und bauen Ihre Website — Sie sehen den Fortschritt zu jedem Schritt.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <h3>Launch</h3>
+        <p>Ihre Website geht online. Wir kümmern uns um Domain, Hosting und alles Technische.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section>
+  <div class="container">
+    <div class="section-eyebrow">
+      <span class="section-num">03</span>
+      <span class="section-line"></span>
+      <span class="section-tag">Portfolio</span>
+    </div>
+    <h2>Unsere Arbeit</h2>
+    <div class="portfolio-card">
+      <div class="portfolio-img">
+        <span>remcosmetics.de — Vorschau</span>
+      </div>
+      <div class="portfolio-meta">
+        <div>
+          <h3>remcosmetics</h3>
+          <p>Kosmetikstudio · Mainburg, Bayern</p>
+        </div>
+        <a href="#" class="portfolio-link">Live ansehen →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PREISE -->
+<section>
+  <div class="container">
+    <div class="section-eyebrow">
+      <span class="section-num">04</span>
+      <span class="section-line"></span>
+      <span class="section-tag">Preise</span>
+    </div>
+    <h2>Transparent &amp; fair</h2>
+    <div class="pricing-row">
+      <div class="price-cell">
+        <h3>Website</h3>
+        <div class="price-amount">499 €<span> einmalig</span></div>
+        <p class="price-desc">Ihre professionelle Website — einmalig erstellt, launch-ready.</p>
+        <ul class="check-list">
+          <li>Individuelles Design</li>
+          <li>Mobilfreundlich (Responsive)</li>
+          <li>Bis zu 5 Unterseiten</li>
+          <li>Kontaktformular</li>
+          <li>SEO-Grundoptimierung</li>
+          <li>Launch & Einrichtung inklusive</li>
+        </ul>
+        <a href="#" class="price-btn ghost">Website anfragen</a>
+      </div>
+      <div class="price-cell highlight">
+        <h3>Wartung & Support</h3>
+        <div class="price-amount">37,99 €<span> /Monat</span></div>
+        <p class="price-desc">Wir kümmern uns um alles — Sie konzentrieren sich aufs Geschäft.</p>
+        <ul class="check-list">
+          <li>Hosting inklusive</li>
+          <li>SSL-Zertifikat</li>
+          <li>Sicherheits-Updates</li>
+          <li>Inhaltspflege bis 2h/Mo</li>
+          <li>Technischer Support</li>
+          <li>Monatlich kündbar</li>
+        </ul>
+        <a href="#" class="price-btn primary">Wartung hinzufügen</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- KONTAKT -->
+<section>
+  <div class="container">
+    <div class="section-eyebrow">
+      <span class="section-num">05</span>
+      <span class="section-line"></span>
+      <span class="section-tag">Kontakt</span>
+    </div>
+    <h2>Lassen Sie uns reden</h2>
+    <div class="contact-grid">
+      <div>
+        <div class="form-field">
+          <label>Name *</label>
+          <input type="text" placeholder="Max Mustermann"/>
+        </div>
+        <div class="form-field">
+          <label>E-Mail *</label>
+          <input type="email" placeholder="max@beispiel.de"/>
+        </div>
+        <div class="form-field">
+          <label>Nachricht</label>
+          <textarea placeholder="Kurze Beschreibung Ihres Projekts..."></textarea>
+        </div>
+        <button class="submit-btn">Nachricht senden →</button>
+      </div>
+      <div class="contact-info">
+        <div class="info-item">
+          <h4>E-Mail</h4>
+          <a href="#">hallo@klarvis.de</a>
+        </div>
+        <div class="info-item">
+          <h4>WhatsApp</h4>
+          <a href="#">Direkt schreiben →</a>
+        </div>
+        <div class="response-note">
+          <p><strong>Antwortzeit:</strong> Wir melden uns in der Regel innerhalb von 24 Stunden bei Ihnen.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="logo">Klarvis<span>.</span></div>
+  <div class="links">
+    <a href="#">Impressum</a>
+    <a href="#">Datenschutz</a>
+  </div>
+  <div class="copy">© 2026 Klarvis</div>
+</footer>
+
+</body>
+</html>

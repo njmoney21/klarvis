@@ -1,0 +1,63 @@
+<h2>When you click an object in the underwater scene — what appears?</h2>
+<p class="subtitle">The scene has 3 clickable object types: the fish (Thing), the sea creatures (WaterStuff capsules), and the sea bed. What kind of UI should pop up?</p>
+
+<div class="cards">
+
+  <div class="card" data-choice="floating-card" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#0a0e1a;padding:20px;min-height:180px;position:relative;display:flex;align-items:center;justify-content:center;border-radius:8px 8px 0 0;">
+      <!-- Fish shape suggestion -->
+      <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-60%);width:44px;height:18px;background:rgba(0,255,255,0.35);border:1px solid rgba(0,255,255,0.6);border-radius:50%;"></div>
+      <!-- Floating card popup -->
+      <div style="position:absolute;left:54%;top:20%;background:rgba(6,10,15,0.92);border:1px solid rgba(124,58,237,0.5);border-radius:10px;padding:12px 16px;min-width:140px;box-shadow:0 0 18px rgba(124,58,237,0.3);">
+        <div style="font-size:11px;font-weight:700;color:#a78bfa;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;">Leistungen</div>
+        <div style="font-size:10px;color:#8892a4;margin-bottom:6px;">→ Webdesign</div>
+        <div style="font-size:10px;color:#8892a4;margin-bottom:6px;">→ SEO</div>
+        <div style="font-size:10px;color:#8892a4;">→ Wartung</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>Floating Card</h3>
+      <p>A sleek popup card appears near the clicked object, showing a label + links. Minimal, stays on screen until dismissed. Clean and modern.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="radial-menu" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#0a0e1a;padding:20px;min-height:180px;position:relative;display:flex;align-items:center;justify-content:center;border-radius:8px 8px 0 0;">
+      <!-- Center point -->
+      <div style="position:relative;width:120px;height:120px;">
+        <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:14px;height:14px;background:rgba(0,255,255,0.6);border-radius:50%;box-shadow:0 0 10px cyan;"></div>
+        <!-- Radial items -->
+        <div style="position:absolute;left:50%;top:0;transform:translateX(-50%);background:rgba(6,10,15,0.9);border:1px solid rgba(124,58,237,0.4);border-radius:20px;padding:4px 10px;font-size:9px;color:#a78bfa;white-space:nowrap;">Preise</div>
+        <div style="position:absolute;right:0;top:50%;transform:translateY(-50%);background:rgba(6,10,15,0.9);border:1px solid rgba(124,58,237,0.4);border-radius:20px;padding:4px 10px;font-size:9px;color:#a78bfa;white-space:nowrap;">Portfolio</div>
+        <div style="position:absolute;left:50%;bottom:0;transform:translateX(-50%);background:rgba(6,10,15,0.9);border:1px solid rgba(124,58,237,0.4);border-radius:20px;padding:4px 10px;font-size:9px;color:#a78bfa;white-space:nowrap;">Kontakt</div>
+        <div style="position:absolute;left:0;top:50%;transform:translateY(-50%);background:rgba(6,10,15,0.9);border:1px solid rgba(124,58,237,0.4);border-radius:20px;padding:4px 10px;font-size:9px;color:#a78bfa;white-space:nowrap;">Über uns</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>Radial Menu</h3>
+      <p>Clicking an object fans out a ring of pill-shaped labels around it. Each pill links to a section of the site. Playful and spatial.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="side-panel" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#0a0e1a;padding:0;min-height:180px;position:relative;overflow:hidden;border-radius:8px 8px 0 0;display:flex;">
+      <!-- Scene area -->
+      <div style="flex:1;background:#0a0e1a;position:relative;">
+        <div style="position:absolute;left:40%;top:50%;transform:translate(-50%,-50%);width:44px;height:18px;background:rgba(0,255,255,0.35);border:1px solid rgba(0,255,255,0.6);border-radius:50%;"></div>
+      </div>
+      <!-- Side panel sliding in -->
+      <div style="width:130px;background:rgba(6,10,15,0.97);border-left:1px solid rgba(124,58,237,0.4);padding:14px 12px;display:flex;flex-direction:column;gap:8px;">
+        <div style="font-size:10px;font-weight:700;color:#a78bfa;letter-spacing:2px;text-transform:uppercase;border-bottom:1px solid rgba(124,58,237,0.2);padding-bottom:6px;">Der Fisch</div>
+        <div style="font-size:9px;color:#8892a4;line-height:1.5;">Ihr lokaler Partner für professionelles Webdesign.</div>
+        <div style="margin-top:4px;background:rgba(124,58,237,0.2);border:1px solid rgba(124,58,237,0.4);border-radius:6px;padding:5px 8px;font-size:9px;color:#a78bfa;text-align:center;">Mehr erfahren →</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>Side Panel</h3>
+      <p>A drawer slides in from the right, showing a title + description + CTA for the clicked object. More space for content. Suits richer info.</p>
+    </div>
+  </div>
+
+</div>
+
+<p class="subtitle" style="margin-top:24px;">Each object type (fish, capsules, sea bed) can show different content — e.g. fish → services, capsule → a portfolio item, sea bed → contact. Does that framing make sense?</p>
