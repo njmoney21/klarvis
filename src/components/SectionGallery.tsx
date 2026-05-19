@@ -143,14 +143,14 @@ function ProjectCard({ project, index }: { project: (typeof projects)[0]; index:
 
 export default function SectionGallery() {
   return (
-    <section id="gallery" style={{ padding: '80px 32px', boxSizing: 'border-box' }}>
+    <section id="gallery" style={{ padding: '48px 32px', boxSizing: 'border-box' }}>
       <div style={{ maxWidth: 1140, margin: '0 auto' }}>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          style={{ marginBottom: '48px' }}
+          style={{ marginBottom: '24px' }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
             <span style={{ fontFamily: 'monospace', fontSize: '10px', letterSpacing: '2px', color: 'rgba(0,255,255,0.45)' }}>03</span>
