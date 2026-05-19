@@ -29,8 +29,17 @@ export async function sendChatMessage(
     throw new Error(`chat ${res.status}: ${body}`)
   }
 
-  // n8n can return several shapes — handle them all
-  const data = await res.json() as unknown
+  const raw = await res.text()
+  if (!raw || raw.trim() === '') {
+    throw new Error('n8n hat eine leere Antwort gesendet — Webhook auf "Respond to Webhook Node" umstellen')
+  }
+
+  let data: unknown
+  try {
+    data = JSON.parse(raw)
+  } catch {
+    throw new Error(`Ungültiges JSON vom Server: ${raw.slice(0, 100)}`)
+  }
   if (typeof data === 'string') return data
   if (Array.isArray(data) && data.length > 0) {
     const first = data[0] as Record<string, unknown>
