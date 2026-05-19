@@ -16,7 +16,7 @@ export default function Navbar() {
     <>
       <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 py-5">
         <a href="#" className="font-black text-white text-lg tracking-wide">
-          Klarvis<span style={{ color: '#00ffff' }}>.</span>
+          Runly<span style={{ color: '#00ffff' }}>.</span>
         </a>
 
         <div className="hidden md:flex items-center gap-7">

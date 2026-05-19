@@ -75,7 +75,7 @@ export default function TaxChat() {
         {loading && (
           <div className="flex justify-start">
             <div className="bg-white border border-gray-200 rounded-2xl rounded-bl-sm px-4 py-2.5 text-sm text-gray-400">
-              Steuerhelfer schreibt...
+              Runly Steuerberater schreibt...
             </div>
           </div>
         )}

@@ -15,8 +15,8 @@ SMTP_HOST = 'smtp-relay.brevo.com'
 SMTP_PORT = 587
 SMTP_USER = os.getenv('BREVO_SMTP_USER', '')
 SMTP_PASS = os.getenv('BREVO_SMTP_PASSWORD', '')
-SENDER_EMAIL = os.getenv('SENDER_EMAIL', 'hallo@klarvis.de')
-SENDER_NAME = os.getenv('SENDER_NAME', 'Nikola – Klarvis')
+SENDER_EMAIL = os.getenv('SENDER_EMAIL', 'hallo@runly.de')
+SENDER_NAME = os.getenv('SENDER_NAME', 'Nikola – Runly')
 
 _SUBJECT = 'Website für {business_name} — kurze Frage'
 
@@ -25,7 +25,7 @@ Hallo,
 
 ich bin auf {business_name} in {city} aufmerksam geworden und wollte kurz nachfragen — haben Sie bereits eine eigene Website?
 
-Ich bin Nikola von Klarvis, einer kleinen Webdesign-Agentur aus der Region. Wir bauen professionelle Websites für lokale Unternehmen in Bayern — schnell, mobilfreundlich und zu einem fairen Preis.
+Ich bin Nikola von Runly, einer kleinen Webdesign-Agentur aus der Region. Wir bauen professionelle Websites für lokale Unternehmen in Bayern — schnell, mobilfreundlich und zu einem fairen Preis.
 
 Ein aktuelles Beispiel unserer Arbeit: remcosmetics.de — ein Kosmetikstudio aus Mainburg.
 
@@ -33,7 +33,7 @@ Falls Sie Interesse haben: ich melde mich gerne kurz per Telefon oder schreibe I
 
 Viele Grüße,
 Nikola
-Klarvis · hallo@klarvis.de
+Runly · hallo@runly.de
 """
 
 

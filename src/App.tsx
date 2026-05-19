@@ -11,7 +11,7 @@ import SteuerhelferApp from './pages/SteuerhelferApp'
 import { AuthProvider } from './lib/auth'
 import AuthGuard from './components/steuerhelfer/AuthGuard'
 
-function KlarvisSite() {
+function RunlySite() {
   return (
     <>
       <Navbar />
@@ -37,7 +37,7 @@ export default function App() {
             </AuthGuard>
           </AuthProvider>
         } />
-        <Route path="/*" element={<KlarvisSite />} />
+        <Route path="/*" element={<RunlySite />} />
       </Routes>
     </BrowserRouter>
   )

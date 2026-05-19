@@ -3,7 +3,7 @@ import Navbar from '../components/Navbar'
 
 test('renders logo text', () => {
   render(<Navbar />)
-  expect(screen.getByText('Klarvis')).toBeInTheDocument()
+  expect(screen.getByText('Runly')).toBeInTheDocument()
 })
 
 test('renders all nav links', () => {

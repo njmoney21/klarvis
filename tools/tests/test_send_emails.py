@@ -10,8 +10,8 @@ def test_body_contains_business_name_and_city():
     assert 'Metzgerei Huber' in body
     assert 'Mainburg' in body
 
-def test_body_contains_klarvis():
-    assert 'Klarvis' in build_email_body('Test GmbH', 'Ingolstadt')
+def test_body_contains_runly():
+    assert 'Runly' in build_email_body('Test GmbH', 'Ingolstadt')
 
 def test_body_contains_sender_name():
     assert 'Nikola' in build_email_body('Test GmbH', 'Ingolstadt')

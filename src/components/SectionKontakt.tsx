@@ -105,7 +105,7 @@ export default function SectionKontakt() {
             </button>
             {status === 'error' && (
               <p className="mt-3 text-center" style={{ fontSize: '12px', color: '#f87171' }}>
-                Etwas ist schiefgelaufen. Schreiben Sie uns direkt an hallo@klarvis.de
+                Etwas ist schiefgelaufen. Schreiben Sie uns direkt an hallo@runly.de
               </p>
             )}
           </motion.form>
@@ -120,11 +120,11 @@ export default function SectionKontakt() {
             <div>
               <h4 className="font-semibold mb-1" style={{ fontSize: '13px', color: 'rgba(255,255,255,0.7)' }}>E-Mail</h4>
               <a
-                href="mailto:hallo@klarvis.de"
+                href="mailto:hallo@runly.de"
                 className="transition-colors hover:opacity-70"
                 style={{ fontSize: '13px', color: 'rgba(255,255,255,0.38)' }}
               >
-                hallo@klarvis.de
+                hallo@runly.de
               </a>
             </div>
             <div>

@@ -40,7 +40,7 @@ export default function AuthGuard({ children }: { children: ReactNode }) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 w-full max-w-sm">
-          <h1 className="text-2xl font-bold text-gray-900 mb-1">Steuerhelfer</h1>
+          <h1 className="text-2xl font-bold text-gray-900 mb-1">Runly Steuerberater</h1>
           <p className="text-sm text-gray-500 mb-6">KI-Assistent für Kleinunternehmer</p>
 
           {!sent ? (
