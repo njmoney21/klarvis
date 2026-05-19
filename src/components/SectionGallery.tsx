@@ -36,18 +36,10 @@ function ProjectCard({ project, index }: { project: (typeof projects)[0]; index:
       onClick={() => window.open(project.url, '_blank', 'noopener')}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      style={{
-        cursor: 'pointer',
-        display: 'flex',
-        flexDirection: 'column',
-        minHeight: 0,
-      }}
+      style={{ cursor: 'pointer' }}
     >
       <div
         style={{
-          flex: 1,
-          display: 'flex',
-          flexDirection: 'column',
           border: `1px solid ${hovered ? project.accent + '55' : 'rgba(0,255,255,0.12)'}`,
           borderRadius: '10px',
           overflow: 'hidden',
@@ -56,7 +48,6 @@ function ProjectCard({ project, index }: { project: (typeof projects)[0]; index:
             ? `0 0 32px ${project.accent}18, 0 8px 40px rgba(0,0,0,0.5)`
             : '0 4px 24px rgba(0,0,0,0.4)',
           transition: 'border-color 0.3s, box-shadow 0.3s',
-          minHeight: 0,
         }}
       >
         {/* Chrome bar */}
@@ -96,7 +87,7 @@ function ProjectCard({ project, index }: { project: (typeof projects)[0]; index:
         </div>
 
         {/* iframe preview */}
-        <div style={{ flex: 1, position: 'relative', overflow: 'hidden', minHeight: 0 }}>
+        <div style={{ position: 'relative', overflow: 'hidden', height: 320 }}>
           <iframe
             src={project.url}
             title={project.name}
@@ -104,7 +95,7 @@ function ProjectCard({ project, index }: { project: (typeof projects)[0]; index:
             tabIndex={-1}
             style={{
               width: '1200px',
-              height: '900px',
+              height: '1200px',
               border: 'none',
               transform: 'scale(0.355)',
               transformOrigin: 'top left',
@@ -153,10 +144,7 @@ export default function SectionGallery() {
     <section
       id="gallery"
       style={{
-        height: '100dvh',
-        display: 'flex',
-        flexDirection: 'column',
-        padding: '48px 32px 32px',
+        padding: '72px 32px 72px',
         boxSizing: 'border-box',
       }}
     >
@@ -188,12 +176,9 @@ export default function SectionGallery() {
 
       <div
         style={{
-          flex: 1,
           display: 'grid',
           gridTemplateColumns: '1fr 1fr',
-          gridTemplateRows: '1fr 1fr',
           gap: '20px',
-          minHeight: 0,
         }}
       >
         {projects.map((project, i) => (
