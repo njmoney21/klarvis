@@ -1,6 +1,10 @@
 import { motion } from 'framer-motion'
 import { useState } from 'react'
 
+const SCALE = 0.36
+const IFRAME_W = 1200
+const IFRAME_H = 4800
+
 const projects = [
   {
     name: 'Bistro Koliba',
@@ -36,33 +40,23 @@ function ProjectCard({ project, index }: { project: (typeof projects)[0]; index:
       onClick={() => window.open(project.url, '_blank', 'noopener')}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      style={{
-        cursor: 'pointer',
-        display: 'flex',
-        flexDirection: 'column',
-        minHeight: 0,
-      }}
+      style={{ cursor: 'pointer' }}
     >
       <div
         style={{
-          flex: 1,
-          display: 'flex',
-          flexDirection: 'column',
           border: `1px solid ${hovered ? project.accent + '55' : 'rgba(0,255,255,0.12)'}`,
           borderRadius: '10px',
           overflow: 'hidden',
           background: '#010b11',
           boxShadow: hovered
-            ? `0 0 32px ${project.accent}18, 0 8px 40px rgba(0,0,0,0.5)`
+            ? `0 0 40px ${project.accent}18, 0 8px 48px rgba(0,0,0,0.6)`
             : '0 4px 24px rgba(0,0,0,0.4)',
           transition: 'border-color 0.3s, box-shadow 0.3s',
-          minHeight: 0,
         }}
       >
         {/* Chrome bar */}
         <div
           style={{
-            flexShrink: 0,
             background: 'rgba(255,255,255,0.035)',
             borderBottom: '1px solid rgba(255,255,255,0.06)',
             padding: '9px 12px',
@@ -95,18 +89,25 @@ function ProjectCard({ project, index }: { project: (typeof projects)[0]; index:
           </div>
         </div>
 
-        {/* iframe preview */}
-        <div style={{ flex: 1, position: 'relative', overflow: 'hidden', minHeight: 0 }}>
+        {/* iframe preview — full-page height */}
+        <div
+          style={{
+            position: 'relative',
+            width: '100%',
+            height: IFRAME_H * SCALE,
+            overflow: 'hidden',
+          }}
+        >
           <iframe
             src={project.url}
             title={project.name}
             loading="lazy"
             tabIndex={-1}
             style={{
-              width: '1200px',
-              height: '900px',
+              width: IFRAME_W,
+              height: IFRAME_H,
               border: 'none',
-              transform: 'scale(0.355)',
+              transform: `scale(${SCALE})`,
               transformOrigin: 'top left',
               pointerEvents: 'none',
               display: 'block',
@@ -117,7 +118,7 @@ function ProjectCard({ project, index }: { project: (typeof projects)[0]; index:
             style={{
               position: 'absolute',
               inset: 0,
-              background: hovered ? 'rgba(2,13,20,0.72)' : 'rgba(2,13,20,0)',
+              background: hovered ? 'rgba(2,13,20,0.68)' : 'rgba(2,13,20,0)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -127,13 +128,13 @@ function ProjectCard({ project, index }: { project: (typeof projects)[0]; index:
             <div
               style={{
                 opacity: hovered ? 1 : 0,
-                transform: hovered ? 'translateY(0)' : 'translateY(6px)',
+                transform: hovered ? 'translateY(0)' : 'translateY(8px)',
                 transition: 'opacity 0.25s, transform 0.25s',
-                padding: '9px 22px',
+                padding: '10px 26px',
                 border: `1px solid ${project.accent}`,
                 borderRadius: '5px',
                 color: project.accent,
-                fontSize: '11px',
+                fontSize: '12px',
                 fontWeight: 700,
                 fontFamily: 'monospace',
                 letterSpacing: '1.5px',
@@ -150,55 +151,45 @@ function ProjectCard({ project, index }: { project: (typeof projects)[0]; index:
 
 export default function SectionGallery() {
   return (
-    <section
-      id="gallery"
-      style={{
-        height: '100dvh',
-        display: 'flex',
-        flexDirection: 'column',
-        padding: '48px 32px 32px',
-        boxSizing: 'border-box',
-      }}
-    >
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-        style={{ flexShrink: 0, marginBottom: '28px' }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
-          <span style={{ fontFamily: 'monospace', fontSize: '10px', letterSpacing: '2px', color: 'rgba(0,255,255,0.45)' }}>03</span>
-          <span style={{ width: 32, height: 1, background: 'rgba(0,255,255,0.2)', flexShrink: 0, display: 'block' }} />
-          <span style={{ fontFamily: 'monospace', fontSize: '9px', textTransform: 'uppercase', letterSpacing: '3px', color: 'rgba(0,255,255,0.4)' }}>Referenzen</span>
-        </div>
-        <h2
+    <section id="gallery" style={{ padding: '80px 32px 80px', boxSizing: 'border-box' }}>
+      <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          style={{ marginBottom: '48px' }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
+            <span style={{ fontFamily: 'monospace', fontSize: '10px', letterSpacing: '2px', color: 'rgba(0,255,255,0.45)' }}>03</span>
+            <span style={{ width: 32, height: 1, background: 'rgba(0,255,255,0.2)', display: 'block' }} />
+            <span style={{ fontFamily: 'monospace', fontSize: '9px', textTransform: 'uppercase', letterSpacing: '3px', color: 'rgba(0,255,255,0.4)' }}>Referenzen</span>
+          </div>
+          <h2
+            style={{
+              fontWeight: 800,
+              color: '#fff',
+              fontSize: 'clamp(1.4rem, 2.5vw, 2.2rem)',
+              letterSpacing: '-0.8px',
+              lineHeight: 1.1,
+              margin: 0,
+            }}
+          >
+            Unsere Projekte
+          </h2>
+        </motion.div>
+
+        <div
           style={{
-            fontWeight: 800,
-            color: '#fff',
-            fontSize: 'clamp(1.4rem, 2.5vw, 2.2rem)',
-            letterSpacing: '-0.8px',
-            lineHeight: 1.1,
-            margin: 0,
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr',
+            gap: '24px',
           }}
         >
-          Unsere Projekte
-        </h2>
-      </motion.div>
-
-      <div
-        style={{
-          flex: 1,
-          display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
-          gridTemplateRows: '1fr 1fr',
-          gap: '20px',
-          minHeight: 0,
-        }}
-      >
-        {projects.map((project, i) => (
-          <ProjectCard key={project.url} project={project} index={i} />
-        ))}
+          {projects.map((project, i) => (
+            <ProjectCard key={project.url} project={project} index={i} />
+          ))}
+        </div>
       </div>
     </section>
   )
