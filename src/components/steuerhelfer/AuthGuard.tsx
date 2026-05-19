@@ -32,17 +32,19 @@ export default function AuthGuard({ children }: { children: ReactNode }) {
     if (password !== confirmPassword) { setError('Passwörter stimmen nicht überein.'); return }
     if (password.length < 6) { setError('Passwort muss mindestens 6 Zeichen haben.'); return }
     setBusy(true)
-    const { error: err } = await supabase.auth.signUp({
+    const { data, error: err } = await supabase.auth.signUp({
       email,
       password,
       options: { data: { name } },
     })
     setBusy(false)
     if (err) { setError(translateError(err.message)); return }
+    // If email confirmation is disabled, Supabase returns a session immediately
+    if (data.session) return // onAuthStateChange will handle login
     setMode('verify')
   }
 
-  // Step 2 of register — verify the 6-digit code from email
+  // Step 2 of register — verify the 6-digit code, then sign in immediately
   const handleVerify = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
@@ -52,8 +54,15 @@ export default function AuthGuard({ children }: { children: ReactNode }) {
       token: code.trim(),
       type: 'signup',
     })
+    if (err) {
+      setError('Ungültiger oder abgelaufener Code. Bitte prüfen.')
+      setBusy(false)
+      return
+    }
+    // verifyOtp confirmed the email — sign in explicitly so the session is guaranteed
+    const { error: loginErr } = await supabase.auth.signInWithPassword({ email, password })
+    if (loginErr) setError(`Bestätigt, aber Login fehlgeschlagen: ${loginErr.message}`)
     setBusy(false)
-    if (err) setError('Ungültiger oder abgelaufener Code. Bitte prüfen.')
   }
 
   // Login — email + password, no code ever
@@ -63,7 +72,7 @@ export default function AuthGuard({ children }: { children: ReactNode }) {
     setBusy(true)
     const { error: err } = await supabase.auth.signInWithPassword({ email, password })
     setBusy(false)
-    if (err) setError(translateError(err.message))
+    if (err) setError(err.message) // show raw error so we can debug
   }
 
   if (loading) {
