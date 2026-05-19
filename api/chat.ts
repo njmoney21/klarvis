@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-declare const process: { env: Record<string, string | undefined> }
-
 interface ChatMessage {
   role: 'user' | 'assistant'
   content: string
 }
 
+// Access process safely so both TS and runtime are happy
+const env = (globalThis as any).process?.env ?? {}
+
 export default async function handler(req: any, res: any) {
-  res.setHeader('Access-Control-Allow-Origin', '*')
   res.setHeader('Content-Type', 'application/json')
 
   if (req.method !== 'POST') {
@@ -21,9 +21,12 @@ export default async function handler(req: any, res: any) {
     return
   }
 
-  const apiKey = process.env.ANTHROPIC_API_KEY
+  const apiKey: string | undefined = env.ANTHROPIC_API_KEY
   if (!apiKey) {
-    res.status(500).json({ error: 'ANTHROPIC_API_KEY not configured' })
+    res.status(500).json({
+      error: 'ANTHROPIC_API_KEY not configured',
+      envCount: Object.keys(env).length,
+    })
     return
   }
 
