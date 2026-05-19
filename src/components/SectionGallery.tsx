@@ -1,37 +1,32 @@
 import { motion } from 'framer-motion'
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
+
+const IFRAME_W = 1280
+const IFRAME_H = 800
 
 const projects = [
-  {
-    name: 'Bistro Koliba',
-    url: 'https://koliba-sepia.vercel.app/',
-    accent: '#D4A017',
-  },
-  {
-    name: 'Rem Cosmetics',
-    url: 'https://remcosmetics.vercel.app/',
-    accent: '#f472b6',
-  },
-  {
-    name: 'Runly',
-    url: 'https://runly-six.vercel.app/',
-    accent: '#00ffff',
-  },
-  {
-    name: 'La Locanda di Nino',
-    url: 'https://lalocandadinino.de/',
-    accent: '#86efac',
-  },
+  { name: 'Bistro Koliba',       url: 'https://koliba-sepia.vercel.app/', accent: '#D4A017' },
+  { name: 'Rem Cosmetics',       url: 'https://remcosmetics.vercel.app/', accent: '#f472b6' },
+  { name: 'Runly',               url: 'https://runly-six.vercel.app/',    accent: '#00ffff' },
+  { name: 'La Locanda di Nino',  url: 'https://lalocandadinino.de/',      accent: '#86efac' },
 ]
-
-// iframe is rendered at 1200×750, then scaled to fill ~540px card width
-const IFRAME_W = 1200
-const IFRAME_H = 750
-const SCALE = 0.45
-const PREVIEW_H = Math.round(IFRAME_H * SCALE) // 337px
 
 function ProjectCard({ project, index }: { project: (typeof projects)[0]; index: number }) {
   const [hovered, setHovered] = useState(false)
+  const wrapRef = useRef<HTMLDivElement>(null)
+  const [scale, setScale] = useState(0.45)
+
+  useEffect(() => {
+    if (!wrapRef.current) return
+    const ro = new ResizeObserver(entries => {
+      const w = entries[0].contentRect.width
+      if (w > 0) setScale(w / IFRAME_W)
+    })
+    ro.observe(wrapRef.current)
+    return () => ro.disconnect()
+  }, [])
+
+  const previewH = Math.round(IFRAME_H * scale)
 
   return (
     <motion.div
@@ -91,13 +86,10 @@ function ProjectCard({ project, index }: { project: (typeof projects)[0]; index:
           </div>
         </div>
 
-        {/* Iframe preview */}
+        {/* iframe — scale computed to fill exact card width */}
         <div
-          style={{
-            position: 'relative',
-            height: PREVIEW_H,
-            overflow: 'hidden',
-          }}
+          ref={wrapRef}
+          style={{ position: 'relative', height: previewH, overflow: 'hidden' }}
         >
           <iframe
             src={project.url}
@@ -108,13 +100,12 @@ function ProjectCard({ project, index }: { project: (typeof projects)[0]; index:
               width: IFRAME_W,
               height: IFRAME_H,
               border: 'none',
-              transform: `scale(${SCALE})`,
+              transform: `scale(${scale})`,
               transformOrigin: 'top left',
               pointerEvents: 'none',
               display: 'block',
             }}
           />
-          {/* Hover overlay */}
           <div
             style={{
               position: 'absolute',
@@ -166,27 +157,12 @@ export default function SectionGallery() {
             <span style={{ width: 32, height: 1, background: 'rgba(0,255,255,0.2)', display: 'block' }} />
             <span style={{ fontFamily: 'monospace', fontSize: '9px', textTransform: 'uppercase', letterSpacing: '3px', color: 'rgba(0,255,255,0.4)' }}>Referenzen</span>
           </div>
-          <h2
-            style={{
-              fontWeight: 800,
-              color: '#fff',
-              fontSize: 'clamp(1.4rem, 2.5vw, 2.2rem)',
-              letterSpacing: '-0.8px',
-              lineHeight: 1.1,
-              margin: 0,
-            }}
-          >
+          <h2 style={{ fontWeight: 800, color: '#fff', fontSize: 'clamp(1.4rem, 2.5vw, 2.2rem)', letterSpacing: '-0.8px', lineHeight: 1.1, margin: 0 }}>
             Unsere Projekte
           </h2>
         </motion.div>
 
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(2, 1fr)',
-            gap: '24px',
-          }}
-        >
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '24px' }}>
           {projects.map((project, i) => (
             <ProjectCard key={project.url} project={project} index={i} />
           ))}
