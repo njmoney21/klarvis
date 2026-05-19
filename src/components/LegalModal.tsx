@@ -55,9 +55,7 @@ function ImpressumContent() {
   return (
     <>
       <Sec num="01" title="Anbieter">
-        <p>Nikola Todorovic</p>
-        <p>Hainbuchenweg 2a</p>
-        <p>84048 Mainburg</p>
+        <p>Runly</p>
         <p>Deutschland</p>
       </Sec>
 
@@ -66,7 +64,7 @@ function ImpressumContent() {
       </Sec>
 
       <Sec num="03" title="Verantwortlich für den Inhalt">
-        <p>Nikola Todorovic, Hainbuchenweg 2a, 84048 Mainburg</p>
+        <p>Runly</p>
         <p style={{ marginTop: '6px', fontSize: '12px', color: 'rgba(255,255,255,0.3)' }}>gemäß § 18 Abs. 2 Medienstaatsvertrag (MStV)</p>
       </Sec>
 
