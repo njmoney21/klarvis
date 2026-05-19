@@ -8,6 +8,8 @@ import SectionPreise from './components/SectionPreise'
 import SectionKontakt from './components/SectionKontakt'
 import Footer from './components/Footer'
 import SteuerhelferApp from './pages/SteuerhelferApp'
+import Impressum from './pages/Impressum'
+import Datenschutz from './pages/Datenschutz'
 import { AuthProvider } from './lib/auth'
 import AuthGuard from './components/steuerhelfer/AuthGuard'
 
@@ -30,6 +32,8 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/impressum" element={<Impressum />} />
+        <Route path="/datenschutz" element={<Datenschutz />} />
         <Route path="/app" element={
           <AuthProvider>
             <AuthGuard>
