@@ -162,7 +162,7 @@ export default function SectionGallery() {
           </h2>
         </motion.div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '24px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px' }}>
           {projects.map((project, i) => (
             <ProjectCard key={project.url} project={project} index={i} />
           ))}
