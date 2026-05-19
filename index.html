@@ -7,7 +7,15 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
-    <title>Runly â€” Webdesign fÃ¼r lokale Unternehmen</title>
+    <title>Runly — Webdesign für lokale Unternehmen</title>
+    <script type=”importmap”>
+      {
+        “imports”: {
+          “three”: “https://unpkg.com/three@0.182.0/build/three.module.js”,
+          “three/addons/”: “https://unpkg.com/three@0.182.0/examples/jsm/”
+        }
+      }
+    </script>
     <style>
       #side-panel {
         position: fixed;
@@ -62,22 +70,12 @@
   </head>
   <body>
 
-    <!-- Three.js importmap -->
-    <script type="importmap">
-      {
-        "imports": {
-          "three": "https://unpkg.com/three@0.182.0/build/three.module.js",
-          "three/addons/": "https://unpkg.com/three@0.182.0/examples/jsm/"
-        }
-      }
-    </script>
-
     <!-- Underwater Three.js background -->
     <div id="underwater-container"></div>
 
     <!-- Side panel -->
     <div id="side-panel">
-      <button id="panel-close" aria-label="SchlieÃŸen">âœ•</button>
+      <button id="panel-close" aria-label="Schließen">✕</button>
       <div id="panel-content"></div>
     </div>
 
