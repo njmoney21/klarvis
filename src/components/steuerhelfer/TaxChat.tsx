@@ -27,10 +27,11 @@ export default function TaxChat() {
     try {
       const reply = await sendChatMessage(trimmed, messages)
       setMessages([...updatedHistory, { role: 'assistant', content: reply }])
-    } catch {
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : 'Unbekannter Fehler'
       setMessages([
         ...updatedHistory,
-        { role: 'assistant', content: 'Verbindungsfehler. Bitte erneut versuchen.' },
+        { role: 'assistant', content: `Verbindungsfehler: ${msg}` },
       ])
     }
 
