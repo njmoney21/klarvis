@@ -13,16 +13,16 @@ const projects = [
 
 function ProjectCard({ project, index }: { project: (typeof projects)[0]; index: number }) {
   const [hovered, setHovered] = useState(false)
-  const wrapRef = useRef<HTMLDivElement>(null)
-  const [scale, setScale] = useState(0.45)
+  const colRef = useRef<HTMLDivElement>(null)
+  const [scale, setScale] = useState(0.21)
 
   useEffect(() => {
-    if (!wrapRef.current) return
+    if (!colRef.current) return
     const ro = new ResizeObserver(entries => {
       const w = entries[0].contentRect.width
       if (w > 0) setScale(w / IFRAME_W)
     })
-    ro.observe(wrapRef.current)
+    ro.observe(colRef.current)
     return () => ro.disconnect()
   }, [])
 
@@ -30,6 +30,7 @@ function ProjectCard({ project, index }: { project: (typeof projects)[0]; index:
 
   return (
     <motion.div
+      ref={colRef}
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -37,17 +38,17 @@ function ProjectCard({ project, index }: { project: (typeof projects)[0]; index:
       onClick={() => window.open(project.url, '_blank', 'noopener')}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      style={{ cursor: 'pointer' }}
+      style={{ cursor: 'pointer', minWidth: 0 }}
     >
       <div
         style={{
           border: `1px solid ${hovered ? project.accent + '55' : 'rgba(0,255,255,0.12)'}`,
-          borderRadius: '10px',
+          borderRadius: '8px',
           overflow: 'hidden',
           background: '#010b11',
           boxShadow: hovered
-            ? `0 0 40px ${project.accent}18, 0 12px 48px rgba(0,0,0,0.6)`
-            : '0 4px 28px rgba(0,0,0,0.5)',
+            ? `0 0 28px ${project.accent}18, 0 8px 32px rgba(0,0,0,0.6)`
+            : '0 4px 20px rgba(0,0,0,0.5)',
           transition: 'border-color 0.3s, box-shadow 0.3s',
         }}
       >
@@ -56,26 +57,26 @@ function ProjectCard({ project, index }: { project: (typeof projects)[0]; index:
           style={{
             background: 'rgba(255,255,255,0.04)',
             borderBottom: '1px solid rgba(255,255,255,0.07)',
-            padding: '10px 14px',
+            padding: '7px 10px',
             display: 'flex',
             alignItems: 'center',
-            gap: '10px',
+            gap: '8px',
           }}
         >
-          <div style={{ display: 'flex', gap: '6px', flexShrink: 0 }}>
-            <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#ff5f57' }} />
-            <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#ffbd2e' }} />
-            <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#28c840' }} />
+          <div style={{ display: 'flex', gap: '4px', flexShrink: 0 }}>
+            <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#ff5f57' }} />
+            <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#ffbd2e' }} />
+            <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#28c840' }} />
           </div>
           <div
             style={{
               flex: 1,
               background: 'rgba(255,255,255,0.05)',
               border: '1px solid rgba(255,255,255,0.08)',
-              borderRadius: '5px',
-              padding: '4px 12px',
-              fontSize: '10px',
-              color: 'rgba(255,255,255,0.35)',
+              borderRadius: '4px',
+              padding: '3px 8px',
+              fontSize: '9px',
+              color: 'rgba(255,255,255,0.3)',
               fontFamily: 'monospace',
               overflow: 'hidden',
               textOverflow: 'ellipsis',
@@ -86,24 +87,23 @@ function ProjectCard({ project, index }: { project: (typeof projects)[0]; index:
           </div>
         </div>
 
-        {/* iframe — scale computed to fill exact card width */}
-        <div
-          ref={wrapRef}
-          style={{ position: 'relative', height: previewH, overflow: 'hidden' }}
-        >
+        {/* Preview — iframe is absolute so it never pushes layout */}
+        <div style={{ position: 'relative', height: previewH, overflow: 'hidden' }}>
           <iframe
             src={project.url}
             title={project.name}
             loading="lazy"
             tabIndex={-1}
             style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
               width: IFRAME_W,
               height: IFRAME_H,
               border: 'none',
               transform: `scale(${scale})`,
               transformOrigin: 'top left',
               pointerEvents: 'none',
-              display: 'block',
             }}
           />
           <div
@@ -120,13 +120,13 @@ function ProjectCard({ project, index }: { project: (typeof projects)[0]; index:
             <div
               style={{
                 opacity: hovered ? 1 : 0,
-                transform: hovered ? 'translateY(0)' : 'translateY(8px)',
+                transform: hovered ? 'translateY(0)' : 'translateY(6px)',
                 transition: 'opacity 0.25s, transform 0.25s',
-                padding: '10px 28px',
+                padding: '8px 20px',
                 border: `1px solid ${project.accent}`,
-                borderRadius: '5px',
+                borderRadius: '4px',
                 color: project.accent,
-                fontSize: '12px',
+                fontSize: '11px',
                 fontWeight: 700,
                 fontFamily: 'monospace',
                 letterSpacing: '1.5px',
@@ -152,7 +152,7 @@ export default function SectionGallery() {
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           style={{ marginBottom: '24px' }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
             <span style={{ fontFamily: 'monospace', fontSize: '10px', letterSpacing: '2px', color: 'rgba(0,255,255,0.45)' }}>03</span>
             <span style={{ width: 32, height: 1, background: 'rgba(0,255,255,0.2)', display: 'block' }} />
             <span style={{ fontFamily: 'monospace', fontSize: '9px', textTransform: 'uppercase', letterSpacing: '3px', color: 'rgba(0,255,255,0.4)' }}>Referenzen</span>
