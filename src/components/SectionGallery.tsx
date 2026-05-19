@@ -24,6 +24,12 @@ const projects = [
   },
 ]
 
+// iframe is rendered at 1200×750, then scaled to fill ~540px card width
+const IFRAME_W = 1200
+const IFRAME_H = 750
+const SCALE = 0.45
+const PREVIEW_H = Math.round(IFRAME_H * SCALE) // 337px
+
 function ProjectCard({ project, index }: { project: (typeof projects)[0]; index: number }) {
   const [hovered, setHovered] = useState(false)
 
@@ -45,37 +51,36 @@ function ProjectCard({ project, index }: { project: (typeof projects)[0]; index:
           overflow: 'hidden',
           background: '#010b11',
           boxShadow: hovered
-            ? `0 0 32px ${project.accent}18, 0 8px 40px rgba(0,0,0,0.5)`
-            : '0 4px 24px rgba(0,0,0,0.4)',
+            ? `0 0 40px ${project.accent}18, 0 12px 48px rgba(0,0,0,0.6)`
+            : '0 4px 28px rgba(0,0,0,0.5)',
           transition: 'border-color 0.3s, box-shadow 0.3s',
         }}
       >
         {/* Chrome bar */}
         <div
           style={{
-            flexShrink: 0,
-            background: 'rgba(255,255,255,0.035)',
-            borderBottom: '1px solid rgba(255,255,255,0.06)',
-            padding: '9px 12px',
+            background: 'rgba(255,255,255,0.04)',
+            borderBottom: '1px solid rgba(255,255,255,0.07)',
+            padding: '10px 14px',
             display: 'flex',
             alignItems: 'center',
             gap: '10px',
           }}
         >
-          <div style={{ display: 'flex', gap: '5px', flexShrink: 0 }}>
-            <div style={{ width: 9, height: 9, borderRadius: '50%', background: '#ff5f57', opacity: 0.85 }} />
-            <div style={{ width: 9, height: 9, borderRadius: '50%', background: '#ffbd2e', opacity: 0.85 }} />
-            <div style={{ width: 9, height: 9, borderRadius: '50%', background: '#28c840', opacity: 0.85 }} />
+          <div style={{ display: 'flex', gap: '6px', flexShrink: 0 }}>
+            <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#ff5f57' }} />
+            <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#ffbd2e' }} />
+            <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#28c840' }} />
           </div>
           <div
             style={{
               flex: 1,
-              background: 'rgba(255,255,255,0.04)',
-              border: '1px solid rgba(255,255,255,0.07)',
+              background: 'rgba(255,255,255,0.05)',
+              border: '1px solid rgba(255,255,255,0.08)',
               borderRadius: '5px',
-              padding: '3px 10px',
-              fontSize: '9px',
-              color: 'rgba(255,255,255,0.28)',
+              padding: '4px 12px',
+              fontSize: '10px',
+              color: 'rgba(255,255,255,0.35)',
               fontFamily: 'monospace',
               overflow: 'hidden',
               textOverflow: 'ellipsis',
@@ -86,29 +91,35 @@ function ProjectCard({ project, index }: { project: (typeof projects)[0]; index:
           </div>
         </div>
 
-        {/* iframe preview */}
-        <div style={{ position: 'relative', overflow: 'hidden', height: 320 }}>
+        {/* Iframe preview */}
+        <div
+          style={{
+            position: 'relative',
+            height: PREVIEW_H,
+            overflow: 'hidden',
+          }}
+        >
           <iframe
             src={project.url}
             title={project.name}
             loading="lazy"
             tabIndex={-1}
             style={{
-              width: '1200px',
-              height: '1200px',
+              width: IFRAME_W,
+              height: IFRAME_H,
               border: 'none',
-              transform: 'scale(0.355)',
+              transform: `scale(${SCALE})`,
               transformOrigin: 'top left',
               pointerEvents: 'none',
               display: 'block',
             }}
           />
-          {/* hover overlay */}
+          {/* Hover overlay */}
           <div
             style={{
               position: 'absolute',
               inset: 0,
-              background: hovered ? 'rgba(2,13,20,0.72)' : 'rgba(2,13,20,0)',
+              background: hovered ? 'rgba(2,13,20,0.68)' : 'rgba(2,13,20,0)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -118,13 +129,13 @@ function ProjectCard({ project, index }: { project: (typeof projects)[0]; index:
             <div
               style={{
                 opacity: hovered ? 1 : 0,
-                transform: hovered ? 'translateY(0)' : 'translateY(6px)',
+                transform: hovered ? 'translateY(0)' : 'translateY(8px)',
                 transition: 'opacity 0.25s, transform 0.25s',
-                padding: '9px 22px',
+                padding: '10px 28px',
                 border: `1px solid ${project.accent}`,
                 borderRadius: '5px',
                 color: project.accent,
-                fontSize: '11px',
+                fontSize: '12px',
                 fontWeight: 700,
                 fontFamily: 'monospace',
                 letterSpacing: '1.5px',
@@ -141,49 +152,45 @@ function ProjectCard({ project, index }: { project: (typeof projects)[0]; index:
 
 export default function SectionGallery() {
   return (
-    <section
-      id="gallery"
-      style={{
-        padding: '72px 32px 72px',
-        boxSizing: 'border-box',
-      }}
-    >
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-        style={{ flexShrink: 0, marginBottom: '28px' }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
-          <span style={{ fontFamily: 'monospace', fontSize: '10px', letterSpacing: '2px', color: 'rgba(0,255,255,0.45)' }}>03</span>
-          <span style={{ width: 32, height: 1, background: 'rgba(0,255,255,0.2)', flexShrink: 0, display: 'block' }} />
-          <span style={{ fontFamily: 'monospace', fontSize: '9px', textTransform: 'uppercase', letterSpacing: '3px', color: 'rgba(0,255,255,0.4)' }}>Referenzen</span>
-        </div>
-        <h2
+    <section id="gallery" style={{ padding: '80px 32px', boxSizing: 'border-box' }}>
+      <div style={{ maxWidth: 1140, margin: '0 auto' }}>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          style={{ marginBottom: '48px' }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
+            <span style={{ fontFamily: 'monospace', fontSize: '10px', letterSpacing: '2px', color: 'rgba(0,255,255,0.45)' }}>03</span>
+            <span style={{ width: 32, height: 1, background: 'rgba(0,255,255,0.2)', display: 'block' }} />
+            <span style={{ fontFamily: 'monospace', fontSize: '9px', textTransform: 'uppercase', letterSpacing: '3px', color: 'rgba(0,255,255,0.4)' }}>Referenzen</span>
+          </div>
+          <h2
+            style={{
+              fontWeight: 800,
+              color: '#fff',
+              fontSize: 'clamp(1.4rem, 2.5vw, 2.2rem)',
+              letterSpacing: '-0.8px',
+              lineHeight: 1.1,
+              margin: 0,
+            }}
+          >
+            Unsere Projekte
+          </h2>
+        </motion.div>
+
+        <div
           style={{
-            fontWeight: 800,
-            color: '#fff',
-            fontSize: 'clamp(1.4rem, 2.5vw, 2.2rem)',
-            letterSpacing: '-0.8px',
-            lineHeight: 1.1,
-            margin: 0,
+            display: 'grid',
+            gridTemplateColumns: 'repeat(2, 1fr)',
+            gap: '24px',
           }}
         >
-          Unsere Projekte
-        </h2>
-      </motion.div>
-
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
-          gap: '20px',
-        }}
-      >
-        {projects.map((project, i) => (
-          <ProjectCard key={project.url} project={project} index={i} />
-        ))}
+          {projects.map((project, i) => (
+            <ProjectCard key={project.url} project={project} index={i} />
+          ))}
+        </div>
       </div>
     </section>
   )
