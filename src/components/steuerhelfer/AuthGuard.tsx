@@ -4,7 +4,7 @@ import { useAuth } from '../../lib/auth'
 
 const STRIPE_LINK = import.meta.env.VITE_STRIPE_PAYMENT_LINK as string | undefined
 
-type Mode = 'login' | 'register'
+type Mode = 'login' | 'register' | 'verify'
 
 export default function AuthGuard({ children }: { children: ReactNode }) {
   const { session, loading } = useAuth()
@@ -13,27 +13,19 @@ export default function AuthGuard({ children }: { children: ReactNode }) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
+  const [code, setCode] = useState('')
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
-  const [success, setSuccess] = useState('')
 
-  const reset = (next: Mode) => {
+  const switchMode = (next: Mode) => {
     setMode(next)
     setError('')
-    setSuccess('')
     setPassword('')
     setConfirmPassword('')
+    setCode('')
   }
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError('')
-    setBusy(true)
-    const { error: err } = await supabase.auth.signInWithPassword({ email, password })
-    if (err) setError(translateError(err.message))
-    setBusy(false)
-  }
-
+  // Step 1 of register — send signup + trigger confirmation email with code
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
@@ -45,9 +37,33 @@ export default function AuthGuard({ children }: { children: ReactNode }) {
       password,
       options: { data: { name } },
     })
-    if (err) setError(translateError(err.message))
-    else setSuccess('Konto erstellt! Sie sind jetzt angemeldet.')
     setBusy(false)
+    if (err) { setError(translateError(err.message)); return }
+    setMode('verify')
+  }
+
+  // Step 2 of register — verify the 6-digit code from email
+  const handleVerify = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setError('')
+    setBusy(true)
+    const { error: err } = await supabase.auth.verifyOtp({
+      email,
+      token: code.trim(),
+      type: 'signup',
+    })
+    setBusy(false)
+    if (err) setError('Ungültiger oder abgelaufener Code. Bitte prüfen.')
+  }
+
+  // Login — email + password, no code ever
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setError('')
+    setBusy(true)
+    const { error: err } = await supabase.auth.signInWithPassword({ email, password })
+    setBusy(false)
+    if (err) setError(translateError(err.message))
   }
 
   if (loading) {
@@ -63,150 +79,195 @@ export default function AuthGuard({ children }: { children: ReactNode }) {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
         <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 w-full max-w-sm">
 
-          {/* Header */}
           <div className="mb-6">
             <h1 className="text-2xl font-bold text-gray-900 mb-1">Runly Steuerberater</h1>
             <p className="text-sm text-gray-500">KI-Assistent für Kleinunternehmer</p>
           </div>
 
-          {/* Tabs */}
-          <div className="flex rounded-lg border border-gray-200 p-1 mb-6 bg-gray-50">
-            <button
-              onClick={() => reset('login')}
-              className={`flex-1 py-1.5 text-sm font-medium rounded-md transition-all ${
-                mode === 'login'
-                  ? 'bg-white text-gray-900 shadow-sm'
-                  : 'text-gray-400 hover:text-gray-600'
-              }`}
-            >
-              Anmelden
-            </button>
-            <button
-              onClick={() => reset('register')}
-              className={`flex-1 py-1.5 text-sm font-medium rounded-md transition-all ${
-                mode === 'register'
-                  ? 'bg-white text-gray-900 shadow-sm'
-                  : 'text-gray-400 hover:text-gray-600'
-              }`}
-            >
-              Registrieren
-            </button>
-          </div>
-
-          {/* Login form */}
+          {/* ── LOGIN ── */}
           {mode === 'login' && (
-            <form onSubmit={handleLogin} className="space-y-3">
-              <div>
-                <label className="block text-xs font-medium text-gray-600 mb-1">E-Mail</label>
-                <input
-                  type="email"
-                  value={email}
-                  onChange={e => setEmail(e.target.value)}
-                  placeholder="max@muster.de"
-                  required
-                  autoComplete="email"
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
+            <>
+              <div className="flex rounded-lg border border-gray-200 p-1 mb-6 bg-gray-50">
+                <button className="flex-1 py-1.5 text-sm font-medium rounded-md bg-white text-gray-900 shadow-sm">
+                  Anmelden
+                </button>
+                <button
+                  onClick={() => switchMode('register')}
+                  className="flex-1 py-1.5 text-sm font-medium rounded-md text-gray-400 hover:text-gray-600 transition-colors"
+                >
+                  Registrieren
+                </button>
               </div>
-              <div>
-                <label className="block text-xs font-medium text-gray-600 mb-1">Passwort</label>
-                <input
-                  type="password"
-                  value={password}
-                  onChange={e => setPassword(e.target.value)}
-                  placeholder="••••••••"
-                  required
-                  autoComplete="current-password"
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
-              </div>
-              {error && <p className="text-xs text-red-600">{error}</p>}
-              <button
-                type="submit"
-                disabled={busy}
-                className="w-full bg-blue-600 text-white rounded-lg px-4 py-2.5 text-sm font-medium hover:bg-blue-700 disabled:opacity-50 transition-colors mt-1"
-              >
-                {busy ? 'Anmelden...' : 'Anmelden'}
-              </button>
-              <p className="text-center text-xs text-gray-400 pt-1">
+
+              <form onSubmit={handleLogin} className="space-y-3">
+                <div>
+                  <label className="block text-xs font-medium text-gray-600 mb-1">E-Mail</label>
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                    placeholder="max@muster.de"
+                    required
+                    autoComplete="email"
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-gray-600 mb-1">Passwort</label>
+                  <input
+                    type="password"
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                    placeholder="••••••••"
+                    required
+                    autoComplete="current-password"
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
+                {error && <p className="text-xs text-red-600">{error}</p>}
+                <button
+                  type="submit"
+                  disabled={busy}
+                  className="w-full bg-blue-600 text-white rounded-lg px-4 py-2.5 text-sm font-medium hover:bg-blue-700 disabled:opacity-50 transition-colors"
+                >
+                  {busy ? 'Anmelden...' : 'Anmelden'}
+                </button>
+              </form>
+
+              <p className="text-center text-xs text-gray-400 mt-4">
                 Noch kein Konto?{' '}
-                <button type="button" onClick={() => reset('register')} className="text-blue-600 hover:underline">
+                <button onClick={() => switchMode('register')} className="text-blue-600 hover:underline">
                   Jetzt registrieren
                 </button>
               </p>
-            </form>
+            </>
           )}
 
-          {/* Register form */}
+          {/* ── REGISTER step 1 ── */}
           {mode === 'register' && (
-            <form onSubmit={handleRegister} className="space-y-3">
-              <div>
-                <label className="block text-xs font-medium text-gray-600 mb-1">Name</label>
-                <input
-                  type="text"
-                  value={name}
-                  onChange={e => setName(e.target.value)}
-                  placeholder="Max Mustermann"
-                  required
-                  autoComplete="name"
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
+            <>
+              <div className="flex rounded-lg border border-gray-200 p-1 mb-6 bg-gray-50">
+                <button
+                  onClick={() => switchMode('login')}
+                  className="flex-1 py-1.5 text-sm font-medium rounded-md text-gray-400 hover:text-gray-600 transition-colors"
+                >
+                  Anmelden
+                </button>
+                <button className="flex-1 py-1.5 text-sm font-medium rounded-md bg-white text-gray-900 shadow-sm">
+                  Registrieren
+                </button>
               </div>
-              <div>
-                <label className="block text-xs font-medium text-gray-600 mb-1">E-Mail</label>
-                <input
-                  type="email"
-                  value={email}
-                  onChange={e => setEmail(e.target.value)}
-                  placeholder="max@muster.de"
-                  required
-                  autoComplete="email"
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
-              </div>
-              <div>
-                <label className="block text-xs font-medium text-gray-600 mb-1">Passwort</label>
-                <input
-                  type="password"
-                  value={password}
-                  onChange={e => setPassword(e.target.value)}
-                  placeholder="Mindestens 6 Zeichen"
-                  required
-                  autoComplete="new-password"
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
-              </div>
-              <div>
-                <label className="block text-xs font-medium text-gray-600 mb-1">Passwort bestätigen</label>
-                <input
-                  type="password"
-                  value={confirmPassword}
-                  onChange={e => setConfirmPassword(e.target.value)}
-                  placeholder="••••••••"
-                  required
-                  autoComplete="new-password"
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
-              </div>
-              {error && <p className="text-xs text-red-600">{error}</p>}
-              {success && <p className="text-xs text-green-600">{success}</p>}
-              <button
-                type="submit"
-                disabled={busy}
-                className="w-full bg-blue-600 text-white rounded-lg px-4 py-2.5 text-sm font-medium hover:bg-blue-700 disabled:opacity-50 transition-colors mt-1"
-              >
-                {busy ? 'Konto erstellen...' : 'Konto erstellen'}
-              </button>
+
+              <form onSubmit={handleRegister} className="space-y-3">
+                <div>
+                  <label className="block text-xs font-medium text-gray-600 mb-1">Name</label>
+                  <input
+                    type="text"
+                    value={name}
+                    onChange={e => setName(e.target.value)}
+                    placeholder="Max Mustermann"
+                    required
+                    autoComplete="name"
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-gray-600 mb-1">E-Mail</label>
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                    placeholder="max@muster.de"
+                    required
+                    autoComplete="email"
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-gray-600 mb-1">Passwort</label>
+                  <input
+                    type="password"
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                    placeholder="Mindestens 6 Zeichen"
+                    required
+                    autoComplete="new-password"
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-gray-600 mb-1">Passwort bestätigen</label>
+                  <input
+                    type="password"
+                    value={confirmPassword}
+                    onChange={e => setConfirmPassword(e.target.value)}
+                    placeholder="••••••••"
+                    required
+                    autoComplete="new-password"
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
+                {error && <p className="text-xs text-red-600">{error}</p>}
+                <button
+                  type="submit"
+                  disabled={busy}
+                  className="w-full bg-blue-600 text-white rounded-lg px-4 py-2.5 text-sm font-medium hover:bg-blue-700 disabled:opacity-50 transition-colors"
+                >
+                  {busy ? 'Konto erstellen...' : 'Konto erstellen'}
+                </button>
+              </form>
+
               {STRIPE_LINK && (
-                <p className="text-center text-xs text-gray-400 pt-1">
-                  Haben Sie bereits ein Abo?{' '}
-                  <button type="button" onClick={() => reset('login')} className="text-blue-600 hover:underline">
+                <p className="text-center text-xs text-gray-400 mt-4">
+                  Bereits ein Abo?{' '}
+                  <button onClick={() => switchMode('login')} className="text-blue-600 hover:underline">
                     Anmelden
                   </button>
                 </p>
               )}
+            </>
+          )}
+
+          {/* ── VERIFY step 2 (only during registration) ── */}
+          {mode === 'verify' && (
+            <form onSubmit={handleVerify} className="space-y-4">
+              <div className="text-center mb-2">
+                <div className="text-3xl mb-3">📬</div>
+                <p className="text-sm font-medium text-gray-800 mb-1">Code eingeben</p>
+                <p className="text-xs text-gray-500">
+                  Wir haben einen 6-stelligen Code an <strong>{email}</strong> gesendet.
+                  Danach können Sie sich immer nur mit Passwort anmelden.
+                </p>
+              </div>
+              <input
+                type="text"
+                value={code}
+                onChange={e => setCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                placeholder="123456"
+                required
+                autoComplete="one-time-code"
+                inputMode="numeric"
+                maxLength={6}
+                className="w-full border border-gray-300 rounded-lg px-3 py-3 text-center text-xl font-mono tracking-[0.5em] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+              {error && <p className="text-xs text-red-600 text-center">{error}</p>}
+              <button
+                type="submit"
+                disabled={busy || code.length < 6}
+                className="w-full bg-blue-600 text-white rounded-lg px-4 py-2.5 text-sm font-medium hover:bg-blue-700 disabled:opacity-50 transition-colors"
+              >
+                {busy ? 'Prüfe...' : 'Bestätigen & Anmelden'}
+              </button>
+              <button
+                type="button"
+                onClick={() => switchMode('register')}
+                className="w-full text-xs text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                Zurück
+              </button>
             </form>
           )}
+
         </div>
       </div>
     )
@@ -217,7 +278,7 @@ export default function AuthGuard({ children }: { children: ReactNode }) {
 
 function translateError(msg: string): string {
   if (msg.includes('Invalid login credentials')) return 'E-Mail oder Passwort falsch.'
-  if (msg.includes('Email not confirmed')) return 'E-Mail noch nicht bestätigt. Bitte E-Mail-Bestätigung deaktivieren (Supabase-Einstellung).'
+  if (msg.includes('Email not confirmed')) return 'E-Mail noch nicht bestätigt. Bitte zuerst registrieren.'
   if (msg.includes('User already registered')) return 'Diese E-Mail ist bereits registriert. Bitte anmelden.'
   if (msg.includes('Password should be')) return 'Passwort muss mindestens 6 Zeichen haben.'
   if (msg.includes('rate limit')) return 'Zu viele Versuche. Bitte kurz warten.'
