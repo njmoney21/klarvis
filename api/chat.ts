@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+declare const process: { env: Record<string, string | undefined> }
+
 interface ChatMessage {
   role: 'user' | 'assistant'
   content: string
@@ -19,7 +21,7 @@ export default async function handler(req: any, res: any) {
     return
   }
 
-  const apiKey = (process as any).env.ANTHROPIC_API_KEY as string | undefined
+  const apiKey = process.env.ANTHROPIC_API_KEY
   if (!apiKey) {
     res.status(500).json({ error: 'ANTHROPIC_API_KEY not configured' })
     return
