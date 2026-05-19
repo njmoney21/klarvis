@@ -4,30 +4,22 @@ import { useState } from 'react'
 const projects = [
   {
     name: 'Bistro Koliba',
-    category: 'Restaurant · Mainburg',
     url: 'https://koliba-sepia.vercel.app/',
-    tags: ['Webdesign', 'Restaurant'],
     accent: '#D4A017',
   },
   {
     name: 'Rem Cosmetics',
-    category: 'Beauty & Kosmetik',
     url: 'https://remcosmetics.vercel.app/',
-    tags: ['Webdesign', 'Online Shop'],
     accent: '#f472b6',
   },
   {
     name: 'Runly',
-    category: 'Webdesign Agentur',
     url: 'https://runly-six.vercel.app/',
-    tags: ['Webdesign', 'SaaS'],
     accent: '#00ffff',
   },
   {
     name: 'La Locanda di Nino',
-    category: 'Ristorante Italiano',
     url: 'https://lalocandadinino.de/',
-    tags: ['Webdesign', 'KI-Agent'],
     accent: '#86efac',
   },
 ]
@@ -37,18 +29,25 @@ function ProjectCard({ project, index }: { project: (typeof projects)[0]; index:
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 28 }}
+      initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.65, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
-      style={{ cursor: 'pointer' }}
+      transition={{ duration: 0.6, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
       onClick={() => window.open(project.url, '_blank', 'noopener')}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      style={{
+        cursor: 'pointer',
+        display: 'flex',
+        flexDirection: 'column',
+        minHeight: 0,
+      }}
     >
-      {/* Browser window */}
       <div
         style={{
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
           border: `1px solid ${hovered ? project.accent + '55' : 'rgba(0,255,255,0.12)'}`,
           borderRadius: '10px',
           overflow: 'hidden',
@@ -57,11 +56,13 @@ function ProjectCard({ project, index }: { project: (typeof projects)[0]; index:
             ? `0 0 32px ${project.accent}18, 0 8px 40px rgba(0,0,0,0.5)`
             : '0 4px 24px rgba(0,0,0,0.4)',
           transition: 'border-color 0.3s, box-shadow 0.3s',
+          minHeight: 0,
         }}
       >
         {/* Chrome bar */}
         <div
           style={{
+            flexShrink: 0,
             background: 'rgba(255,255,255,0.035)',
             borderBottom: '1px solid rgba(255,255,255,0.06)',
             padding: '9px 12px',
@@ -92,32 +93,10 @@ function ProjectCard({ project, index }: { project: (typeof projects)[0]; index:
           >
             {project.url.replace(/https?:\/\//, '')}
           </div>
-          <div
-            style={{
-              width: 12,
-              height: 12,
-              flexShrink: 0,
-              opacity: 0.3,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <svg viewBox="0 0 12 12" fill="none" style={{ width: 10, height: 10 }}>
-              <path d="M1 6h10M6 1l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'rgba(255,255,255,0.5)' }} />
-            </svg>
-          </div>
         </div>
 
         {/* iframe preview */}
-        <div
-          style={{
-            position: 'relative',
-            height: '240px',
-            overflow: 'hidden',
-            background: '#020d14',
-          }}
-        >
+        <div style={{ flex: 1, position: 'relative', overflow: 'hidden', minHeight: 0 }}>
           <iframe
             src={project.url}
             title={project.name}
@@ -125,7 +104,7 @@ function ProjectCard({ project, index }: { project: (typeof projects)[0]; index:
             tabIndex={-1}
             style={{
               width: '1200px',
-              height: '800px',
+              height: '900px',
               border: 'none',
               transform: 'scale(0.355)',
               transformOrigin: 'top left',
@@ -133,7 +112,7 @@ function ProjectCard({ project, index }: { project: (typeof projects)[0]; index:
               display: 'block',
             }}
           />
-          {/* Hover overlay */}
+          {/* hover overlay */}
           <div
             style={{
               position: 'absolute',
@@ -158,64 +137,11 @@ function ProjectCard({ project, index }: { project: (typeof projects)[0]; index:
                 fontWeight: 700,
                 fontFamily: 'monospace',
                 letterSpacing: '1.5px',
-                whiteSpace: 'nowrap',
               }}
             >
               BESUCHEN ↗
             </div>
           </div>
-        </div>
-      </div>
-
-      {/* Info row */}
-      <div style={{ padding: '14px 2px 0' }}>
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'baseline',
-            justifyContent: 'space-between',
-            gap: '8px',
-            marginBottom: '8px',
-          }}
-        >
-          <span
-            style={{
-              fontSize: '15px',
-              fontWeight: 700,
-              color: '#fff',
-              letterSpacing: '-0.2px',
-            }}
-          >
-            {project.name}
-          </span>
-          <span
-            style={{
-              fontSize: '9px',
-              color: 'rgba(255,255,255,0.3)',
-              fontFamily: 'monospace',
-              letterSpacing: '0.5px',
-              whiteSpace: 'nowrap',
-            }}
-          >
-            {project.category}
-          </span>
-        </div>
-        <div style={{ display: 'flex', gap: '5px', flexWrap: 'wrap' }}>
-          {project.tags.map((tag) => (
-            <span
-              key={tag}
-              style={{
-                fontSize: '10px',
-                padding: '2px 8px',
-                border: `1px solid ${project.accent}30`,
-                borderRadius: '3px',
-                color: project.accent + 'aa',
-                background: project.accent + '09',
-              }}
-            >
-              {tag}
-            </span>
-          ))}
         </div>
       </div>
     </motion.div>
@@ -224,63 +150,55 @@ function ProjectCard({ project, index }: { project: (typeof projects)[0]; index:
 
 export default function SectionGallery() {
   return (
-    <section id="gallery" className="py-20 md:py-[88px] px-6 md:px-8">
-      <div className="max-w-5xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          style={{ marginBottom: '52px' }}
-        >
-          <div className="flex items-center gap-3 mb-4">
-            <span
-              className="font-mono text-[10px] tracking-[2px]"
-              style={{ color: 'rgba(0,255,255,0.45)' }}
-            >
-              03
-            </span>
-            <span
-              className="w-8 h-px flex-shrink-0"
-              style={{ background: 'rgba(0,255,255,0.2)' }}
-            />
-            <span
-              className="font-mono text-[9px] uppercase tracking-[3px]"
-              style={{ color: 'rgba(0,255,255,0.4)' }}
-            >
-              Referenzen
-            </span>
-          </div>
-          <h2
-            className="font-extrabold text-white"
-            style={{ fontSize: 'clamp(1.6rem, 3vw, 2.4rem)', letterSpacing: '-0.8px', lineHeight: 1.1 }}
-          >
-            Unsere Projekte
-          </h2>
-          <p
-            style={{
-              marginTop: '14px',
-              fontSize: '14px',
-              color: 'rgba(255,255,255,0.38)',
-              maxWidth: '480px',
-              lineHeight: 1.7,
-            }}
-          >
-            Echte Websites für echte Unternehmen — klick rein und schau selbst.
-          </p>
-        </motion.div>
-
-        <div
+    <section
+      id="gallery"
+      style={{
+        height: '100dvh',
+        display: 'flex',
+        flexDirection: 'column',
+        padding: '48px 32px 32px',
+        boxSizing: 'border-box',
+      }}
+    >
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        style={{ flexShrink: 0, marginBottom: '28px' }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
+          <span style={{ fontFamily: 'monospace', fontSize: '10px', letterSpacing: '2px', color: 'rgba(0,255,255,0.45)' }}>03</span>
+          <span style={{ width: 32, height: 1, background: 'rgba(0,255,255,0.2)', flexShrink: 0, display: 'block' }} />
+          <span style={{ fontFamily: 'monospace', fontSize: '9px', textTransform: 'uppercase', letterSpacing: '3px', color: 'rgba(0,255,255,0.4)' }}>Referenzen</span>
+        </div>
+        <h2
           style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))',
-            gap: '32px',
+            fontWeight: 800,
+            color: '#fff',
+            fontSize: 'clamp(1.4rem, 2.5vw, 2.2rem)',
+            letterSpacing: '-0.8px',
+            lineHeight: 1.1,
+            margin: 0,
           }}
         >
-          {projects.map((project, i) => (
-            <ProjectCard key={project.url} project={project} index={i} />
-          ))}
-        </div>
+          Unsere Projekte
+        </h2>
+      </motion.div>
+
+      <div
+        style={{
+          flex: 1,
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          gridTemplateRows: '1fr 1fr',
+          gap: '20px',
+          minHeight: 0,
+        }}
+      >
+        {projects.map((project, i) => (
+          <ProjectCard key={project.url} project={project} index={i} />
+        ))}
       </div>
     </section>
   )
