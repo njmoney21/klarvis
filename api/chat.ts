@@ -1,38 +1,27 @@
-import type { IncomingMessage, ServerResponse } from 'node:http'
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
 interface ChatMessage {
   role: 'user' | 'assistant'
   content: string
 }
 
-interface RequestBody {
-  message: string
-  history: ChatMessage[]
-}
-
-type VercelReq = IncomingMessage & { body: RequestBody }
-
-export default async function handler(req: VercelReq, res: ServerResponse) {
+export default async function handler(req: any, res: any) {
   res.setHeader('Access-Control-Allow-Origin', '*')
   res.setHeader('Content-Type', 'application/json')
 
   if (req.method !== 'POST') {
-    res.writeHead(405)
-    res.end(JSON.stringify({ error: 'Method not allowed' }))
+    res.status(405).json({ error: 'Method not allowed' })
     return
   }
 
-  const { message, history } = req.body ?? {}
+  const { message, history } = (req.body ?? {}) as { message?: string; history?: ChatMessage[] }
   if (!message) {
-    res.writeHead(400)
-    res.end(JSON.stringify({ error: 'message required' }))
+    res.status(400).json({ error: 'message required' })
     return
   }
 
-  const apiKey = process.env.ANTHROPIC_API_KEY
+  const apiKey = (process as any).env.ANTHROPIC_API_KEY as string | undefined
   if (!apiKey) {
-    res.writeHead(500)
-    res.end(JSON.stringify({ error: 'ANTHROPIC_API_KEY not configured' }))
+    res.status(500).json({ error: 'ANTHROPIC_API_KEY not configured' })
     return
   }
 
@@ -61,14 +50,12 @@ export default async function handler(req: VercelReq, res: ServerResponse) {
 
   if (!upstream.ok) {
     const err = await upstream.text()
-    res.writeHead(upstream.status)
-    res.end(JSON.stringify({ error: err }))
+    res.status(upstream.status).json({ error: err })
     return
   }
 
   const data = (await upstream.json()) as { content: Array<{ type: string; text: string }> }
-  const reply = data.content.find(c => c.type === 'text')?.text ?? ''
+  const reply = data.content.find((c: { type: string; text: string }) => c.type === 'text')?.text ?? ''
 
-  res.writeHead(200)
-  res.end(JSON.stringify({ reply }))
+  res.status(200).json({ reply })
 }
