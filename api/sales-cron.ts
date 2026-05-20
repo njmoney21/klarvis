@@ -135,10 +135,15 @@ export default async function handler(req: any, res: any) {
     nextDate.setUTCDate(nextDate.getUTCDate() + 1)
     const nextDateStr = nextDate.toISOString().split('T')[0]
 
-    const leadsRes = await fetch(
-      `${supabaseUrl}/rest/v1/sales_leads?status=eq.${rule.status}&created_at=gte.${dateStr}T00%3A00%3A00Z&created_at=lt.${nextDateStr}T00%3A00%3A00Z&select=*`,
-      { headers: sbHeaders },
-    )
+    let leadsRes: Response
+    try {
+      leadsRes = await fetch(
+        `${supabaseUrl}/rest/v1/sales_leads?status=eq.${rule.status}&created_at=gte.${dateStr}T00%3A00%3A00Z&created_at=lt.${nextDateStr}T00%3A00%3A00Z&select=*`,
+        { headers: sbHeaders },
+      )
+    } catch {
+      continue
+    }
     if (!leadsRes.ok) continue
     const leads = await leadsRes.json() as CronLead[]
 
@@ -170,24 +175,29 @@ export default async function handler(req: any, res: any) {
         errorMsg = String(err)
       }
 
-      await fetch(`${supabaseUrl}/rest/v1/sales_emails`, {
-        method: 'POST',
-        headers: sbHeaders,
-        body: JSON.stringify({
-          lead_id: lead.id,
-          day_number: rule.dayNumber,
-          subject: emailSubject || '(generation failed)',
-          body: emailBody || errorMsg || '',
-          status: emailStatus,
-        }),
-      })
-
-      if (emailStatus === 'sent') {
-        await fetch(`${supabaseUrl}/rest/v1/sales_leads?id=eq.${lead.id}`, {
-          method: 'PATCH',
+      try {
+        await fetch(`${supabaseUrl}/rest/v1/sales_emails`, {
+          method: 'POST',
           headers: sbHeaders,
-          body: JSON.stringify({ status: rule.nextStatus }),
+          body: JSON.stringify({
+            lead_id: lead.id,
+            day_number: rule.dayNumber,
+            subject: emailSubject || '(generation failed)',
+            body: emailBody || errorMsg || '',
+            status: emailStatus,
+          }),
         })
+
+        if (emailStatus === 'sent') {
+          await fetch(`${supabaseUrl}/rest/v1/sales_leads?id=eq.${lead.id}`, {
+            method: 'PATCH',
+            headers: sbHeaders,
+            body: JSON.stringify({ status: rule.nextStatus }),
+          })
+        }
+      } catch (dbErr) {
+        results.push({ lead_id: lead.id, day: rule.dayNumber, status: 'failed', error: `DB write error: ${String(dbErr)}` })
+        continue
       }
 
       results.push({ lead_id: lead.id, day: rule.dayNumber, status: emailStatus, error: errorMsg })
