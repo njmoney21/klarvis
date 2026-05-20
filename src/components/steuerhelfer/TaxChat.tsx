@@ -47,7 +47,7 @@ export default function TaxChat() {
             key={q}
             onClick={() => send(q)}
             disabled={loading}
-            className="text-xs px-3 py-1.5 bg-blue-50 text-blue-700 rounded-full border border-blue-200 hover:bg-blue-100 disabled:opacity-50 transition-colors"
+            className="text-xs px-3 py-1.5 bg-cyan-500/10 text-cyan-400 rounded-full border border-cyan-500/20 hover:bg-cyan-500/20 disabled:opacity-50 transition-colors"
           >
             {q}
           </button>
@@ -56,7 +56,7 @@ export default function TaxChat() {
 
       <div className="flex-1 overflow-y-auto space-y-3 mb-3">
         {messages.length === 0 && (
-          <p className="text-center text-gray-400 py-10 text-sm">
+          <p className="text-center text-slate-500 py-10 text-sm">
             Stellen Sie Ihre Steuerfrage oder wählen Sie eine Schnellfrage.
           </p>
         )}
@@ -65,8 +65,8 @@ export default function TaxChat() {
             <div
               className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${
                 m.role === 'user'
-                  ? 'bg-blue-600 text-white rounded-br-sm'
-                  : 'bg-white border border-gray-200 text-gray-800 rounded-bl-sm'
+                  ? 'bg-cyan-500 text-slate-900 font-medium rounded-br-sm'
+                  : 'bg-slate-800 border border-slate-700 text-slate-300 rounded-bl-sm'
               }`}
             >
               {m.content}
@@ -75,7 +75,7 @@ export default function TaxChat() {
         ))}
         {loading && (
           <div className="flex justify-start">
-            <div className="bg-white border border-gray-200 rounded-2xl rounded-bl-sm px-4 py-2.5 text-sm text-gray-400">
+            <div className="bg-slate-800 border border-slate-700 rounded-2xl rounded-bl-sm px-4 py-2.5 text-sm text-slate-500">
               Runly Steuerberater schreibt...
             </div>
           </div>
@@ -90,12 +90,12 @@ export default function TaxChat() {
           onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(input) } }}
           placeholder="Ihre Frage..."
           disabled={loading}
-          className="flex-1 border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-400 disabled:opacity-50"
+          className="flex-1 bg-slate-800 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-slate-200 placeholder:text-slate-500 focus:outline-none focus:border-cyan-500 disabled:opacity-50"
         />
         <button
           onClick={() => send(input)}
           disabled={loading || !input.trim()}
-          className="px-4 py-2.5 bg-blue-600 text-white rounded-xl text-sm font-medium disabled:opacity-40 hover:bg-blue-700 transition-colors"
+          className="px-4 py-2.5 bg-cyan-500 text-slate-900 rounded-xl text-sm font-bold disabled:opacity-40 hover:bg-cyan-400 transition-colors"
         >
           Senden
         </button>
