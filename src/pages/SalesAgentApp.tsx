@@ -25,13 +25,19 @@ export default function SalesAgentApp() {
   const [emailCount, setEmailCount] = useState(0)
   const [selectedLead, setSelectedLead] = useState<SalesLead | null>(null)
   const [showAddModal, setShowAddModal] = useState(false)
+  const [loadError, setLoadError] = useState<string | null>(null)
 
   useEffect(() => { void load() }, [])
 
   const load = async () => {
-    const [leadsData, count] = await Promise.all([getLeads(), getEmailsSentCount()])
-    setLeads(leadsData)
-    setEmailCount(count)
+    setLoadError(null)
+    try {
+      const [leadsData, count] = await Promise.all([getLeads(), getEmailsSentCount()])
+      setLeads(leadsData)
+      setEmailCount(count)
+    } catch {
+      setLoadError('Leads konnten nicht geladen werden.')
+    }
   }
 
   const handleAddLead = async (lead: Pick<SalesLead, 'name' | 'email' | 'phone' | 'company' | 'notes'>) => {
@@ -92,6 +98,12 @@ export default function SalesAgentApp() {
           ))}
         </div>
       </nav>
+
+      {loadError && (
+        <div className="mx-4 mt-4 p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-sm text-red-400">
+          {loadError}
+        </div>
+      )}
 
       {activeTab === 'pipeline' && (
         <>

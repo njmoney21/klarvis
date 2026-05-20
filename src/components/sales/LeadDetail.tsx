@@ -29,15 +29,21 @@ function InfoField({ label, value }: { label: string; value: string }) {
 export default function LeadDetail({ lead, onClose, onStatusChange }: Props) {
   const [emails, setEmails] = useState<SalesEmail[]>([])
   const [busy, setBusy] = useState(false)
+  const [actionError, setActionError] = useState<string | null>(null)
 
   useEffect(() => {
     getEmailsForLead(lead.id).then(setEmails).catch(() => {})
   }, [lead.id])
 
   const handleAction = async (status: LeadStatus) => {
+    setActionError(null)
     setBusy(true)
-    await onStatusChange(lead.id, status)
-    setBusy(false)
+    try {
+      await onStatusChange(lead.id, status)
+    } catch {
+      setActionError('Status konnte nicht geändert werden.')
+      setBusy(false)
+    }
   }
 
   const isDecided = lead.status === 'won' || lead.status === 'lost'
@@ -114,21 +120,26 @@ export default function LeadDetail({ lead, onClose, onStatusChange }: Props) {
         </div>
 
         {!isDecided && (
-          <div className="p-4 border-t border-slate-700 flex gap-2">
-            <button
-              onClick={() => handleAction('won')}
-              disabled={busy}
-              className="flex-1 bg-green-500/10 text-green-400 border border-green-500/20 hover:bg-green-500/20 text-sm font-semibold py-2.5 rounded-lg disabled:opacity-50 transition-colors"
-            >
-              ✓ Gewonnen
-            </button>
-            <button
-              onClick={() => handleAction('lost')}
-              disabled={busy}
-              className="flex-1 bg-slate-700 text-slate-400 hover:bg-slate-600 text-sm font-semibold py-2.5 rounded-lg disabled:opacity-50 transition-colors"
-            >
-              ✕ Verloren
-            </button>
+          <div className="p-4 border-t border-slate-700 flex flex-col gap-2">
+            {actionError && (
+              <p className="text-xs text-red-400 mb-2">{actionError}</p>
+            )}
+            <div className="flex gap-2">
+              <button
+                onClick={() => handleAction('won')}
+                disabled={busy}
+                className="flex-1 bg-green-500/10 text-green-400 border border-green-500/20 hover:bg-green-500/20 text-sm font-semibold py-2.5 rounded-lg disabled:opacity-50 transition-colors"
+              >
+                ✓ Gewonnen
+              </button>
+              <button
+                onClick={() => handleAction('lost')}
+                disabled={busy}
+                className="flex-1 bg-slate-700 text-slate-400 hover:bg-slate-600 text-sm font-semibold py-2.5 rounded-lg disabled:opacity-50 transition-colors"
+              >
+                ✕ Verloren
+              </button>
+            </div>
           </div>
         )}
       </div>

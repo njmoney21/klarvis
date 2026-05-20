@@ -104,7 +104,7 @@ async function sendEmail(
 export default async function handler(req: any, res: any) {
   const cronSecret = env.CRON_SECRET as string | undefined
   const authHeader = (req.headers['authorization'] ?? '') as string
-  if (cronSecret && authHeader !== `Bearer ${cronSecret}`) {
+  if (!cronSecret || authHeader !== `Bearer ${cronSecret}`) {
     res.status(401).json({ error: 'Unauthorized' })
     return
   }
