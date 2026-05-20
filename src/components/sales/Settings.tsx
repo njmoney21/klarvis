@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { getSettings, upsertSettings } from '../../lib/salesApi'
 
 const INPUT = 'w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-cyan-500'
@@ -23,6 +23,7 @@ export default function Settings() {
   const [busy, setBusy] = useState(false)
   const [saved, setSaved] = useState(false)
   const [error, setError] = useState('')
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
     getSettings().then(s => {
@@ -31,7 +32,13 @@ export default function Settings() {
         setBusinessDescription(s.business_description)
         setReplyToEmail(s.reply_to_email)
       }
-    }).finally(() => setLoading(false))
+    })
+      .catch(() => setError('Einstellungen konnten nicht geladen werden.'))
+      .finally(() => setLoading(false))
+  }, [])
+
+  useEffect(() => {
+    return () => { if (timerRef.current) clearTimeout(timerRef.current) }
   }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -46,7 +53,7 @@ export default function Settings() {
         reply_to_email: replyToEmail.trim(),
       })
       setSaved(true)
-      setTimeout(() => setSaved(false), 3000)
+      timerRef.current = setTimeout(() => setSaved(false), 3000)
     } catch {
       setError('Fehler beim Speichern. Bitte erneut versuchen.')
     } finally {

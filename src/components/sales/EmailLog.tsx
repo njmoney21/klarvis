@@ -5,13 +5,21 @@ import { getAllEmails } from '../../lib/salesApi'
 export default function EmailLog() {
   const [emails, setEmails] = useState<SalesEmailWithLead[]>([])
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    getAllEmails().then(setEmails).finally(() => setLoading(false))
+    getAllEmails()
+      .then(setEmails)
+      .catch(() => setError('E-Mails konnten nicht geladen werden.'))
+      .finally(() => setLoading(false))
   }, [])
 
   if (loading) {
     return <div className="p-6 text-center text-sm text-slate-500">Lade E-Mails…</div>
+  }
+
+  if (error) {
+    return <div className="p-6 text-center text-sm text-red-400">{error}</div>
   }
 
   if (emails.length === 0) {
@@ -26,7 +34,7 @@ export default function EmailLog() {
           <thead>
             <tr className="border-b border-slate-700">
               {['Lead', 'Tag', 'Betreff', 'Gesendet', 'Status'].map(h => (
-                <th key={h} className="text-left text-xs text-slate-500 uppercase tracking-wide px-4 py-3">{h}</th>
+                <th key={h} scope="col" className="text-left text-xs text-slate-500 uppercase tracking-wide px-4 py-3">{h}</th>
               ))}
             </tr>
           </thead>
@@ -37,7 +45,7 @@ export default function EmailLog() {
                 <td className="px-4 py-3 text-slate-400">Tag {email.day_number}</td>
                 <td className="px-4 py-3 text-slate-300 max-w-xs truncate">{email.subject}</td>
                 <td className="px-4 py-3 text-slate-500 text-xs whitespace-nowrap">
-                  {new Date(email.sent_at).toLocaleDateString('de-DE', {
+                  {new Date(email.sent_at).toLocaleString('de-DE', {
                     day: '2-digit', month: '2-digit', year: 'numeric',
                     hour: '2-digit', minute: '2-digit',
                   })}
