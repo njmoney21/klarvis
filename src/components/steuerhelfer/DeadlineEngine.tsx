@@ -122,9 +122,9 @@ export function computeDeadlines(includeEmployees: boolean): Deadline[] {
 }
 
 const URGENCY_STYLES: Record<Deadline['urgency'], string> = {
-  urgent: 'bg-red-100 text-red-700 border border-red-200',
-  soon: 'bg-amber-100 text-amber-700 border border-amber-200',
-  ok: 'bg-green-100 text-green-700 border border-green-200',
+  urgent: 'bg-red-500/15 text-red-400 border border-red-500/20',
+  soon: 'bg-amber-500/15 text-amber-400 border border-amber-500/20',
+  ok: 'bg-green-500/15 text-green-400 border border-green-500/20',
 }
 
 const URGENCY_LABEL: Record<Deadline['urgency'], string> = {
@@ -139,12 +139,12 @@ export default function DeadlineEngine() {
 
   return (
     <div className="space-y-4">
-      <label className="flex items-center gap-2.5 text-sm text-gray-700 cursor-pointer">
+      <label className="flex items-center gap-2.5 text-sm text-slate-300 cursor-pointer">
         <input
           type="checkbox"
           checked={hasEmployees}
           onChange={e => setHasEmployees(e.target.checked)}
-          className="w-4 h-4 rounded accent-blue-600"
+          className="w-4 h-4 rounded accent-cyan-500"
         />
         Ich habe Angestellte
       </label>
@@ -153,15 +153,15 @@ export default function DeadlineEngine() {
         {deadlines.map(d => (
           <li
             key={d.name}
-            className="bg-white rounded-xl border border-gray-200 p-4 flex justify-between items-start gap-3"
+            className="bg-slate-800 rounded-xl border border-slate-700 p-4 flex justify-between items-start gap-3"
           >
             <div className="min-w-0">
-              <p className="font-medium text-gray-900 text-sm">{d.name}</p>
-              <p className="text-xs text-gray-500 mt-0.5">{d.description}</p>
-              <p className="text-xs text-gray-700 mt-1.5">
+              <p className="font-semibold text-slate-100 text-sm">{d.name}</p>
+              <p className="text-xs text-slate-500 mt-0.5">{d.description}</p>
+              <p className="text-xs text-slate-400 mt-1.5">
                 Fällig: {d.dueDate.toLocaleDateString('de-DE')}
                 {' '}
-                <span className="text-gray-500">
+                <span className="text-slate-500">
                   ({d.daysRemaining > 0 ? `in ${d.daysRemaining} Tagen` : 'heute'})
                 </span>
               </p>
