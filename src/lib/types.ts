@@ -51,3 +51,38 @@ export interface ChatMessage {
   role: 'user' | 'assistant'
   content: string
 }
+
+export type LeadStatus = 'new' | 'day1_sent' | 'day3_sent' | 'day7_sent' | 'won' | 'lost'
+
+export interface SalesLead {
+  id: string
+  user_id: string
+  name: string
+  email: string
+  phone: string | null
+  company: string | null
+  notes: string | null
+  status: LeadStatus
+  created_at: string
+}
+
+export interface SalesEmail {
+  id: string
+  lead_id: string
+  day_number: 1 | 3 | 7
+  subject: string
+  body: string
+  sent_at: string
+  status: 'sent' | 'failed'
+}
+
+export interface SalesEmailWithLead extends SalesEmail {
+  lead_name: string
+}
+
+export interface SalesSettings {
+  user_id: string
+  business_name: string
+  business_description: string
+  reply_to_email: string
+}
