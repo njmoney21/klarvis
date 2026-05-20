@@ -88,7 +88,7 @@ export default function Belegscanner({ onApproved }: Props) {
             className={`flex-1 py-2 rounded-lg text-sm font-medium border transition-colors ${
               mode === m
                 ? 'bg-cyan-500 text-slate-900 border-cyan-500'
-                : 'bg-transparent text-slate-500 border-slate-700 hover:border-slate-500'
+                : 'bg-slate-800 text-slate-500 border-slate-700 hover:border-slate-500'
             }`}
           >
             {m === 'scan' ? 'Beleg scannen' : 'Ausgangsrechnung prüfen'}
