@@ -87,8 +87,8 @@ export default function Belegscanner({ onApproved }: Props) {
             onClick={() => switchMode(m)}
             className={`flex-1 py-2 rounded-lg text-sm font-medium border transition-colors ${
               mode === m
-                ? 'bg-blue-600 text-white border-blue-600'
-                : 'bg-white text-gray-700 border-gray-300 hover:border-gray-400'
+                ? 'bg-cyan-500 text-slate-900 border-cyan-500'
+                : 'bg-transparent text-slate-500 border-slate-700 hover:border-slate-500'
             }`}
           >
             {m === 'scan' ? 'Beleg scannen' : 'Ausgangsrechnung prüfen'}
@@ -98,7 +98,7 @@ export default function Belegscanner({ onApproved }: Props) {
 
       {/* Upload area */}
       {uiState === 'idle' && (
-        <label className="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-xl p-10 cursor-pointer hover:border-blue-400 transition-colors">
+        <label className="flex flex-col items-center justify-center border-2 border-dashed border-slate-700 rounded-xl p-10 cursor-pointer hover:border-cyan-500 transition-colors">
           <input
             type="file"
             accept="image/*"
@@ -106,53 +106,53 @@ export default function Belegscanner({ onApproved }: Props) {
             onChange={e => { const f = e.target.files?.[0]; if (f) handleFile(f) }}
           />
           <span className="text-3xl mb-2">📷</span>
-          <p className="text-sm text-gray-600 font-medium">Foto hochladen</p>
-          <p className="text-xs text-gray-400 mt-1">JPG, PNG, HEIC</p>
+          <p className="text-sm text-slate-400 font-medium">Foto hochladen</p>
+          <p className="text-xs text-slate-500 mt-1">JPG, PNG, HEIC</p>
         </label>
       )}
 
       {/* Loading */}
       {uiState === 'loading' && (
         <div className="text-center py-12">
-          <p className="text-gray-500 text-sm">Analysiere Dokument...</p>
+          <p className="text-slate-400 text-sm">Analysiere Dokument...</p>
         </div>
       )}
 
       {/* Receipt preview */}
       {uiState === 'preview' && extracted && (
-        <div className="bg-white rounded-xl border border-gray-200 p-4 space-y-3">
-          <h3 className="font-semibold text-gray-900">Extrahierte Daten</h3>
+        <div className="bg-slate-800 rounded-xl border border-slate-700 p-4 space-y-3">
+          <h3 className="font-semibold text-slate-100">Extrahierte Daten</h3>
           <dl className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
-            <dt className="text-gray-500">Händler</dt>
-            <dd className="text-gray-900 font-medium">{extracted.vendor}</dd>
-            <dt className="text-gray-500">Datum</dt>
-            <dd>{extracted.date}</dd>
-            <dt className="text-gray-500">Brutto</dt>
-            <dd>{extracted.amount_gross.toFixed(2)} €</dd>
-            <dt className="text-gray-500">Netto</dt>
-            <dd>{extracted.amount_net.toFixed(2)} €</dd>
-            <dt className="text-gray-500">MwSt-Satz</dt>
-            <dd>{extracted.vat_rate} %</dd>
-            <dt className="text-gray-500">Vorsteuer</dt>
-            <dd>{extracted.vat_amount.toFixed(2)} €</dd>
-            <dt className="text-gray-500">Kategorie</dt>
-            <dd>{extracted.category}</dd>
-            <dt className="text-gray-500">SKR03</dt>
-            <dd>{extracted.skr03_account}</dd>
+            <dt className="text-slate-500">Händler</dt>
+            <dd className="text-slate-100 font-medium">{extracted.vendor}</dd>
+            <dt className="text-slate-500">Datum</dt>
+            <dd className="text-slate-100">{extracted.date}</dd>
+            <dt className="text-slate-500">Brutto</dt>
+            <dd className="text-slate-100">{extracted.amount_gross.toFixed(2)} €</dd>
+            <dt className="text-slate-500">Netto</dt>
+            <dd className="text-slate-100">{extracted.amount_net.toFixed(2)} €</dd>
+            <dt className="text-slate-500">MwSt-Satz</dt>
+            <dd className="text-slate-100">{extracted.vat_rate} %</dd>
+            <dt className="text-slate-500">Vorsteuer</dt>
+            <dd className="text-slate-100">{extracted.vat_amount.toFixed(2)} €</dd>
+            <dt className="text-slate-500">Kategorie</dt>
+            <dd className="text-slate-100">{extracted.category}</dd>
+            <dt className="text-slate-500">SKR03</dt>
+            <dd className="text-slate-100">{extracted.skr03_account}</dd>
           </dl>
           {extracted.notes && (
-            <p className="text-xs text-gray-500 italic bg-gray-50 rounded p-2">{extracted.notes}</p>
+            <p className="text-xs text-slate-400 italic bg-slate-900 rounded p-2">{extracted.notes}</p>
           )}
           <div className="flex gap-2 pt-1">
             <button
               onClick={handleApprove}
-              className="flex-1 py-2.5 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700 transition-colors"
+              className="flex-1 py-2.5 bg-cyan-500 text-slate-900 rounded-lg text-sm font-medium hover:bg-cyan-400 transition-colors"
             >
               Bestätigen & speichern
             </button>
             <button
               onClick={reset}
-              className="flex-1 py-2.5 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors"
+              className="flex-1 py-2.5 bg-slate-700 text-slate-300 rounded-lg text-sm font-medium hover:bg-slate-600 transition-colors"
             >
               Verwerfen
             </button>
@@ -162,14 +162,14 @@ export default function Belegscanner({ onApproved }: Props) {
 
       {/* Compliance result */}
       {uiState === 'compliance' && compliance && (
-        <div className="bg-white rounded-xl border border-gray-200 p-4 space-y-3">
+        <div className="bg-slate-800 rounded-xl border border-slate-700 p-4 space-y-3">
           <div className="flex items-center justify-between">
-            <h3 className="font-semibold text-gray-900">§14 UStG Prüfung</h3>
+            <h3 className="font-semibold text-slate-100">§14 UStG Prüfung</h3>
             <span
               className={`text-xs font-medium px-2.5 py-1 rounded-full ${
                 compliance.is_compliant
-                  ? 'bg-green-100 text-green-700'
-                  : 'bg-red-100 text-red-700'
+                  ? 'bg-green-500/15 text-green-400 border border-green-500/20'
+                  : 'bg-red-500/15 text-red-400 border border-red-500/20'
               }`}
             >
               {compliance.is_compliant ? 'Vollständig' : 'Unvollständig'}
@@ -180,10 +180,10 @@ export default function Belegscanner({ onApproved }: Props) {
               const present = compliance[key] as boolean
               return (
                 <li key={key} className="flex items-center gap-2">
-                  <span className={present ? 'text-green-500' : 'text-red-500'}>
+                  <span className={present ? 'text-green-400' : 'text-red-400'}>
                     {present ? '✓' : '✗'}
                   </span>
-                  <span className={present ? 'text-gray-700' : 'text-red-700 font-medium'}>
+                  <span className={present ? 'text-slate-300' : 'text-red-400 font-medium'}>
                     {label}
                   </span>
                 </li>
@@ -191,9 +191,9 @@ export default function Belegscanner({ onApproved }: Props) {
             })}
           </ul>
           {compliance.missing_fields.length > 0 && (
-            <div className="bg-red-50 rounded-lg p-3 text-sm">
-              <p className="font-medium text-red-800 mb-1">Bitte vor dem Versand ergänzen:</p>
-              <ul className="list-disc list-inside text-red-700 space-y-0.5">
+            <div className="bg-red-500/10 rounded-lg p-3 text-sm">
+              <p className="font-medium text-red-400 mb-1">Bitte vor dem Versand ergänzen:</p>
+              <ul className="list-disc list-inside text-red-400 space-y-0.5">
                 {compliance.missing_fields.map(f => (
                   <li key={f}>{f}</li>
                 ))}
@@ -201,11 +201,11 @@ export default function Belegscanner({ onApproved }: Props) {
             </div>
           )}
           {compliance.notes && (
-            <p className="text-xs text-gray-500 italic">{compliance.notes}</p>
+            <p className="text-xs text-slate-400 italic">{compliance.notes}</p>
           )}
           <button
             onClick={reset}
-            className="w-full py-2.5 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors"
+            className="w-full py-2.5 bg-slate-700 text-slate-300 rounded-lg text-sm font-medium hover:bg-slate-600 transition-colors"
           >
             Neue Prüfung
           </button>
@@ -213,7 +213,7 @@ export default function Belegscanner({ onApproved }: Props) {
       )}
 
       {error && (
-        <p className="text-red-600 text-sm text-center bg-red-50 rounded-lg py-3">{error}</p>
+        <p className="text-red-400 text-sm text-center bg-red-500/10 rounded-lg py-3">{error}</p>
       )}
     </div>
   )
