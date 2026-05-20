@@ -22,33 +22,38 @@ export default function SteuerhelferApp() {
   const { session, signOut } = useAuth()
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between">
-        <div>
-          <h1 className="text-xl font-bold text-gray-900">Runly Steuerberater</h1>
-          <p className="text-sm text-gray-500">KI-Assistent für Kleinunternehmer</p>
+    <div className="min-h-screen bg-slate-900">
+      <header className="bg-slate-800 border-b border-slate-700 px-4 py-3 flex items-center justify-between">
+        <div className="flex items-center gap-2.5">
+          <div className="w-7 h-7 rounded-lg bg-cyan-500 flex items-center justify-center text-slate-900 text-sm font-bold shrink-0">
+            ⬡
+          </div>
+          <div>
+            <h1 className="text-base font-bold text-slate-100">Runly Steuerberater</h1>
+            <p className="text-xs text-slate-500">KI-Assistent für Kleinunternehmer</p>
+          </div>
         </div>
         <div className="text-right">
-          <p className="text-xs text-gray-400 mb-1 truncate max-w-[160px]">{session?.user.email}</p>
+          <p className="text-xs text-slate-500 mb-1 truncate max-w-[160px]">{session?.user.email}</p>
           <button
             onClick={signOut}
-            className="text-xs text-gray-400 hover:text-gray-700 transition-colors"
+            className="text-xs text-cyan-500 hover:text-cyan-400 transition-colors"
           >
             Abmelden
           </button>
         </div>
       </header>
 
-      <nav className="bg-white border-b border-gray-200 overflow-x-auto">
+      <nav className="bg-slate-800 border-b border-slate-700 overflow-x-auto">
         <div className="flex min-w-max">
           {TABS.map(tab => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`px-4 py-3 text-sm font-medium border-b-2 whitespace-nowrap ${
+              className={`px-4 py-3 text-sm font-medium border-b-2 whitespace-nowrap transition-colors ${
                 activeTab === tab
-                  ? 'border-blue-600 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700'
+                  ? 'border-cyan-500 text-cyan-500 bg-cyan-500/5'
+                  : 'border-transparent text-slate-500 hover:text-slate-300'
               }`}
             >
               {TAB_LABELS[tab]}
