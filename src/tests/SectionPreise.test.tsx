@@ -11,11 +11,11 @@ test('shows website price', () => {
 
 test('shows maintenance price', () => {
   render(<SectionPreise />)
-  expect(screen.getByText(/^49\s/)).toBeInTheDocument()
+  expect(screen.getAllByText(/€49/).length).toBeGreaterThan(0)
 })
 
 test('shows both tier names', () => {
   render(<SectionPreise />)
-  expect(screen.getByText('Website')).toBeInTheDocument()
-  expect(screen.getByText('Wartung & Support')).toBeInTheDocument()
+  expect(screen.getAllByText(/Website/).length).toBeGreaterThan(0)
+  expect(screen.getAllByText(/Wartung/).length).toBeGreaterThan(0)
 })

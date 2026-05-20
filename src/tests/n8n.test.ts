@@ -14,6 +14,7 @@ const mockFetch = (body: unknown, ok = true) =>
     ok,
     status: ok ? 200 : 500,
     json: () => Promise.resolve(body),
+    text: () => Promise.resolve(''),
   })
 
 describe('scanReceipt', () => {
@@ -44,7 +45,7 @@ describe('sendChatMessage', () => {
     const history = [{ role: 'user' as const, content: 'Frage' }, { role: 'assistant' as const, content: 'Antwort' }]
     const reply = await sendChatMessage('Neues', history)
     expect(fetch).toHaveBeenCalledWith(
-      'http://test/chat',
+      '/api/chat',
       expect.objectContaining({
         method: 'POST',
         body: JSON.stringify({ message: 'Neues', history }),
@@ -55,7 +56,7 @@ describe('sendChatMessage', () => {
 
   it('throws on non-ok response', async () => {
     mockFetch(null, false)
-    await expect(sendChatMessage('x', [])).rejects.toThrow('chat failed: 500')
+    await expect(sendChatMessage('x', [])).rejects.toThrow('chat 500')
   })
 })
 
