@@ -10,6 +10,7 @@ import SectionKontakt from './components/SectionKontakt'
 import Footer from './components/Footer'
 import LegalModal from './components/LegalModal'
 import SteuerhelferApp from './pages/SteuerhelferApp'
+import SalesAgentApp from './pages/SalesAgentApp'
 import { AuthProvider } from './lib/auth'
 import AuthGuard from './components/steuerhelfer/AuthGuard'
 
@@ -41,6 +42,13 @@ export default function App() {
           <AuthProvider>
             <AuthGuard>
               <SteuerhelferApp />
+            </AuthGuard>
+          </AuthProvider>
+        } />
+        <Route path="/sales" element={
+          <AuthProvider>
+            <AuthGuard>
+              <SalesAgentApp />
             </AuthGuard>
           </AuthProvider>
         } />
