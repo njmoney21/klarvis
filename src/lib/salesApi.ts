@@ -13,9 +13,11 @@ export async function getLeads(): Promise<SalesLead[]> {
 export async function createLead(
   lead: Pick<SalesLead, 'name' | 'email' | 'phone' | 'company' | 'notes'>,
 ): Promise<SalesLead> {
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) throw new Error('Not authenticated')
   const { data, error } = await supabase
     .from('sales_leads')
-    .insert(lead)
+    .insert({ ...lead, user_id: user.id })
     .select()
     .single()
   if (error) throw error
