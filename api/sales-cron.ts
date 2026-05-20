@@ -148,10 +148,15 @@ export default async function handler(req: any, res: any) {
     const leads = await leadsRes.json() as CronLead[]
 
     for (const lead of leads) {
-      const settingsRes = await fetch(
-        `${supabaseUrl}/rest/v1/sales_settings?user_id=eq.${lead.user_id}&select=*`,
-        { headers: sbHeaders },
-      )
+      let settingsRes: Response
+      try {
+        settingsRes = await fetch(
+          `${supabaseUrl}/rest/v1/sales_settings?user_id=eq.${lead.user_id}&select=*`,
+          { headers: sbHeaders },
+        )
+      } catch {
+        continue
+      }
       if (!settingsRes.ok) continue
       const [settings] = await settingsRes.json() as CronSettings[]
       if (!settings) continue
