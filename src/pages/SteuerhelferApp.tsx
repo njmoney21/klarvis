@@ -25,7 +25,7 @@ export default function SteuerhelferApp() {
     <div className="min-h-screen bg-slate-900">
       <header className="bg-slate-800 border-b border-slate-700 px-4 py-3 flex items-center justify-between">
         <div className="flex items-center gap-2.5">
-          <div className="w-7 h-7 rounded-lg bg-cyan-500 flex items-center justify-center text-slate-900 text-sm font-bold shrink-0">
+          <div aria-hidden="true" className="w-7 h-7 rounded-lg bg-cyan-500 flex items-center justify-center text-slate-900 text-sm font-bold shrink-0">
             ⬡
           </div>
           <div>
