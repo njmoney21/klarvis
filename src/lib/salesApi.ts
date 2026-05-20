@@ -46,6 +46,7 @@ export async function getAllEmails(): Promise<SalesEmailWithLead[]> {
     .select('*, sales_leads(name)')
     .order('sent_at', { ascending: false })
   if (error) throw error
+  if (!Array.isArray(data)) return []
   return (data as Array<SalesEmail & { sales_leads: { name: string } | null }>).map(row => ({
     id: row.id,
     lead_id: row.lead_id,
