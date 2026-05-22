@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
+import { fadeLeft, fadeRight, fadeUp, viewport } from '../lib/animations'
 
 const inputStyle: React.CSSProperties = {
   width: '100%',
@@ -37,10 +38,10 @@ export default function SectionKontakt() {
     <section id="kontakt" className="py-20 md:py-[88px] px-6 md:px-8">
       <div className="max-w-5xl mx-auto">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewport}
         >
           <div className="flex items-center gap-3 mb-4">
             <span className="font-mono text-[10px] tracking-[2px]" style={{ color: 'rgba(0,255,255,0.45)' }}>05</span>
@@ -57,10 +58,10 @@ export default function SectionKontakt() {
 
         <div className="grid md:grid-cols-[1.2fr_1fr] gap-16 items-start">
           <motion.form
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            variants={fadeLeft}
+            initial="hidden"
+            whileInView="visible"
+            viewport={viewport}
             onSubmit={handleSubmit}
           >
             <div className="mb-4">
@@ -111,10 +112,10 @@ export default function SectionKontakt() {
           </motion.form>
 
           <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            variants={fadeRight}
+            initial="hidden"
+            whileInView="visible"
+            viewport={viewport}
             className="flex flex-col gap-8 pt-2"
           >
             <div>

@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { fadeUp, fadeLeft, stagger, viewport } from '../lib/animations'
 
 const services = [
   {
@@ -31,10 +32,10 @@ export default function SectionLeistungen() {
     <section id="leistungen" className="py-20 md:py-[88px] px-6 md:px-8">
       <div className="max-w-5xl mx-auto">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          variants={fadeLeft}
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewport}
         >
           <div className="flex items-center gap-3 mb-4">
             <span className="font-mono text-[10px] tracking-[2px]" style={{ color: 'rgba(0,255,255,0.45)' }}>01</span>
@@ -50,16 +51,17 @@ export default function SectionLeistungen() {
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          variants={stagger(0.18)}
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewport}
           className="grid md:grid-cols-2 overflow-hidden"
           style={{ gap: '1px', background: 'rgba(0,255,255,0.06)', border: '1px solid rgba(0,255,255,0.1)', borderRadius: '4px' }}
         >
           {services.map(({ title, subtitle, description, features, icon }) => (
-            <div
+            <motion.div
               key={title}
+              variants={fadeUp}
               className="flex flex-col p-9"
               style={{ background: '#020d14' }}
             >
@@ -76,15 +78,21 @@ export default function SectionLeistungen() {
               <p className="mb-5 leading-relaxed" style={{ fontSize: '13px', color: 'rgba(255,255,255,0.42)' }}>
                 {description}
               </p>
-              <div className="flex flex-col gap-1.5">
+              <motion.div
+                variants={stagger(0.08)}
+                initial="hidden"
+                whileInView="visible"
+                viewport={viewport}
+                className="flex flex-col gap-1.5"
+              >
                 {features.map(f => (
-                  <span key={f} className="flex items-center gap-2" style={{ fontSize: '12px', color: 'rgba(255,255,255,0.5)' }}>
+                  <motion.span key={f} variants={fadeLeft} className="flex items-center gap-2" style={{ fontSize: '12px', color: 'rgba(255,255,255,0.5)' }}>
                     <span className="w-1 h-1 rounded-full flex-shrink-0" style={{ background: '#00ffff' }} />
                     {f}
-                  </span>
+                  </motion.span>
                 ))}
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
           ))}
         </motion.div>
       </div>

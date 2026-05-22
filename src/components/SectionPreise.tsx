@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { useState } from 'react'
 import CardScanner from './CardScanner'
+import { fadeUp, fadeLeft, stagger, viewport } from '../lib/animations'
 
 const tiers = [
   {
@@ -160,10 +161,10 @@ export default function SectionPreise() {
 
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          variants={fadeLeft}
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewport}
           style={{ marginBottom: '40px' }}
         >
           <div className="flex items-center gap-3 mb-4">
@@ -184,15 +185,16 @@ export default function SectionPreise() {
 
         {/* Pricing cards */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          variants={stagger(0.15)}
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewport}
           className="grid md:grid-cols-3"
           style={{ gap: '16px', marginBottom: '72px' }}
         >
           {tiers.map(({ name, price, priceLabel, monthly, badge, description, features, cta, highlight }) => (
-            <div
+            <motion.div
+              variants={fadeUp}
               key={name}
               className="flex flex-col relative"
               style={{
@@ -263,16 +265,16 @@ export default function SectionPreise() {
               >
                 {cta} ↗
               </a>
-            </div>
+            </motion.div>
           ))}
         </motion.div>
 
         {/* AI Add-ons */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewport}
         >
           <div className="flex items-center gap-3 mb-4">
             <span className="font-mono text-[10px] tracking-[2px]" style={{ color: 'rgba(0,255,255,0.45)' }}>KI</span>
@@ -397,10 +399,10 @@ export default function SectionPreise() {
       </div>
 
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+        variants={fadeUp}
+        initial="hidden"
+        whileInView="visible"
+        viewport={viewport}
         className="mt-16 -mx-6 md:-mx-8"
       >
         <CardScanner />
