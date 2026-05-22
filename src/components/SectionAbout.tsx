@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { fadeLeft, fadeRight, fadeUp, scaleIn, stagger, viewport } from '../lib/animations'
+import { fadeLeft, fadeRight, fadeUp, stagger, viewport } from '../lib/animations'
 
 const bullets = [
   'Websites, die Kunden überzeugen',
