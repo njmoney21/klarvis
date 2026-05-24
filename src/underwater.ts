@@ -261,12 +261,18 @@ addEventListener('resize', () => {
   renderer.setSize(innerWidth, innerHeight, false)
 })
 
-const controls = new OrbitControls(camera, renderer.domElement)
-controls.enableDamping = true
-controls.enablePan = false
-controls.enableZoom = false
-controls.rotateSpeed = 0.6
-controls.dampingFactor = 0.08
+// On touch devices, skip OrbitControls entirely — it registers touch listeners
+// and sets touch-action:none on the canvas, which blocks native page scroll.
+// The animation still plays; only mouse-drag rotation is disabled on mobile.
+const isTouch = window.matchMedia('(pointer: coarse)').matches || 'ontouchstart' in window
+const controls = isTouch ? null : new OrbitControls(camera, renderer.domElement)
+if (controls) {
+  controls.enableDamping = true
+  controls.enablePan = false
+  controls.enableZoom = false
+  controls.rotateSpeed = 0.6
+  controls.dampingFactor = 0.08
+}
 
 const background = new Background(scene)
 scene.add(background)
@@ -284,7 +290,7 @@ renderer.setAnimationLoop(() => {
   const dt = clock.getDelta()
   t += dt
   gu.time.value = t * 1.25
-  controls.update()
+  controls?.update()
   waterStuff.update(dt)
   renderer.render(scene, camera)
 })
