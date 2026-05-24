@@ -249,6 +249,7 @@ scene.fog = new THREE.Fog(scene.background as THREE.Color, 8, 30)
 
 const camera = new THREE.PerspectiveCamera(45, innerWidth / innerHeight, 0.1, 500)
 camera.position.set(0.5, 0.25, -1).setLength(7.25)
+camera.lookAt(0, 0, 0)
 
 const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' })
 renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5))
