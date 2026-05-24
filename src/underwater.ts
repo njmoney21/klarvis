@@ -252,7 +252,7 @@ camera.position.set(0.5, 0.25, -1).setLength(7.25)
 camera.lookAt(0, 0, 0)
 
 const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' })
-renderer.setPixelRatio(Math.min(devicePixelRatio, 2))
+renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5))
 renderer.setSize(innerWidth, innerHeight)
 document.getElementById('underwater-container')!.appendChild(renderer.domElement)
 
@@ -287,14 +287,38 @@ scene.add(waterStuff)
 const clock = new THREE.Clock()
 let t = 0
 
-renderer.setAnimationLoop(() => {
+function renderLoop() {
   const dt = clock.getDelta()
   t += dt
   gu.time.value = t * 1.25
   controls?.update()
   waterStuff.update(dt)
   renderer.render(scene, camera)
+}
+
+let loopActive = true
+renderer.setAnimationLoop(renderLoop)
+
+function setLoop(active: boolean) {
+  if (active === loopActive) return
+  loopActive = active
+  if (active) {
+    clock.getDelta() // flush accumulated time to prevent jump on resume
+    renderer.setAnimationLoop(renderLoop)
+  } else {
+    renderer.setAnimationLoop(null)
+  }
+}
+
+// Pause when browser tab is hidden
+document.addEventListener('visibilitychange', () => {
+  setLoop(!document.hidden)
 })
+
+// Pause when scrolled well past the hero — fixed canvas is covered by solid sections anyway
+window.addEventListener('scroll', () => {
+  if (!document.hidden) setLoop(window.scrollY < window.innerHeight * 2)
+}, { passive: true })
 
 const panel = document.getElementById('side-panel')!
 const panelClose = document.getElementById('panel-close')!

@@ -247,8 +247,6 @@ export default function CardScanner() {
 
       startUpdates() {
         setInterval(() => { if (!destroyed) this.updateAscii() }, 200)
-        const loop = () => { if (!destroyed) { this.updateClipping(); requestAnimationFrame(loop) } }
-        loop()
       }
     }
 
