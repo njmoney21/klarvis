@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useCallback } from 'react'
+import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
 
 export default function CardScanner() {
@@ -8,22 +8,6 @@ export default function CardScanner() {
   const cardStreamRef = useRef<HTMLDivElement>(null)
   const speedValueRef = useRef<HTMLSpanElement>(null)
   const ctrlRef = useRef<any>(null)
-  const [isPaused, setIsPaused] = useState(false)
-
-  const handlePause = useCallback(() => {
-    if (!ctrlRef.current) return
-    ctrlRef.current.toggleAnimation()
-    setIsPaused(p => !p)
-  }, [])
-
-  const handleReset = useCallback(() => {
-    ctrlRef.current?.resetPosition()
-    setIsPaused(false)
-  }, [])
-
-  const handleDirection = useCallback(() => {
-    ctrlRef.current?.changeDirection()
-  }, [])
 
   useEffect(() => {
     const particleCanvas = particleCanvasRef.current!
