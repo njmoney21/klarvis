@@ -2,7 +2,6 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import './underwater'
-import './stars'
 import App from './App'
 
 // On touch devices, override the CSS pointer-events:none on #root via inline
