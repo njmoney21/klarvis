@@ -1,3 +1,5 @@
+import LogoImg from './LogoImg'
+
 type LegalType = 'impressum' | 'datenschutz'
 
 interface Props {
@@ -7,7 +9,7 @@ interface Props {
 export default function Footer({ onLegal }: Props) {
   return (
     <footer className="flex flex-col md:flex-row items-center justify-between gap-4 px-8 py-7">
-      <img src="/logo.png" alt="Runly" style={{ height: '54px', width: 'auto', mixBlendMode: 'screen' }} />
+      <LogoImg height={54} />
       <div className="flex gap-5">
         <button
           onClick={() => onLegal('impressum')}

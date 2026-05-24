@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Menu, X } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
+import LogoImg from './LogoImg'
 
 const links = [
   { label: 'Leistungen', href: '#leistungen' },
@@ -16,7 +17,7 @@ export default function Navbar() {
     <>
       <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 py-5">
         <a href="#">
-          <img src="/logo.png" alt="Runly" style={{ height: '64px', width: 'auto', mixBlendMode: 'screen' }} />
+          <LogoImg height={64} />
         </a>
 
         <div className="hidden md:flex items-center gap-7">
