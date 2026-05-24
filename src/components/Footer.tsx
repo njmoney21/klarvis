@@ -7,9 +7,7 @@ interface Props {
 export default function Footer({ onLegal }: Props) {
   return (
     <footer className="flex flex-col md:flex-row items-center justify-between gap-4 px-8 py-7">
-      <span className="font-black" style={{ fontSize: '15px', color: 'rgba(255,255,255,0.6)' }}>
-        Runly<span style={{ color: '#00ffff' }}>.</span>
-      </span>
+      <img src="/logo.png" alt="Runly" style={{ height: '36px', width: 'auto' }} />
       <div className="flex gap-5">
         <button
           onClick={() => onLegal('impressum')}
