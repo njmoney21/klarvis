@@ -18,7 +18,10 @@
 
 * { box-sizing: border-box; }
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
 
 body {
   margin: 0;
@@ -26,7 +29,6 @@ body {
   background: #020d14;
   color: #e8e8f0;
   font-family: 'Space Grotesk', sans-serif;
-  overflow-x: hidden;
 }
 
 a, button { cursor: pointer; }
