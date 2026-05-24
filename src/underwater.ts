@@ -267,13 +267,6 @@ controls.enablePan = false
 controls.enableZoom = false
 controls.rotateSpeed = 0.6
 controls.dampingFactor = 0.08
-// On touch-primary devices the canvas covers the full viewport. OrbitControls
-// sets touch-action:none inline, which blocks native scroll. Override it and
-// remove pointer-events so touches fall through to the page scroll instead.
-if (window.matchMedia('(pointer: coarse)').matches) {
-  renderer.domElement.style.pointerEvents = 'none'
-  renderer.domElement.style.touchAction = 'auto'
-}
 
 const background = new Background(scene)
 scene.add(background)

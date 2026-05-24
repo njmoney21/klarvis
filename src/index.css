@@ -41,6 +41,16 @@ a, button { cursor: pointer; }
   z-index: 0 !important;
 }
 
+/* On touch devices, OrbitControls sets touch-action:none inline which blocks
+   page scroll. CSS !important beats any JS inline style, so this always wins.
+   pointer-events:none lets touches fall through to the body → native scroll. */
+@media (pointer: coarse) {
+  #underwater-container canvas {
+    pointer-events: none !important;
+    touch-action: auto !important;
+  }
+}
+
 /* Pass pointer events through #root so the canvas receives them in the hero area.
    Re-enable for every direct child except the hero spacer. */
 #root {
