@@ -6,7 +6,6 @@ import SectionLeistungen from './components/SectionLeistungen'
 import SectionAbout from './components/SectionAbout'
 import SectionGallery from './components/SectionGallery'
 import SectionPreise from './components/SectionPreise'
-import SectionAgents from './components/SectionAgents'
 import SectionKontakt from './components/SectionKontakt'
 import Footer from './components/Footer'
 import LegalModal from './components/LegalModal'
@@ -28,7 +27,6 @@ function RunlySite() {
       <SectionAbout />
       <SectionGallery />
       <SectionPreise />
-      <SectionAgents />
       <SectionKontakt />
       <Footer onLegal={setLegal} />
       {legal && <LegalModal type={legal} onClose={() => setLegal(null)} />}
