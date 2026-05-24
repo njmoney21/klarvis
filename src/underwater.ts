@@ -252,7 +252,7 @@ camera.position.set(0.5, 0.25, -1).setLength(7.25)
 camera.lookAt(0, 0, 0)
 
 const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' })
-renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5))
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2))
 renderer.setSize(innerWidth, innerHeight)
 document.getElementById('underwater-container')!.appendChild(renderer.domElement)
 
@@ -271,8 +271,8 @@ if (controls) {
   controls.enableDamping = true
   controls.enablePan = false
   controls.enableZoom = false
-  controls.rotateSpeed = 0.6
-  controls.dampingFactor = 0.08
+  controls.rotateSpeed = 0.45
+  controls.dampingFactor = 0.18
 }
 
 const background = new Background(scene)
