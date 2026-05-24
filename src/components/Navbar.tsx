@@ -16,7 +16,7 @@ export default function Navbar() {
     <>
       <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 py-5">
         <a href="#">
-          <img src="/logo.png" alt="Runly" style={{ height: '40px', width: 'auto' }} />
+          <img src="/logo.png" alt="Runly" style={{ height: '64px', width: 'auto', mixBlendMode: 'screen' }} />
         </a>
 
         <div className="hidden md:flex items-center gap-7">
