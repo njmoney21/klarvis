@@ -145,7 +145,9 @@ export default function CardScanner() {
         document.addEventListener('mousemove', e => this.onDrag(e))
         document.addEventListener('mouseup', () => this.endDrag())
         cardLine.addEventListener('touchstart', (e: TouchEvent) => { e.preventDefault(); this.startDrag(e.touches[0] as any) }, { passive: false })
-        document.addEventListener('touchmove', (e: TouchEvent) => { e.preventDefault(); this.onDrag(e.touches[0] as any) }, { passive: false })
+        document.addEventListener('touchmove', (e: TouchEvent) => {
+          if (this.isDragging) { e.preventDefault(); this.onDrag(e.touches[0] as any) }
+        }, { passive: false })
         document.addEventListener('touchend', () => this.endDrag())
         cardLine.addEventListener('wheel', (e: WheelEvent) => {
           e.preventDefault()
