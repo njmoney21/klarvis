@@ -546,12 +546,6 @@ export default function CardScanner() {
 
   return (
     <div className="cs-wrap">
-      <div className="cs-controls">
-        <button className="cs-btn" onClick={handlePause}>{isPaused ? '▶️ Play' : '⏸️ Pause'}</button>
-        <button className="cs-btn" onClick={handleReset}>🔄 Reset</button>
-        <button className="cs-btn" onClick={handleDirection}>↔️ Direction</button>
-      </div>
-      <div className="cs-speed">Speed: <span ref={speedValueRef}>120</span> px/s</div>
       <div className="cs-container">
         <canvas ref={particleCanvasRef} className="cs-particle-canvas" />
         <canvas ref={scannerCanvasRef} className="cs-scanner-canvas" />
