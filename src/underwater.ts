@@ -267,6 +267,11 @@ controls.enablePan = false
 controls.enableZoom = false
 controls.rotateSpeed = 0.6
 controls.dampingFactor = 0.08
+// On touch devices the canvas covers the full viewport; disabling controls lets
+// native touch-scroll work instead of being consumed by OrbitControls.
+if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+  controls.enabled = false
+}
 
 const background = new Background(scene)
 scene.add(background)
