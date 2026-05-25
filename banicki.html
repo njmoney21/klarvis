@@ -11,6 +11,7 @@
       width: 100%;
       background: #0a0f0a;
       font-family: system-ui, sans-serif;
+      overflow-x: hidden;
     }
 
     .scroll-container {
@@ -32,6 +33,7 @@
       left: 0;
       width: 100% !important;
       height: 100% !important;
+      z-index: 0;
     }
 
     .overlay {
@@ -155,14 +157,17 @@
     let targetTime = 0;
     let lerpedTime = 0;
 
+    const scrollHint = document.getElementById('scrollHint');
+
     window.addEventListener('scroll', () => {
       if (!isFinite(video.duration)) return;
       const scrollable = scrollContainer.scrollHeight - window.innerHeight;
       if (scrollable <= 0) return;
       const progress = Math.min(Math.max(window.scrollY / scrollable, 0), 1);
       targetTime = progress * video.duration;
-      if (window.scrollY > 10) {
-        document.getElementById('scrollHint').style.opacity = '0';
+      if (scrollHint && window.scrollY > 50) {
+        scrollHint.style.opacity = '0';
+        scrollHint.addEventListener('transitionend', () => { scrollHint.style.display = 'none'; }, { once: true });
       }
     });
 
