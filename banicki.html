@@ -71,6 +71,7 @@
     window.addEventListener('scroll', () => {
       if (!isFinite(video.duration)) return;
       const scrollable = scrollContainer.scrollHeight - window.innerHeight;
+      if (scrollable <= 0) return;
       const progress = Math.min(Math.max(window.scrollY / scrollable, 0), 1);
       targetTime = progress * video.duration;
     });
