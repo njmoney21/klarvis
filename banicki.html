@@ -65,9 +65,26 @@
     const mesh = new THREE.Mesh(geo, mat);
     scene.add(mesh);
 
+    let targetTime = 0;
+    let lerpedTime = 0;
+
+    window.addEventListener('scroll', () => {
+      if (!isFinite(video.duration)) return;
+      const scrollable = scrollContainer.scrollHeight - window.innerHeight;
+      const progress = Math.min(Math.max(window.scrollY / scrollable, 0), 1);
+      targetTime = progress * video.duration;
+    });
+
     function animate() {
       requestAnimationFrame(animate);
-      texture.needsUpdate = true;
+
+      const diff = targetTime - lerpedTime;
+      if (Math.abs(diff) > 0.001) {
+        lerpedTime += diff * 0.12;
+        video.currentTime = lerpedTime;
+        texture.needsUpdate = true;
+      }
+
       renderer.render(scene, camera);
     }
     animate();
