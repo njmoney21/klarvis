@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BANICKI — Garten- und Landschaftsbau</title>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+      width: 100%;
+      background: #0a0f0a;
+      font-family: system-ui, sans-serif;
+    }
+
+    .scroll-container {
+      height: 400vh;
+      position: relative;
+    }
+
+    .sticky-viewport {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      width: 100%;
+      overflow: hidden;
+      background: #1a3a1a;
+    }
+  </style>
+</head>
+<body>
+  <!-- Serve via `npx serve .` — video texture is blocked on file:// protocol -->
+  <div class="scroll-container" id="scrollContainer">
+    <div class="sticky-viewport" id="stickyViewport"></div>
+  </div>
+</body>
+</html>
