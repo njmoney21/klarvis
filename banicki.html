@@ -27,11 +27,41 @@
       background: #1a3a1a;
     }
   </style>
+  <script type="importmap">
+    { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.184.0/build/three.module.js" } }
+  </script>
 </head>
 <body>
   <!-- Serve via `npx serve .` — video texture is blocked on file:// protocol -->
   <div class="scroll-container" id="scrollContainer">
     <div class="sticky-viewport" id="stickyViewport"></div>
   </div>
+
+  <script type="module">
+    import * as THREE from 'three';
+
+    const stickyViewport = document.getElementById('stickyViewport');
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setClearColor(0x000000, 0);
+    stickyViewport.style.background = 'none';
+    stickyViewport.appendChild(renderer.domElement);
+
+    const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+    const scene = new THREE.Scene();
+
+    const geo = new THREE.PlaneGeometry(2, 2);
+    const mat = new THREE.MeshBasicMaterial({ color: 0x2a5a2a });
+    const mesh = new THREE.Mesh(geo, mat);
+    scene.add(mesh);
+
+    function animate() {
+      requestAnimationFrame(animate);
+      renderer.render(scene, camera);
+    }
+    animate();
+  </script>
 </body>
 </html>
