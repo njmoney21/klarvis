@@ -37,9 +37,13 @@
     <div class="sticky-viewport" id="stickyViewport"></div>
   </div>
 
+  <video id="video" src="video.mp4" muted playsinline preload="auto" style="display:none"></video>
+
   <script type="module">
     import * as THREE from 'three';
 
+    const video = document.getElementById('video');
+    const scrollContainer = document.getElementById('scrollContainer');
     const stickyViewport = document.getElementById('stickyViewport');
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -52,13 +56,18 @@
     const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
     const scene = new THREE.Scene();
 
+    const texture = new THREE.VideoTexture(video);
+    texture.minFilter = THREE.LinearFilter;
+    texture.magFilter = THREE.LinearFilter;
+
     const geo = new THREE.PlaneGeometry(2, 2);
-    const mat = new THREE.MeshBasicMaterial({ color: 0x2a5a2a });
+    const mat = new THREE.MeshBasicMaterial({ map: texture });
     const mesh = new THREE.Mesh(geo, mat);
     scene.add(mesh);
 
     function animate() {
       requestAnimationFrame(animate);
+      texture.needsUpdate = true;
       renderer.render(scene, camera);
     }
     animate();
