@@ -92,9 +92,6 @@
       transition: opacity 0.6s ease;
     }
   </style>
-  <script type="importmap">
-    { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.184.0/build/three.module.js" } }
-  </script>
 </head>
 <body>
   <!-- Serve via `npx serve .` — video texture is blocked on file:// protocol -->
@@ -114,7 +111,7 @@
   <video id="video" src="video.mp4" muted playsinline preload="auto" style="display:none"></video>
 
   <script type="module">
-    import * as THREE from 'three';
+    import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.184.0/build/three.module.js';
 
     const video = document.getElementById('video');
     const scrollContainer = document.getElementById('scrollContainer');
@@ -152,7 +149,10 @@
       }
     }
 
-    video.addEventListener('loadedmetadata', updateTextureAspect);
+    video.addEventListener('loadedmetadata', () => {
+      updateTextureAspect();
+      video.play().then(() => video.pause()).catch(() => {});
+    });
 
     window.addEventListener('resize', () => {
       renderer.setSize(window.innerWidth, window.innerHeight);
@@ -162,7 +162,7 @@
     let targetTime = 0;
     let lerpedTime = 0;
 
-    const scrollHint = document.getElementById('scrollHint');
+    let scrollHint = document.getElementById('scrollHint');
 
     window.addEventListener('scroll', () => {
       if (!isFinite(video.duration)) return;
@@ -172,7 +172,10 @@
       targetTime = progress * video.duration;
       if (scrollHint && window.scrollY > 50) {
         scrollHint.style.opacity = '0';
-        scrollHint.addEventListener('transitionend', () => { scrollHint.style.display = 'none'; }, { once: true });
+        scrollHint.addEventListener('transitionend', () => {
+          scrollHint.style.display = 'none';
+          scrollHint = null;
+        }, { once: true });
       }
     });
 
@@ -182,8 +185,10 @@
       const diff = targetTime - lerpedTime;
       if (Math.abs(diff) > 0.001) {
         lerpedTime += diff * 0.12;
-        video.currentTime = lerpedTime;
-        texture.needsUpdate = true;
+        if (!video.seeking) {
+          video.currentTime = lerpedTime;
+          texture.needsUpdate = true;
+        }
       }
 
       renderer.render(scene, camera);
