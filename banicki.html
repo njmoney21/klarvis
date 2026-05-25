@@ -66,7 +66,7 @@
     scene.add(mesh);
 
     function updateTextureAspect() {
-      if (!video.videoWidth) return;
+      if (!video.videoWidth || !video.videoHeight) return;
       const vA = video.videoWidth / video.videoHeight;
       const wA = window.innerWidth / window.innerHeight;
       if (wA > vA) {
