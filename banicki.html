@@ -65,6 +65,21 @@
     const mesh = new THREE.Mesh(geo, mat);
     scene.add(mesh);
 
+    function updateTextureAspect() {
+      if (!video.videoWidth) return;
+      const vA = video.videoWidth / video.videoHeight;
+      const wA = window.innerWidth / window.innerHeight;
+      if (wA > vA) {
+        texture.repeat.set(1, vA / wA);
+        texture.offset.set(0, (1 - vA / wA) / 2);
+      } else {
+        texture.repeat.set(wA / vA, 1);
+        texture.offset.set((1 - wA / vA) / 2, 0);
+      }
+    }
+
+    video.addEventListener('loadedmetadata', updateTextureAspect);
+
     let targetTime = 0;
     let lerpedTime = 0;
 
