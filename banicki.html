@@ -154,6 +154,11 @@
 
     video.addEventListener('loadedmetadata', updateTextureAspect);
 
+    window.addEventListener('resize', () => {
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      updateTextureAspect();
+    });
+
     let targetTime = 0;
     let lerpedTime = 0;
 
