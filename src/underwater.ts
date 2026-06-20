@@ -263,7 +263,7 @@ renderer.shadowMap.type = THREE.PCFSoftShadowMap
 container.appendChild(renderer.domElement)
 
 const scene = new THREE.Scene()
-scene.background = new THREE.Color(0x101014)
+scene.background = new THREE.Color(0x0f0f0f)
 
 const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100)
 camera.position.set(0, 1.2, 5.5)
@@ -292,7 +292,7 @@ projectionGradientSource.render(renderer, 0)
 
 // Meshes
 const floorKeyboardMat = new THREE.MeshStandardMaterial({
-  color: 0x1a1a22,
+  color: 0x141414,
   roughness: 0.88,
   metalness: 0.06,
 })

@@ -37,9 +37,9 @@ export default function Navbar() {
             href="#kontakt"
             className="text-xs font-bold rounded transition-opacity hover:opacity-90"
             style={{
-              color: '#00ffff',
-              background: 'rgba(0,255,255,0.1)',
-              border: '1px solid rgba(0,255,255,0.35)',
+              color: '#ffffff',
+              background: 'rgba(255,255,255,0.07)',
+              border: '1px solid rgba(255,255,255,0.2)',
               padding: '8px 18px',
             }}
           >
@@ -66,8 +66,8 @@ export default function Navbar() {
             transition={{ duration: 0.2 }}
             className="fixed top-0 left-0 right-0 z-40 md:hidden pt-16"
             style={{
-              background: '#020d14',
-              borderBottom: '1px solid rgba(0,255,255,0.1)',
+              background: '#0f0f0f',
+              borderBottom: '1px solid rgba(255,255,255,0.07)',
             }}
           >
             <div className="flex flex-col gap-5 px-8 py-6">
@@ -87,7 +87,7 @@ export default function Navbar() {
                 onClick={() => setOpen(false)}
                 className="mt-2 text-sm font-bold text-center py-3 rounded"
                 style={{
-                  color: '#00ffff',
+                  color: '#ffffff',
                   background: 'rgba(0,255,255,0.1)',
                   border: '1px solid rgba(0,255,255,0.35)',
                 }}

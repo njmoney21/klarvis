@@ -114,16 +114,13 @@ const addons = [
     ),
   },
   {
-    id: 'workflow',
-    name: 'Workflow-Automatisierung',
-    description: 'Verbinden Sie Ihre Tools und automatisieren Sie repetitive Prozesse.',
+    id: 'ads',
+    name: 'Ad Strategy System',
+    description: 'KI analysiert Ihre Zielgruppe und erstellt datengetriebene Werbestrategien für Google & Meta.',
     price: 89,
     icon: (
       <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
-        <polyline points="17 1 21 5 17 9" />
-        <path d="M3 11V9a4 4 0 0 1 4-4h14" />
-        <polyline points="7 23 3 19 7 15" />
-        <path d="M21 13v2a4 4 0 0 1-4 4H3" />
+        <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
       </svg>
     ),
   },
@@ -168,9 +165,9 @@ export default function SectionPreise() {
           style={{ marginBottom: '40px' }}
         >
           <div className="flex items-center gap-3 mb-4">
-            <span className="font-mono text-[10px] tracking-[2px]" style={{ color: 'rgba(0,255,255,0.45)' }}>04</span>
+            <span className="font-mono text-[10px] tracking-[2px]" style={{ color: 'rgba(255,255,255,0.3)' }}>04</span>
             <span className="w-8 h-px flex-shrink-0" style={{ background: 'rgba(0,255,255,0.2)' }} />
-            <span className="font-mono text-[9px] uppercase tracking-[3px]" style={{ color: 'rgba(0,255,255,0.4)' }}>Website Pakete</span>
+            <span className="font-mono text-[9px] uppercase tracking-[3px]" style={{ color: 'rgba(255,255,255,0.25)' }}>Website Pakete</span>
           </div>
           <h2
             className="font-extrabold text-white"
@@ -198,11 +195,11 @@ export default function SectionPreise() {
               key={name}
               className="flex flex-col relative"
               style={{
-                background: '#020d14',
-                border: `1px solid ${highlight ? 'rgba(0,255,255,0.35)' : 'rgba(0,255,255,0.1)'}`,
+                background: '#0f0f0f',
+                border: `1px solid ${highlight ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.06)'}`,
                 borderRadius: '8px',
                 padding: '28px 24px',
-                boxShadow: highlight ? '0 0 32px rgba(0,255,255,0.06)' : undefined,
+                boxShadow: highlight ? '0 0 32px rgba(255,255,255,0.04)' : undefined,
               }}
             >
               {badge && (
@@ -212,14 +209,14 @@ export default function SectionPreise() {
                     top: -1,
                     left: '50%',
                     transform: 'translateX(-50%)',
-                    background: 'rgba(0,255,255,0.12)',
-                    border: '1px solid rgba(0,255,255,0.3)',
+                    background: 'rgba(255,255,255,0.07)',
+                    border: '1px solid rgba(255,255,255,0.18)',
                     borderTop: 'none',
                     borderRadius: '0 0 6px 6px',
                     padding: '3px 14px',
                     fontSize: '10px',
                     fontWeight: 700,
-                    color: '#00ffff',
+                    color: '#ffffff',
                     fontFamily: 'monospace',
                     letterSpacing: '0.5px',
                     whiteSpace: 'nowrap',
@@ -238,14 +235,14 @@ export default function SectionPreise() {
                 </span>
                 <span style={{ fontSize: '13px', color: 'rgba(255,255,255,0.35)', marginLeft: '6px' }}>{priceLabel}</span>
               </div>
-              <p style={{ fontSize: '12px', color: 'rgba(0,255,255,0.5)', marginBottom: '20px' }}>{monthly}</p>
+              <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.35)', marginBottom: '20px' }}>{monthly}</p>
 
-              <hr style={{ border: 'none', borderTop: '1px solid rgba(0,255,255,0.08)', marginBottom: '20px' }} />
+              <hr style={{ border: 'none', borderTop: '1px solid rgba(255,255,255,0.05)', marginBottom: '20px' }} />
 
               <ul className="flex flex-col gap-2 flex-1" style={{ marginBottom: '24px' }}>
                 {features.map(f => (
                   <li key={f} className="flex items-start gap-2" style={{ fontSize: '13px', color: 'rgba(255,255,255,0.55)', listStyle: 'none' }}>
-                    <span style={{ color: '#00ffff', fontWeight: 700, flexShrink: 0, marginTop: '1px' }}>✓</span>
+                    <span style={{ color: '#ffffff', fontWeight: 700, flexShrink: 0, marginTop: '1px' }}>✓</span>
                     {f}
                   </li>
                 ))}
@@ -258,9 +255,9 @@ export default function SectionPreise() {
                   fontSize: '13px',
                   padding: '12px 0',
                   borderRadius: '6px',
-                  background: highlight ? 'rgba(0,255,255,0.1)' : 'transparent',
-                  color: highlight ? '#00ffff' : 'rgba(255,255,255,0.6)',
-                  border: highlight ? '1px solid rgba(0,255,255,0.35)' : '1px solid rgba(255,255,255,0.15)',
+                  background: highlight ? 'rgba(255,255,255,0.06)' : 'transparent',
+                  color: highlight ? '#ffffff' : 'rgba(255,255,255,0.6)',
+                  border: highlight ? '1px solid rgba(255,255,255,0.2)' : '1px solid rgba(255,255,255,0.15)',
                 }}
               >
                 {cta} ↗
@@ -277,9 +274,9 @@ export default function SectionPreise() {
           viewport={viewport}
         >
           <div className="flex items-center gap-3 mb-4">
-            <span className="font-mono text-[10px] tracking-[2px]" style={{ color: 'rgba(0,255,255,0.45)' }}>KI</span>
+            <span className="font-mono text-[10px] tracking-[2px]" style={{ color: 'rgba(255,255,255,0.3)' }}>KI</span>
             <span className="w-8 h-px flex-shrink-0" style={{ background: 'rgba(0,255,255,0.2)' }} />
-            <span className="font-mono text-[9px] uppercase tracking-[3px]" style={{ color: 'rgba(0,255,255,0.4)' }}>KI Add-ons</span>
+            <span className="font-mono text-[9px] uppercase tracking-[3px]" style={{ color: 'rgba(255,255,255,0.25)' }}>KI Add-ons</span>
           </div>
           <h3
             className="font-extrabold text-white"
@@ -299,8 +296,8 @@ export default function SectionPreise() {
                   key={addon.id}
                   onClick={() => toggle(addon.id)}
                   style={{
-                    background: isSelected ? 'rgba(0,255,255,0.07)' : '#020d14',
-                    border: `1px solid ${isSelected ? 'rgba(0,255,255,0.35)' : 'rgba(0,255,255,0.1)'}`,
+                    background: isSelected ? 'rgba(255,255,255,0.04)' : '#0f0f0f',
+                    border: `1px solid ${isSelected ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.06)'}`,
                     borderRadius: '8px',
                     padding: '20px',
                     textAlign: 'left',
@@ -318,8 +315,8 @@ export default function SectionPreise() {
                       width: 18,
                       height: 18,
                       borderRadius: '50%',
-                      border: `1.5px solid ${isSelected ? '#00ffff' : 'rgba(255,255,255,0.2)'}`,
-                      background: isSelected ? '#00ffff' : 'transparent',
+                      border: `1.5px solid ${isSelected ? '#ffffff' : 'rgba(255,255,255,0.2)'}`,
+                      background: isSelected ? '#ffffff' : 'transparent',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
@@ -329,14 +326,14 @@ export default function SectionPreise() {
                   >
                     {isSelected && (
                       <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-                        <path d="M2 5l2.5 2.5L8 3" stroke="#020d14" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                        <path d="M2 5l2.5 2.5L8 3" stroke="#0f0f0f" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
                     )}
                   </div>
 
                   <div
                     style={{
-                      color: isSelected ? '#00ffff' : 'rgba(255,255,255,0.4)',
+                      color: isSelected ? '#ffffff' : 'rgba(255,255,255,0.4)',
                       marginBottom: '10px',
                       transition: 'color 0.2s',
                     }}
@@ -345,7 +342,7 @@ export default function SectionPreise() {
                   </div>
                   <div className="font-bold text-white" style={{ fontSize: '14px', marginBottom: '6px' }}>{addon.name}</div>
                   <div style={{ fontSize: '12px', color: 'rgba(255,255,255,0.38)', lineHeight: 1.6, marginBottom: '12px' }}>{addon.description}</div>
-                  <div style={{ fontSize: '13px', fontWeight: 700, color: isSelected ? '#00ffff' : 'rgba(255,255,255,0.5)', transition: 'color 0.2s' }}>
+                  <div style={{ fontSize: '13px', fontWeight: 700, color: isSelected ? '#ffffff' : 'rgba(255,255,255,0.5)', transition: 'color 0.2s' }}>
                     +€{addon.price}/Mo
                   </div>
                 </button>
@@ -356,8 +353,8 @@ export default function SectionPreise() {
           {/* Running total bar */}
           <div
             style={{
-              background: 'rgba(0,255,255,0.04)',
-              border: '1px solid rgba(0,255,255,0.12)',
+              background: 'rgba(255,255,255,0.03)',
+              border: '1px solid rgba(255,255,255,0.07)',
               borderRadius: '8px',
               padding: '18px 24px',
               display: 'flex',
@@ -380,9 +377,9 @@ export default function SectionPreise() {
             <a
               href="#kontakt"
               style={{
-                background: 'rgba(0,255,255,0.1)',
-                border: '1px solid rgba(0,255,255,0.3)',
-                color: '#00ffff',
+                background: 'rgba(255,255,255,0.06)',
+                border: '1px solid rgba(255,255,255,0.18)',
+                color: '#ffffff',
                 padding: '12px 24px',
                 borderRadius: '6px',
                 fontSize: '13px',

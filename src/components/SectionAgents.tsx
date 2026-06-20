@@ -68,8 +68,8 @@ export default function SectionAgents() {
               transition={{ type: 'spring', stiffness: 300, damping: 20 }}
               className="relative overflow-hidden flex flex-col p-7 group"
               style={{
-                background: 'linear-gradient(135deg, rgba(0,255,255,0.04) 0%, #020d14 60%)',
-                border: '1px solid rgba(0,255,255,0.12)',
+                background: 'linear-gradient(135deg, rgba(255,255,255,0.03) 0%, #0f0f0f 60%)',
+                border: '1px solid rgba(255,255,255,0.07)',
                 borderRadius: '6px',
               }}
             >

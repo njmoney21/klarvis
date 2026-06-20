@@ -13,7 +13,6 @@ export default function SectionAbout() {
       <div className="max-w-5xl mx-auto">
         <div className="flex flex-col md:flex-row md:items-center gap-12 md:gap-16">
 
-          {/* Text — slides in from left */}
           <motion.div
             className="flex-1"
             variants={fadeLeft}
@@ -22,9 +21,9 @@ export default function SectionAbout() {
             viewport={viewport}
           >
             <div className="flex items-center gap-3 mb-4">
-              <span className="font-mono text-[10px] tracking-[2px]" style={{ color: 'rgba(0,255,255,0.45)' }}>02</span>
-              <span className="w-8 h-px flex-shrink-0" style={{ background: 'rgba(0,255,255,0.2)' }} />
-              <span className="font-mono text-[9px] uppercase tracking-[3px]" style={{ color: 'rgba(0,255,255,0.4)' }}>Über uns</span>
+              <span className="font-mono text-[10px] tracking-[2px]" style={{ color: 'rgba(255,255,255,0.3)' }}>02</span>
+              <span className="w-8 h-px flex-shrink-0" style={{ background: 'rgba(255,255,255,0.12)' }} />
+              <span className="font-mono text-[9px] uppercase tracking-[3px]" style={{ color: 'rgba(255,255,255,0.25)' }}>Über uns</span>
             </div>
 
             <h2
@@ -58,7 +57,7 @@ export default function SectionAbout() {
                 >
                   <span
                     className="flex-shrink-0"
-                    style={{ width: 6, height: 6, borderRadius: '50%', background: '#00ffff', boxShadow: '0 0 6px #00ffff88' }}
+                    style={{ width: 6, height: 6, borderRadius: '50%', background: '#ffffff' }}
                   />
                   {item}
                 </motion.span>
@@ -66,7 +65,6 @@ export default function SectionAbout() {
             </motion.div>
           </motion.div>
 
-          {/* Image — slides in from right */}
           <motion.div
             variants={fadeRight}
             initial="hidden"
@@ -78,8 +76,8 @@ export default function SectionAbout() {
               height: 220,
               borderRadius: '50%',
               overflow: 'hidden',
-              border: '1px solid rgba(0,255,255,0.2)',
-              boxShadow: '0 0 40px rgba(0,255,255,0.08), 0 8px 32px rgba(0,0,0,0.5)',
+              border: '1px solid rgba(255,255,255,0.15)',
+              boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
               alignSelf: 'center',
             }}
           >

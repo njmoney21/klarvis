@@ -5,7 +5,7 @@ import { fadeLeft, fadeRight, fadeUp, viewport } from '../lib/animations'
 const inputStyle: React.CSSProperties = {
   width: '100%',
   background: 'rgba(255,255,255,0.03)',
-  border: '1px solid rgba(0,255,255,0.12)',
+  border: '1px solid rgba(255,255,255,0.1)',
   borderRadius: '4px',
   padding: '12px 16px',
   color: '#fff',
@@ -44,9 +44,9 @@ export default function SectionKontakt() {
           viewport={viewport}
         >
           <div className="flex items-center gap-3 mb-4">
-            <span className="font-mono text-[10px] tracking-[2px]" style={{ color: 'rgba(0,255,255,0.45)' }}>05</span>
-            <span className="w-8 h-px flex-shrink-0" style={{ background: 'rgba(0,255,255,0.2)' }} />
-            <span className="font-mono text-[9px] uppercase tracking-[3px]" style={{ color: 'rgba(0,255,255,0.4)' }}>Kontakt</span>
+            <span className="font-mono text-[10px] tracking-[2px]" style={{ color: 'rgba(255,255,255,0.3)' }}>05</span>
+            <span className="w-8 h-px flex-shrink-0" style={{ background: 'rgba(255,255,255,0.12)' }} />
+            <span className="font-mono text-[9px] uppercase tracking-[3px]" style={{ color: 'rgba(255,255,255,0.25)' }}>Kontakt</span>
           </div>
           <h2
             className="font-extrabold text-white mb-12"
@@ -92,9 +92,9 @@ export default function SectionKontakt() {
               disabled={status === 'sending' || status === 'sent'}
               className="w-full font-bold transition-opacity hover:opacity-90 disabled:opacity-50"
               style={{
-                background: 'rgba(0,255,255,0.1)',
-                border: '1px solid rgba(0,255,255,0.35)',
-                color: '#00ffff',
+                background: 'rgba(255,255,255,0.07)',
+                border: '1px solid rgba(255,255,255,0.2)',
+                color: '#ffffff',
                 borderRadius: '4px',
                 fontSize: '14px',
                 padding: '14px',

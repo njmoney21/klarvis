@@ -28,8 +28,7 @@ export default function SectionHero() {
             fontFamily: 'var(--font-mono)',
             letterSpacing: '0.18em',
             textTransform: 'uppercase',
-            color: '#00ffff',
-            opacity: 0.7,
+            color: 'rgba(255,255,255,0.35)',
             marginBottom: 24,
           }}
         >
@@ -46,11 +45,11 @@ export default function SectionHero() {
             letterSpacing: '-0.03em',
             color: '#fff',
             margin: '0 0 28px',
-            textShadow: '0 4px 50px rgba(0,5,20,0.95)',
+            textShadow: '0 4px 50px rgba(0,0,0,0.95)',
           }}
         >
           Deine Website.<br />
-          <span style={{ color: '#00ffff', textShadow: '0 0 50px rgba(0,255,255,0.4)' }}>
+          <span style={{ color: 'rgba(255,255,255,0.25)' }}>
             Professionell.
           </span>
           <br />Bezahlbar.
@@ -73,19 +72,18 @@ export default function SectionHero() {
 
         <motion.div custom={3} variants={fadeUp} style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
           <a href="#kontakt" style={{
-            background: '#00ffff',
-            color: '#020d14',
+            background: '#ffffff',
+            color: '#0f0f0f',
             fontWeight: 800,
             fontSize: '0.88rem',
             padding: '13px 28px',
             borderRadius: 40,
             textDecoration: 'none',
-            boxShadow: '0 0 28px rgba(0,255,255,0.22)',
           }}>
             Kostenfreies Gespräch
           </a>
           <a href="#leistungen" style={{
-            border: '1px solid rgba(0,255,255,0.25)',
+            border: '1px solid rgba(255,255,255,0.2)',
             color: 'rgba(255,255,255,0.6)',
             fontWeight: 600,
             fontSize: '0.88rem',
@@ -102,7 +100,7 @@ export default function SectionHero() {
       <div style={{
         position: 'absolute', bottom: 0, left: 0, right: 0,
         height: 220,
-        background: 'linear-gradient(to bottom, transparent, #020d14)',
+        background: 'linear-gradient(to bottom, transparent, #0f0f0f)',
         pointerEvents: 'none',
         zIndex: 1,
       }} />

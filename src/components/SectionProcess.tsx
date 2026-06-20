@@ -45,9 +45,9 @@ export default function SectionProcess() {
             >
               <div
                 className="flex items-center gap-2 font-mono mb-5"
-                style={{ fontSize: '10px', color: '#00ffff', letterSpacing: '2px' }}
+                style={{ fontSize: '10px', color: '#ffffff', letterSpacing: '2px' }}
               >
-                <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: '#00ffff' }} />
+                <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: '#ffffff' }} />
                 {number}
               </div>
               <h3 className="text-white font-bold mb-2" style={{ fontSize: '16px' }}>{title}</h3>

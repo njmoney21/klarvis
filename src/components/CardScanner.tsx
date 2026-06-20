@@ -393,8 +393,8 @@ export default function CardScanner() {
         this.gradCtx = this.gradCanvas.getContext('2d')!
         const g = this.gradCtx.createRadialGradient(8, 8, 0, 8, 8, 8)
         g.addColorStop(0, 'rgba(255,255,255,1)')
-        g.addColorStop(0.3, 'rgba(136,255,255,0.8)')
-        g.addColorStop(0.7, 'rgba(0,255,255,0.4)')
+        g.addColorStop(0.3, 'rgba(220,220,220,0.8)')
+        g.addColorStop(0.7, 'rgba(180,180,180,0.4)')
         g.addColorStop(1, 'transparent')
         this.gradCtx.fillStyle = g
         this.gradCtx.beginPath(); this.gradCtx.arc(8, 8, 8, 0, Math.PI * 2); this.gradCtx.fill()
@@ -456,18 +456,18 @@ export default function CardScanner() {
         this.ctx.beginPath(); this.ctx.roundRect(lx - lw / 2, 0, lw, this.h, 15); this.ctx.fill()
 
         const g1 = this.ctx.createLinearGradient(lx - lw * 2, 0, lx + lw * 2, 0)
-        g1.addColorStop(0, 'rgba(0,255,255,0)'); g1.addColorStop(0.5, `rgba(136,255,255,${Math.min(1, 0.8 * gi)})`); g1.addColorStop(1, 'rgba(0,255,255,0)')
+        g1.addColorStop(0, 'rgba(255,255,255,0)'); g1.addColorStop(0.5, `rgba(220,220,220,${Math.min(1, 0.8 * gi)})`); g1.addColorStop(1, 'rgba(255,255,255,0)')
         this.ctx.globalAlpha = this.scanningActive ? 1 : 0.8; this.ctx.fillStyle = g1
         this.ctx.beginPath(); this.ctx.roundRect(lx - lw * 2, 0, lw * 4, this.h, 25); this.ctx.fill()
 
         const g2 = this.ctx.createLinearGradient(lx - lw * 4, 0, lx + lw * 4, 0)
-        g2.addColorStop(0, 'rgba(0,255,255,0)'); g2.addColorStop(0.5, `rgba(0,255,255,${Math.min(1, 0.4 * gi)})`); g2.addColorStop(1, 'rgba(0,255,255,0)')
+        g2.addColorStop(0, 'rgba(255,255,255,0)'); g2.addColorStop(0.5, `rgba(200,200,200,${Math.min(1, 0.4 * gi)})`); g2.addColorStop(1, 'rgba(255,255,255,0)')
         this.ctx.globalAlpha = this.scanningActive ? 0.8 : 0.6; this.ctx.fillStyle = g2
         this.ctx.beginPath(); this.ctx.roundRect(lx - lw * 4, 0, lw * 8, this.h, 35); this.ctx.fill()
 
         if (this.scanningActive) {
           const g3 = this.ctx.createLinearGradient(lx - lw * 8, 0, lx + lw * 8, 0)
-          g3.addColorStop(0, 'rgba(0,255,255,0)'); g3.addColorStop(0.5, 'rgba(0,255,255,0.2)'); g3.addColorStop(1, 'rgba(0,255,255,0)')
+          g3.addColorStop(0, 'rgba(255,255,255,0)'); g3.addColorStop(0.5, 'rgba(200,200,200,0.2)'); g3.addColorStop(1, 'rgba(255,255,255,0)')
           this.ctx.globalAlpha = 0.6; this.ctx.fillStyle = g3
           this.ctx.beginPath(); this.ctx.roundRect(lx - lw * 8, 0, lw * 16, this.h, 45); this.ctx.fill()
         }

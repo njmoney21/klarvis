@@ -10,7 +10,7 @@ interface Props {
 const Tag = ({ children }: { children: React.ReactNode }) => (
   <span style={{
     display: 'inline-block',
-    background: 'rgba(0,255,255,0.07)',
+    background: 'rgba(255,255,255,0.05)',
     border: '1px solid rgba(0,255,255,0.15)',
     borderRadius: '3px',
     padding: '2px 8px',
@@ -45,7 +45,7 @@ const InfoBox = ({ children }: { children: React.ReactNode }) => (
     marginTop: '14px',
     padding: '14px 18px',
     background: 'rgba(255,255,255,0.02)',
-    border: '1px solid rgba(0,255,255,0.08)',
+    border: '1px solid rgba(255,255,255,0.06)',
     borderRadius: '6px',
     lineHeight: 2,
   }}>{children}</div>
@@ -60,7 +60,7 @@ function ImpressumContent() {
       </Sec>
 
       <Sec num="02" title="Kontakt">
-        <p>E-Mail: <a href="mailto:runlyinternational@gmail.com" style={{ color: '#00ffff', textDecoration: 'none' }}>runlyinternational@gmail.com</a></p>
+        <p>E-Mail: <a href="mailto:runlyinternational@gmail.com" style={{ color: '#ffffff', textDecoration: 'none' }}>runlyinternational@gmail.com</a></p>
       </Sec>
 
       <Sec num="03" title="Verantwortlich für den Inhalt">
@@ -75,7 +75,7 @@ function ImpressumContent() {
       <Sec num="05" title="Streitschlichtung">
         <p>
           Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung bereit:{' '}
-          <a href="https://ec.europa.eu/consumers/odr/" target="_blank" rel="noopener noreferrer" style={{ color: '#00ffff', textDecoration: 'none' }}>
+          <a href="https://ec.europa.eu/consumers/odr/" target="_blank" rel="noopener noreferrer" style={{ color: '#ffffff', textDecoration: 'none' }}>
             ec.europa.eu/consumers/odr
           </a>
         </p>
@@ -105,7 +105,7 @@ function DatenschutzContent() {
         <p>Verantwortlicher im Sinne der DSGVO:</p>
         <InfoBox>
           <strong style={{ color: '#fff' }}>Runly</strong><br />
-          E-Mail: <a href="mailto:runlyinternational@gmail.com" style={{ color: '#00ffff', textDecoration: 'none' }}>runlyinternational@gmail.com</a><br />
+          E-Mail: <a href="mailto:runlyinternational@gmail.com" style={{ color: '#ffffff', textDecoration: 'none' }}>runlyinternational@gmail.com</a><br />
           <span style={{ fontSize: '12px', color: 'rgba(255,255,255,0.3)' }}>Vollständige Angaben im Impressum</span>
         </InfoBox>
       </Sec>
@@ -118,7 +118,7 @@ function DatenschutzContent() {
         <Tag>Art. 6 Abs. 1 lit. f DSGVO</Tag>
         <p style={{ marginTop: '10px' }}>Diese Website wird bei Vercel Inc., San Francisco, CA, USA gehostet. Beim Seitenaufruf werden automatisch Server-Logfiles erfasst (IP-Adresse, Datum/Uhrzeit, Browser, Betriebssystem, Referrer). Übertragung in die USA erfolgt auf Basis von Standardvertragsklauseln (SCC) gemäß Art. 46 Abs. 2 lit. c DSGVO.</p>
         <p style={{ marginTop: '8px' }}>
-          <a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer" style={{ color: '#00ffff', textDecoration: 'none', fontSize: '13px' }}>
+          <a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer" style={{ color: '#ffffff', textDecoration: 'none', fontSize: '13px' }}>
             vercel.com/legal/privacy-policy ↗
           </a>
         </p>
@@ -128,7 +128,7 @@ function DatenschutzContent() {
         <Tag>Art. 6 Abs. 1 lit. f DSGVO</Tag>
         <p style={{ marginTop: '10px' }}>Diese Website lädt Schriftarten von Google-Servern (Google Ireland Limited, Dublin). Dabei wird Ihre IP-Adresse an Google übertragen. Google ist im EU-U.S. Data Privacy Framework zertifiziert.</p>
         <p style={{ marginTop: '8px' }}>
-          <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" style={{ color: '#00ffff', textDecoration: 'none', fontSize: '13px' }}>
+          <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" style={{ color: '#ffffff', textDecoration: 'none', fontSize: '13px' }}>
             policies.google.com/privacy ↗
           </a>
         </p>
@@ -144,7 +144,7 @@ function DatenschutzContent() {
         <Sub title="Supabase — Authentifizierung & Datenbank">
           <Tag>Art. 6 Abs. 1 lit. b DSGVO</Tag>
           <p style={{ marginTop: '8px' }}>Nutzeranmeldung per Magic Link und Speicherung von Belegdaten über Supabase Inc. (USA).{' '}
-            <a href="https://supabase.com/privacy" target="_blank" rel="noopener noreferrer" style={{ color: '#00ffff', textDecoration: 'none' }}>supabase.com/privacy ↗</a>
+            <a href="https://supabase.com/privacy" target="_blank" rel="noopener noreferrer" style={{ color: '#ffffff', textDecoration: 'none' }}>supabase.com/privacy ↗</a>
           </p>
         </Sub>
         <Sub title="n8n — Workflow-Automatisierung">
@@ -154,7 +154,7 @@ function DatenschutzContent() {
         <Sub title="Stripe — Zahlungsabwicklung">
           <Tag>Art. 6 Abs. 1 lit. b DSGVO</Tag>
           <p style={{ marginTop: '8px' }}>Zahlungen werden über Stripe Payments Europe Ltd. (Dublin) abgewickelt.{' '}
-            <a href="https://stripe.com/de/privacy" target="_blank" rel="noopener noreferrer" style={{ color: '#00ffff', textDecoration: 'none' }}>stripe.com/de/privacy ↗</a>
+            <a href="https://stripe.com/de/privacy" target="_blank" rel="noopener noreferrer" style={{ color: '#ffffff', textDecoration: 'none' }}>stripe.com/de/privacy ↗</a>
           </p>
         </Sub>
       </Sec>
@@ -174,7 +174,7 @@ function DatenschutzContent() {
           <li>Widerspruchsrecht — Art. 21 DSGVO</li>
         </ul>
         <p style={{ marginTop: '12px' }}>
-          Kontakt: <a href="mailto:runlyinternational@gmail.com" style={{ color: '#00ffff', textDecoration: 'none' }}>runlyinternational@gmail.com</a>
+          Kontakt: <a href="mailto:runlyinternational@gmail.com" style={{ color: '#ffffff', textDecoration: 'none' }}>runlyinternational@gmail.com</a>
         </p>
       </Sec>
 
@@ -182,7 +182,7 @@ function DatenschutzContent() {
         <InfoBox>
           <strong style={{ color: '#fff' }}>Bayerisches Landesamt für Datenschutzaufsicht (BayLDA)</strong><br />
           Promenade 18, 91522 Ansbach<br />
-          <a href="https://www.lda.bayern.de" target="_blank" rel="noopener noreferrer" style={{ color: '#00ffff', textDecoration: 'none' }}>
+          <a href="https://www.lda.bayern.de" target="_blank" rel="noopener noreferrer" style={{ color: '#ffffff', textDecoration: 'none' }}>
             www.lda.bayern.de ↗
           </a>
         </InfoBox>
@@ -225,8 +225,8 @@ export default function LegalModal({ type, onClose }: Props) {
           width: '100%',
           maxWidth: '680px',
           maxHeight: '88vh',
-          background: '#020d14',
-          border: '1px solid rgba(0,255,255,0.12)',
+          background: '#0f0f0f',
+          border: '1px solid rgba(255,255,255,0.07)',
           borderBottom: 'none',
           borderRadius: '12px 12px 0 0',
           display: 'flex',
@@ -240,7 +240,7 @@ export default function LegalModal({ type, onClose }: Props) {
           alignItems: 'center',
           justifyContent: 'space-between',
           padding: '20px 24px 16px',
-          borderBottom: '1px solid rgba(0,255,255,0.08)',
+          borderBottom: '1px solid rgba(255,255,255,0.06)',
           flexShrink: 0,
         }}>
           <div>
@@ -271,7 +271,7 @@ export default function LegalModal({ type, onClose }: Props) {
               transition: 'background 0.15s, color 0.15s',
               flexShrink: 0,
             }}
-            onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(0,255,255,0.08)'; (e.currentTarget as HTMLButtonElement).style.color = '#00ffff' }}
+            onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.06)'; (e.currentTarget as HTMLButtonElement).style.color = '#ffffff' }}
             onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.05)'; (e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,0.4)' }}
           >
             ✕
@@ -286,7 +286,7 @@ export default function LegalModal({ type, onClose }: Props) {
             marginTop: '16px',
             padding: '12px 16px',
             background: 'rgba(0,255,255,0.03)',
-            border: '1px solid rgba(0,255,255,0.07)',
+            border: '1px solid rgba(255,255,255,0.05)',
             borderRadius: '5px',
             fontFamily: "'JetBrains Mono', monospace",
             fontSize: '10px',

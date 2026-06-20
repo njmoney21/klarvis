@@ -57,9 +57,9 @@ export default function SectionGallery() {
           style={{ marginBottom: '24px' }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
-            <span style={{ fontFamily: 'monospace', fontSize: '10px', letterSpacing: '2px', color: 'rgba(0,255,255,0.45)' }}>03</span>
-            <span style={{ width: 32, height: 1, background: 'rgba(0,255,255,0.2)', display: 'block' }} />
-            <span style={{ fontFamily: 'monospace', fontSize: '9px', textTransform: 'uppercase', letterSpacing: '3px', color: 'rgba(0,255,255,0.4)' }}>Referenzen</span>
+            <span style={{ fontFamily: 'monospace', fontSize: '10px', letterSpacing: '2px', color: 'rgba(255,255,255,0.3)' }}>03</span>
+            <span style={{ width: 32, height: 1, background: 'rgba(255,255,255,0.12)', display: 'block' }} />
+            <span style={{ fontFamily: 'monospace', fontSize: '9px', textTransform: 'uppercase', letterSpacing: '3px', color: 'rgba(255,255,255,0.25)' }}>Referenzen</span>
           </div>
           <h2 style={{ fontWeight: 800, color: '#fff', fontSize: 'clamp(1.4rem, 2.5vw, 2.2rem)', letterSpacing: '-0.8px', lineHeight: 1.1, margin: 0 }}>
             Unsere Projekte

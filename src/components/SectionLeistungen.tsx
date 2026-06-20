@@ -8,7 +8,7 @@ const services = [
     description: 'Individuell, mobilfreundlich und auf Ihre Kunden zugeschnitten — von der Konzeption bis zum Launch.',
     features: ['Responsives Design', 'Schnelle Ladezeiten', 'SEO-Grundoptimierung', 'Kontaktformular'],
     icon: (
-      <svg width="16" height="16" fill="none" stroke="#00ffff" strokeWidth="1.5" viewBox="0 0 24 24">
+      <svg width="16" height="16" fill="none" stroke="#ffffff" strokeWidth="1.5" viewBox="0 0 24 24">
         <rect x="2" y="3" width="20" height="14" rx="2" />
         <path d="M8 21h8M12 17v4" />
       </svg>
@@ -20,7 +20,7 @@ const services = [
     description: 'Wir kümmern uns um Hosting, Sicherheit und Updates — damit Sie sich auf Ihr Geschäft konzentrieren können.',
     features: ['Hosting inklusive', 'Sicherheits-Updates', 'Inhaltspflege bis 2h/Mo', 'Persönlicher Ansprechpartner'],
     icon: (
-      <svg width="16" height="16" fill="none" stroke="#00ffff" strokeWidth="1.5" viewBox="0 0 24 24">
+      <svg width="16" height="16" fill="none" stroke="#ffffff" strokeWidth="1.5" viewBox="0 0 24 24">
         <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
       </svg>
     ),
@@ -38,9 +38,9 @@ export default function SectionLeistungen() {
           viewport={viewport}
         >
           <div className="flex items-center gap-3 mb-4">
-            <span className="font-mono text-[10px] tracking-[2px]" style={{ color: 'rgba(0,255,255,0.45)' }}>01</span>
-            <span className="w-8 h-px flex-shrink-0" style={{ background: 'rgba(0,255,255,0.2)' }} />
-            <span className="font-mono text-[9px] uppercase tracking-[3px]" style={{ color: 'rgba(0,255,255,0.4)' }}>Leistungen</span>
+            <span className="font-mono text-[10px] tracking-[2px]" style={{ color: 'rgba(255,255,255,0.3)' }}>01</span>
+            <span className="w-8 h-px flex-shrink-0" style={{ background: 'rgba(255,255,255,0.12)' }} />
+            <span className="font-mono text-[9px] uppercase tracking-[3px]" style={{ color: 'rgba(255,255,255,0.25)' }}>Leistungen</span>
           </div>
           <h2
             className="font-extrabold text-white mb-12"
@@ -56,23 +56,23 @@ export default function SectionLeistungen() {
           whileInView="visible"
           viewport={viewport}
           className="grid md:grid-cols-2 overflow-hidden"
-          style={{ gap: '1px', background: 'rgba(0,255,255,0.06)', border: '1px solid rgba(0,255,255,0.1)', borderRadius: '4px' }}
+          style={{ gap: '1px', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '4px' }}
         >
           {services.map(({ title, subtitle, description, features, icon }) => (
             <motion.div
               key={title}
               variants={fadeUp}
               className="flex flex-col p-9"
-              style={{ background: '#020d14' }}
+              style={{ background: '#0f0f0f' }}
             >
               <div
                 className="w-9 h-9 flex items-center justify-center mb-5 flex-shrink-0"
-                style={{ background: 'rgba(0,255,255,0.08)', border: '1px solid rgba(0,255,255,0.2)', borderRadius: '4px' }}
+                style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: '4px' }}
               >
                 {icon}
               </div>
               <h3 className="text-white font-bold mb-1" style={{ fontSize: '17px' }}>{title}</h3>
-              <p className="font-mono mb-3" style={{ fontSize: '11px', color: 'rgba(0,255,255,0.55)', letterSpacing: '1px' }}>
+              <p className="font-mono mb-3" style={{ fontSize: '11px', color: 'rgba(255,255,255,0.38)', letterSpacing: '1px' }}>
                 {subtitle}
               </p>
               <p className="mb-5 leading-relaxed" style={{ fontSize: '13px', color: 'rgba(255,255,255,0.42)' }}>
@@ -87,7 +87,7 @@ export default function SectionLeistungen() {
               >
                 {features.map(f => (
                   <motion.span key={f} variants={fadeLeft} className="flex items-center gap-2" style={{ fontSize: '12px', color: 'rgba(255,255,255,0.5)' }}>
-                    <span className="w-1 h-1 rounded-full flex-shrink-0" style={{ background: '#00ffff' }} />
+                    <span className="w-1 h-1 rounded-full flex-shrink-0" style={{ background: '#ffffff' }} />
                     {f}
                   </motion.span>
                 ))}
