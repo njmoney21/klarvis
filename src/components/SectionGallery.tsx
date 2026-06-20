@@ -1,145 +1,49 @@
 import { motion } from 'framer-motion'
-import { useState, useRef, useEffect } from 'react'
-
-const IFRAME_W = 1280
-const IFRAME_H = 800
 
 const projects = [
-  { name: 'Bistro Koliba',       url: 'https://koliba-sepia.vercel.app/', accent: '#D4A017' },
-  { name: 'Rem Cosmetics',       url: 'https://remcosmetics.vercel.app/', accent: '#f472b6' },
-  { name: 'Runly',               url: 'https://runly-six.vercel.app/',    accent: '#00ffff' },
-  { name: 'La Locanda di Nino',  url: 'https://lalocandadinino.de/',      accent: '#86efac' },
+  {
+    name:     'Bistro Koliba',
+    url:      'https://koliba-sepia.vercel.app/',
+    img:      '/screenshots/koliba.jpg',
+    subtitle: 'Restaurant Website',
+  },
+  {
+    name:     'Rem Cosmetics',
+    url:      'https://remcosmetics.vercel.app/',
+    img:      '/screenshots/remcosmetics.jpg',
+    subtitle: 'Beauty & Cosmetics',
+  },
+  {
+    name:     'Runly',
+    url:      'https://runly-six.vercel.app/',
+    img:      '/screenshots/runly.jpg',
+    subtitle: 'Web Agency',
+  },
+  {
+    name:     'La Locanda di Nino',
+    url:      'https://lalocandadinino.de/',
+    img:      '/screenshots/lalocanda.jpg',
+    subtitle: 'Italian Restaurant',
+  },
+  {
+    name:     'Banicki',
+    url:      'https://banicki.vercel.app/',
+    img:      '/screenshots/banicki.jpg',
+    subtitle: 'Garten & Landschaftsbau',
+  },
+  {
+    name:     'Dream Residence Lux',
+    url:      'https://dreamresidencelux.vercel.app/',
+    img:      '/screenshots/dreamresidencelux.jpg',
+    subtitle: 'Luxury Real Estate',
+  },
+  {
+    name:     'Gasthaus Lippnwirt',
+    url:      'https://gasthaus-lippnwirt.vercel.app/',
+    img:      '/screenshots/gasthaus_lippnwirt.jpg',
+    subtitle: 'Traditionelles Gasthaus',
+  },
 ]
-
-function ProjectCard({ project, index }: { project: (typeof projects)[0]; index: number }) {
-  const [hovered, setHovered] = useState(false)
-  const colRef = useRef<HTMLDivElement>(null)
-  const [scale, setScale] = useState(0.21)
-
-  useEffect(() => {
-    if (!colRef.current) return
-    const ro = new ResizeObserver(entries => {
-      const w = entries[0].contentRect.width
-      if (w > 0) setScale(w / IFRAME_W)
-    })
-    ro.observe(colRef.current)
-    return () => ro.disconnect()
-  }, [])
-
-  const previewH = Math.round(IFRAME_H * scale)
-
-  return (
-    <motion.div
-      ref={colRef}
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
-      onClick={() => window.open(project.url, '_blank', 'noopener')}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      style={{ cursor: 'pointer', minWidth: 0 }}
-    >
-      <div
-        style={{
-          border: `1px solid ${hovered ? project.accent + '55' : 'rgba(0,255,255,0.12)'}`,
-          borderRadius: '8px',
-          overflow: 'hidden',
-          background: '#010b11',
-          boxShadow: hovered
-            ? `0 0 28px ${project.accent}18, 0 8px 32px rgba(0,0,0,0.6)`
-            : '0 4px 20px rgba(0,0,0,0.5)',
-          transition: 'border-color 0.3s, box-shadow 0.3s',
-        }}
-      >
-        {/* Chrome bar */}
-        <div
-          style={{
-            background: 'rgba(255,255,255,0.04)',
-            borderBottom: '1px solid rgba(255,255,255,0.07)',
-            padding: '7px 10px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-          }}
-        >
-          <div style={{ display: 'flex', gap: '4px', flexShrink: 0 }}>
-            <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#ff5f57' }} />
-            <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#ffbd2e' }} />
-            <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#28c840' }} />
-          </div>
-          <div
-            style={{
-              flex: 1,
-              background: 'rgba(255,255,255,0.05)',
-              border: '1px solid rgba(255,255,255,0.08)',
-              borderRadius: '4px',
-              padding: '3px 8px',
-              fontSize: '9px',
-              color: 'rgba(255,255,255,0.3)',
-              fontFamily: 'monospace',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              whiteSpace: 'nowrap',
-            }}
-          >
-            {project.url.replace(/https?:\/\//, '')}
-          </div>
-        </div>
-
-        {/* Preview — iframe is absolute so it never pushes layout */}
-        <div style={{ position: 'relative', height: previewH, overflow: 'hidden' }}>
-          <iframe
-            src={project.url}
-            title={project.name}
-            loading="lazy"
-            tabIndex={-1}
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: IFRAME_W,
-              height: IFRAME_H,
-              border: 'none',
-              transform: `scale(${scale})`,
-              transformOrigin: 'top left',
-              pointerEvents: 'none',
-            }}
-          />
-          <div
-            style={{
-              position: 'absolute',
-              inset: 0,
-              background: hovered ? 'rgba(2,13,20,0.68)' : 'rgba(2,13,20,0)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              transition: 'background 0.25s',
-            }}
-          >
-            <div
-              style={{
-                opacity: hovered ? 1 : 0,
-                transform: hovered ? 'translateY(0)' : 'translateY(6px)',
-                transition: 'opacity 0.25s, transform 0.25s',
-                padding: '8px 20px',
-                border: `1px solid ${project.accent}`,
-                borderRadius: '4px',
-                color: project.accent,
-                fontSize: '11px',
-                fontWeight: 700,
-                fontFamily: 'monospace',
-                letterSpacing: '1.5px',
-              }}
-            >
-              BESUCHEN ↗
-            </div>
-          </div>
-        </div>
-      </div>
-    </motion.div>
-  )
-}
 
 export default function SectionGallery() {
   return (
@@ -162,11 +66,28 @@ export default function SectionGallery() {
           </h2>
         </motion.div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px' }}>
-          {projects.map((project, i) => (
-            <ProjectCard key={project.url} project={project} index={i} />
-          ))}
-        </div>
+        <main className="gallery-wrapper">
+          <div className="hex-grid">
+            {projects.map(project => (
+              <div
+                key={project.url}
+                className="hex"
+                tabIndex={0}
+                role="button"
+                onClick={() => window.open(project.url, '_blank', 'noopener')}
+                onKeyDown={e => e.key === 'Enter' && window.open(project.url, '_blank', 'noopener')}
+              >
+                <div className="hex-shape">
+                  <img src={project.img} alt={project.name} />
+                  <div className="hex-caption">
+                    <h3>{project.name}</h3>
+                    <p>{project.subtitle}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </main>
       </div>
     </section>
   )

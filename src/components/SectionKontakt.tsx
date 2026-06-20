@@ -106,7 +106,7 @@ export default function SectionKontakt() {
             </button>
             {status === 'error' && (
               <p className="mt-3 text-center" style={{ fontSize: '12px', color: '#f87171' }}>
-                Etwas ist schiefgelaufen. Schreiben Sie uns direkt an hallo@runly.de
+                Etwas ist schiefgelaufen. Schreiben Sie uns direkt an runlyinternational@gmail.com
               </p>
             )}
           </motion.form>
@@ -121,21 +121,11 @@ export default function SectionKontakt() {
             <div>
               <h4 className="font-semibold mb-1" style={{ fontSize: '13px', color: 'rgba(255,255,255,0.7)' }}>E-Mail</h4>
               <a
-                href="mailto:hallo@runly.de"
+                href="mailto:runlyinternational@gmail.com"
                 className="transition-colors hover:opacity-70"
                 style={{ fontSize: '13px', color: 'rgba(255,255,255,0.38)' }}
               >
-                hallo@runly.de
-              </a>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-1" style={{ fontSize: '13px', color: 'rgba(255,255,255,0.7)' }}>WhatsApp</h4>
-              <a
-                href="https://wa.me/49XXXXXXXXXX"
-                className="transition-colors hover:opacity-70"
-                style={{ fontSize: '13px', color: 'rgba(255,255,255,0.38)' }}
-              >
-                Direkt schreiben →
+                runlyinternational@gmail.com
               </a>
             </div>
             <div

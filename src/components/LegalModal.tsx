@@ -60,7 +60,7 @@ function ImpressumContent() {
       </Sec>
 
       <Sec num="02" title="Kontakt">
-        <p>E-Mail: <a href="mailto:nikolatodorovic800@gmail.com" style={{ color: '#00ffff', textDecoration: 'none' }}>nikolatodorovic800@gmail.com</a></p>
+        <p>E-Mail: <a href="mailto:runlyinternational@gmail.com" style={{ color: '#00ffff', textDecoration: 'none' }}>runlyinternational@gmail.com</a></p>
       </Sec>
 
       <Sec num="03" title="Verantwortlich für den Inhalt">
@@ -105,7 +105,7 @@ function DatenschutzContent() {
         <p>Verantwortlicher im Sinne der DSGVO:</p>
         <InfoBox>
           <strong style={{ color: '#fff' }}>Runly</strong><br />
-          E-Mail: <a href="mailto:nikolatodorovic800@gmail.com" style={{ color: '#00ffff', textDecoration: 'none' }}>nikolatodorovic800@gmail.com</a><br />
+          E-Mail: <a href="mailto:runlyinternational@gmail.com" style={{ color: '#00ffff', textDecoration: 'none' }}>runlyinternational@gmail.com</a><br />
           <span style={{ fontSize: '12px', color: 'rgba(255,255,255,0.3)' }}>Vollständige Angaben im Impressum</span>
         </InfoBox>
       </Sec>
@@ -174,7 +174,7 @@ function DatenschutzContent() {
           <li>Widerspruchsrecht — Art. 21 DSGVO</li>
         </ul>
         <p style={{ marginTop: '12px' }}>
-          Kontakt: <a href="mailto:nikolatodorovic800@gmail.com" style={{ color: '#00ffff', textDecoration: 'none' }}>nikolatodorovic800@gmail.com</a>
+          Kontakt: <a href="mailto:runlyinternational@gmail.com" style={{ color: '#00ffff', textDecoration: 'none' }}>runlyinternational@gmail.com</a>
         </p>
       </Sec>
 
